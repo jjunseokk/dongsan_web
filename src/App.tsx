@@ -6,7 +6,6 @@ import Splash from "./Page/Login/Splash";
 import Home from "./Page/Home/Home";
 import SignUp from "./Page/SignUp/SignUp";
 
-
 const userSize = window.innerWidth;
 
 interface AppContainerStyle {
@@ -38,6 +37,10 @@ function App() {
     {
       path: "/signUp",
       element: <SignUp />,
+    },
+    {
+      path: "/*",
+      element: <Splash />,
     },
   ]);
 
