@@ -2,22 +2,23 @@ import styled from "styled-components";
 import { px2vw } from "../Util/px2vw";
 
 interface SignButtonType {
-  bgColor: string;
   color: string;
   context: string;
   disabled?: boolean;
   onClick: () => void;
   borderColor: string;
+  width?: number;
 }
 
 interface SignButtonStyleType {
   $bgColor: string;
   $color: string;
   $borderColor: string;
+  $width?: number;
 }
 
 const SignButtonContainer = styled.button<SignButtonStyleType>`
-  width: ${px2vw(380)};
+  width: ${({ $width }) => ($width ? $width : px2vw(380))};
   height: ${px2vw(37)};
   border-radius: 5px;
   background-color: ${({ $bgColor }) => $bgColor};
@@ -35,25 +36,26 @@ const SignButtonContainer = styled.button<SignButtonStyleType>`
     $borderColor === "none" ? "none" : `1px solid ${$borderColor}`};
 `;
 
-const SignButton = ({
-  bgColor,
+const Button = ({
   color,
   context,
   disabled,
   onClick,
   borderColor,
+  width,
 }: SignButtonType) => {
   return (
     <SignButtonContainer
       onClick={onClick}
       disabled={disabled}
-      $bgColor={disabled ? "#D9D9D9" : bgColor}
+      $bgColor={disabled ? "#D9D9D9" : "#ffffff"}
       $color={disabled ? "#ffffff" : color}
       $borderColor={disabled ? "none" : borderColor}
+      $width={width}
     >
       <p>{context}</p>
     </SignButtonContainer>
   );
 };
 
-export default SignButton;
+export default Button;

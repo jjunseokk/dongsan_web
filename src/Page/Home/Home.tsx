@@ -1,124 +1,21 @@
 import { useRef, useState } from "react";
-import styled from "styled-components";
-import { px2vw } from "../../Util/px2vw";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
-
-import track_bg from "/assets/track_bg.png";
-import next from "/assets/audio-next.png";
-import prev from "/assets/audio-prev.png";
-import play from "/assets/audio-play.png";
-import pause from "/assets/audio-pause.png";
-import heart from "/assets/heart.png";
-import heart_on from "/assets/heart-active.png";
-import comment from "/assets/comment.png";
-
-const HomeContainer = styled.div`
-  padding: 0 ${px2vw(24)};
-
-  > .home-date {
-    display: flex;
-    align-items: center;
-    gap: ${px2vw(9)};
-
-    > p {
-      color: #427d4f;
-      font: 700 25px "Pretendard";
-    }
-    > img {
-      width: ${px2vw(18)};
-    }
-  }
-  .home-today-qt {
-    font: 700 20px "Pretendard";
-    margin-top: 10px;
-  }
-  .home-qt-track {
-    width: ${px2vw(300)};
-    height: ${px2vw(300)};
-    border: 1px solid #427d4f;
-    border-radius: 50%;
-    margin: 0 auto;
-    margin-top: ${px2vw(40)};
-    position: relative;
-    .track-bg {
-      width: ${px2vw(270)};
-      height: ${px2vw(270)};
-      border-radius: 50%;
-      overflow: hidden;
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      .active {
-        animation: playTrack 5s linear infinite;
-      }
-      .track-center-white {
-        width: ${px2vw(60)};
-        height: ${px2vw(60)};
-        background: #ffffff;
-        border-radius: 50%;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-      }
-    }
-  }
-  .home-qt-info {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    margin-top: ${px2vw(30)};
-
-    .qt-title {
-      font: 700 25px "Pretendard";
-    }
-    .qt-chapter {
-      font: 500 18px "Pretendard";
-      margin-top: ${px2vw(10)};
-    }
-    .qt-audio-controller {
-      display: flex;
-      gap: ${px2vw(45)};
-      align-items: center;
-      margin-top: ${px2vw(30)};
-      cursor: pointer;
-    }
-    .home-qt-activeArea {
-      display: flex;
-      align-items: center;
-      gap: ${px2vw(40)};
-      margin-top: ${px2vw(30)};
-      > div {
-        display: flex;
-        align-items: center;
-        gap: ${px2vw(5)};
-        > img {
-          cursor: pointer;
-        }
-        > p {
-          color: #427d4f;
-        }
-      }
-    }
-  }
-
-  @keyframes playTrack {
-    0% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(360deg);
-    }
-  }
-`;
+import { HomeContainer } from "./HomeStyle";
+import { PopupContainer } from "../Login/Login";
+import Button from "../../components/Button";
 
 const Home = () => {
   const playRef = useRef<any>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isHeart, setIsHeart] = useState<boolean>(false);
+  const [showComment, setShowComment] = useState<boolean>(false);
+  const [showEdit, setShowEdit] = useState<boolean>(false);
+  const [edit, setEdit] = useState<string>(
+    "오늘 묵상으로 하루를 열심히 살아갈 수 있을 것 같습니다.오늘 묵상으로 하루를 열심히 살아갈 수 있을 것 같습니다."
+  );
+  const [showModalMenu, setShowModalMenu] = useState<boolean>(false);
+  const [showDeletePopup, setShowDeletePopup] = useState<boolean>(false);
 
   const handlePlayPause = () => {
     const audioElement = playRef.current.audio.current;
@@ -131,8 +28,29 @@ const Home = () => {
       setIsPlaying(true); // 상태를 재생으로 변경
     }
   };
+
+  const handleEdit = () => {
+    console.log("수정");
+  };
+
+  const handleDeleteComment = () => {
+    console.log("삭제");
+    setShowDeletePopup(false);
+  };
+
   return (
     <HomeContainer>
+      {showDeletePopup ? (
+        <PopupContainer>
+          <p>삭제하시겠습니까?</p>
+          <Button
+            context="확인"
+            color="#427d4f"
+            onClick={handleDeleteComment}
+            borderColor="#427d4f"
+          />
+        </PopupContainer>
+      ) : null}
       <div className="home-date">
         <p>2024.09.09</p>
         <img src="/assets/home-calendar.png" alt="" />
@@ -140,7 +58,11 @@ const Home = () => {
       <p className="home-today-qt">오늘의 묵상</p>
       <div className="home-qt-track">
         <div className="track-bg">
-          <img className={isPlaying ? "active" : ""} src={track_bg} alt="" />
+          <img
+            className={isPlaying ? "active" : ""}
+            src="/assets/track_bg.png"
+            alt=""
+          />
           <div className="track-center-white"></div>
         </div>
       </div>
@@ -148,13 +70,15 @@ const Home = () => {
         <p className="qt-title">묵상제목</p>
         <p className="qt-chapter">잠언 12:1</p>
         <div className="qt-audio-controller">
-          <img src={prev} alt="prev" />
+          <img src="/assets/audio-prev.png" alt="prev" />
           <img
             onClick={handlePlayPause}
-            src={isPlaying ? pause : play}
+            src={
+              isPlaying ? "/assets/audio-pause.png" : "/assets/audio-play.png"
+            }
             alt="play"
           />
-          <img src={next} alt="next" />
+          <img src="/assets/audio-next.png" alt="next" />
         </div>
         <AudioPlayer
           ref={playRef}
@@ -170,14 +94,260 @@ const Home = () => {
           <div>
             <img
               onClick={() => setIsHeart(!isHeart)}
-              src={isHeart ? heart_on : heart}
+              src={isHeart ? "/assets/heart-active.png" : "/assets/heart.png"}
               alt=""
             />
             <p>1</p>
           </div>
-          <div>
-            <img src={comment} alt="" />
+          <div onClick={() => setShowComment(true)}>
+            <img src="/assets/comment.png" alt="" />
             <p>1</p>
+          </div>
+        </div>
+      </div>
+      <div className={showComment ? "home-comment active" : "home-comment"}>
+        <div onClick={() => setShowComment(false)} className="comment-bg"></div>
+        <div className="comment-popup">
+          <div className="popup-header">
+            <p className="title">나눔</p>
+            <p className="description">총 2개의 나눔</p>
+          </div>
+
+          <div className="popup-body">
+            <div className="comment-container">
+              <div className="comment-info">
+                <div>
+                  <p>박준석</p>
+                  <p>2024-02-04</p>
+                </div>
+                <img
+                  onClick={() => setShowModalMenu(true)}
+                  src="/assets/more_menu.png"
+                  alt=""
+                />
+              </div>
+              {showEdit ? (
+                <div className="comment-edit">
+                  <input
+                    value={edit}
+                    onChange={(e) => setEdit(e.target.value)}
+                    className="edit-input"
+                    type="text"
+                  />
+                  <div>
+                    <p onClick={handleEdit}>수정</p>
+                    <p onClick={() => setShowEdit(false)}>취소</p>
+                  </div>
+                </div>
+              ) : (
+                <p>
+                  오늘 묵상으로 하루를 열심히 살아갈 수 있을 것 같습니다.오늘
+                  묵상으로 하루를 열심히 살아갈 수 있을 것 같습니다.
+                </p>
+              )}
+
+              {showModalMenu ? (
+                <div className="modal-menu">
+                  <p
+                    onClick={() => {
+                      setShowEdit(true);
+                      setShowModalMenu(false);
+                    }}
+                  >
+                    수정하기
+                  </p>
+                  <p onClick={() => setShowDeletePopup(true)}>삭제하기</p>
+                </div>
+              ) : null}
+            </div>
+            <div className="comment-container">
+              <div className="comment-info">
+                <div>
+                  <p>박준석</p>
+                  <p>2024-02-04</p>
+                </div>
+                <img
+                  onClick={() => setShowModalMenu(true)}
+                  src="/assets/more_menu.png"
+                  alt=""
+                />
+              </div>
+              {showEdit ? (
+                <div className="comment-edit">
+                  <input
+                    value={edit}
+                    onChange={(e) => setEdit(e.target.value)}
+                    className="edit-input"
+                    type="text"
+                  />
+                  <div>
+                    <p onClick={handleEdit}>수정</p>
+                    <p onClick={() => setShowEdit(false)}>취소</p>
+                  </div>
+                </div>
+              ) : (
+                <p>
+                  오늘 묵상으로 하루를 열심히 살아갈 수 있을 것 같습니다.오늘
+                  묵상으로 하루를 열심히 살아갈 수 있을 것 같습니다.
+                </p>
+              )}
+
+              {showModalMenu ? (
+                <div className="modal-menu">
+                  <p
+                    onClick={() => {
+                      setShowEdit(true);
+                      setShowModalMenu(false);
+                    }}
+                  >
+                    수정하기
+                  </p>
+                  <p onClick={() => setShowDeletePopup(true)}>삭제하기</p>
+                </div>
+              ) : null}
+            </div>
+            <div className="comment-container">
+              <div className="comment-info">
+                <div>
+                  <p>박준석</p>
+                  <p>2024-02-04</p>
+                </div>
+                <img
+                  onClick={() => setShowModalMenu(true)}
+                  src="/assets/more_menu.png"
+                  alt=""
+                />
+              </div>
+              {showEdit ? (
+                <div className="comment-edit">
+                  <input
+                    value={edit}
+                    onChange={(e) => setEdit(e.target.value)}
+                    className="edit-input"
+                    type="text"
+                  />
+                  <div>
+                    <p onClick={handleEdit}>수정</p>
+                    <p onClick={() => setShowEdit(false)}>취소</p>
+                  </div>
+                </div>
+              ) : (
+                <p>
+                  오늘 묵상으로 하루를 열심히 살아갈 수 있을 것 같습니다.오늘
+                  묵상으로 하루를 열심히 살아갈 수 있을 것 같습니다.
+                </p>
+              )}
+
+              {showModalMenu ? (
+                <div className="modal-menu">
+                  <p
+                    onClick={() => {
+                      setShowEdit(true);
+                      setShowModalMenu(false);
+                    }}
+                  >
+                    수정하기
+                  </p>
+                  <p onClick={() => setShowDeletePopup(true)}>삭제하기</p>
+                </div>
+              ) : null}
+            </div>
+            <div className="comment-container">
+              <div className="comment-info">
+                <div>
+                  <p>박준석</p>
+                  <p>2024-02-04</p>
+                </div>
+                <img
+                  onClick={() => setShowModalMenu(true)}
+                  src="/assets/more_menu.png"
+                  alt=""
+                />
+              </div>
+              {showEdit ? (
+                <div className="comment-edit">
+                  <input
+                    value={edit}
+                    onChange={(e) => setEdit(e.target.value)}
+                    className="edit-input"
+                    type="text"
+                  />
+                  <div>
+                    <p onClick={handleEdit}>수정</p>
+                    <p onClick={() => setShowEdit(false)}>취소</p>
+                  </div>
+                </div>
+              ) : (
+                <p>
+                  오늘 묵상으로 하루를 열심히 살아갈 수 있을 것 같습니다.오늘
+                  묵상으로 하루를 열심히 살아갈 수 있을 것 같습니다.
+                </p>
+              )}
+
+              {showModalMenu ? (
+                <div className="modal-menu">
+                  <p
+                    onClick={() => {
+                      setShowEdit(true);
+                      setShowModalMenu(false);
+                    }}
+                  >
+                    수정하기
+                  </p>
+                  <p onClick={() => setShowDeletePopup(true)}>삭제하기</p>
+                </div>
+              ) : null}
+            </div>
+            <div className="comment-container">
+              <div className="comment-info">
+                <div>
+                  <p>박준석</p>
+                  <p>2024-02-04</p>
+                </div>
+                <img
+                  onClick={() => setShowModalMenu(true)}
+                  src="/assets/more_menu.png"
+                  alt=""
+                />
+              </div>
+              {showEdit ? (
+                <div className="comment-edit">
+                  <input
+                    value={edit}
+                    onChange={(e) => setEdit(e.target.value)}
+                    className="edit-input"
+                    type="text"
+                  />
+                  <div>
+                    <p onClick={handleEdit}>수정</p>
+                    <p onClick={() => setShowEdit(false)}>취소</p>
+                  </div>
+                </div>
+              ) : (
+                <p>
+                  오늘 묵상으로 하루를 열심히 살아갈 수 있을 것 같습니다.오늘
+                  묵상으로 하루를 열심히 살아갈 수 있을 것 같습니다.
+                </p>
+              )}
+
+              {showModalMenu ? (
+                <div className="modal-menu">
+                  <p
+                    onClick={() => {
+                      setShowEdit(true);
+                      setShowModalMenu(false);
+                    }}
+                  >
+                    수정하기
+                  </p>
+                  <p onClick={() => setShowDeletePopup(true)}>삭제하기</p>
+                </div>
+              ) : null}
+            </div>
+          </div>
+          <div className="home-input-area">
+            <input type="text" />
+            <p>입력</p>
           </div>
         </div>
       </div>

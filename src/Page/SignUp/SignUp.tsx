@@ -3,13 +3,14 @@ import styled from "styled-components";
 import BackHeader from "../../components/BackHeader";
 import Input from "../../components/Input";
 import { px2vw } from "../../Util/px2vw";
-import SignButton from "../../components/SignButton";
+import SignButton from "../../components/Button";
 import { useNavigate } from "react-router-dom";
 import { PopupContainer } from "../Login/Login";
 
 const SignUpContainer = styled.div`
   .signUp-input {
     margin-top: ${px2vw(50)};
+    padding: 0px ${px2vw(25)};
     > div {
       margin-top: ${px2vw(15)};
       &:first-of-type {
@@ -118,7 +119,6 @@ const SignUp = () => {
           context="회원가입 하기"
           color="#427D4F"
           borderColor="#427D4F"
-          bgColor="transparent"
           onClick={handleSingUp}
           disabled={canRegister ? false : true}
         />
@@ -126,7 +126,6 @@ const SignUp = () => {
           context="불편사항 문의하기"
           color="#151515"
           borderColor="none"
-          bgColor="transparent"
           onClick={() => console.log("ss")}
         />
       </div>
@@ -137,7 +136,6 @@ const SignUp = () => {
             context="로그인 하기"
             color="#427D4F"
             borderColor="#427D4F"
-            bgColor="transparent"
             onClick={() => navigate("/login")}
           />
         </PopupContainer>
