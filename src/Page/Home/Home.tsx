@@ -178,7 +178,7 @@ const Home = () => {
           </div>
           <div>
             <img src={comment} alt="" />
-            <p>1</p>
+            <p>13</p>
           </div>
         </div>
       </div>
