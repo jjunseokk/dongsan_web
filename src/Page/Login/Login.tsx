@@ -3,7 +3,7 @@ import styled from "styled-components";
 import Input from "../../components/Input";
 import BackHeader from "../../components/BackHeader";
 import { px2vw } from "../../Util/px2vw";
-import SignButton from "../../components/SignButton";
+import SignButton from "../../components/Button";
 import { useNavigate } from "react-router-dom";
 
 const LoginContainer = styled.div`
@@ -39,6 +39,7 @@ export const PopupContainer = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  z-index: 10;
   > p {
     font-size: 20;
     font-weight: 600;
@@ -79,14 +80,12 @@ const Login = () => {
           <SignButton
             context="로그인하기"
             disabled={userName && userPw ? false : true}
-            bgColor="transparent"
             color="#427D4F"
             onClick={handleLogin}
             borderColor="#427D4F"
           />
           <SignButton
             context="회원가입"
-            bgColor="transparent"
             color="#151515"
             onClick={() => navigate('/signUp')}
             borderColor="none"
@@ -98,7 +97,6 @@ const Login = () => {
           <p>주님의 이름으로 축복합니다.</p>
           <SignButton
             context="확인"
-            bgColor="transparent"
             color="#427D4F"
             onClick={()=>navigate('/main')}
             borderColor="#427D4F"
