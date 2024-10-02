@@ -1,10 +1,9 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import styled from "styled-components";
 import { px2vw } from "../../Util/px2vw";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 
-import home_calender from "/assets/home-calendar.png";
 import track_bg from "/assets/track_bg.png";
 import next from "/assets/audio-next.png";
 import prev from "/assets/audio-prev.png";
@@ -136,7 +135,7 @@ const Home = () => {
     <HomeContainer>
       <div className="home-date">
         <p>2024.09.09</p>
-        <img src={home_calender} alt="" />
+        <img src="/assets/home-calendar.png" alt="" />
       </div>
       <p className="home-today-qt">오늘의 묵상</p>
       <div className="home-qt-track">
@@ -178,7 +177,7 @@ const Home = () => {
           </div>
           <div>
             <img src={comment} alt="" />
-            <p>13</p>
+            <p>1</p>
           </div>
         </div>
       </div>

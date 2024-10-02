@@ -1,4 +1,3 @@
-import React from "react";
 import styled from "styled-components";
 import { px2vw } from "../Util/px2vw";
 
