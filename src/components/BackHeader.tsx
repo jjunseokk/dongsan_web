@@ -1,0 +1,39 @@
+import React from "react";
+import styled from "styled-components";
+import { px2vw } from "../Util/px2vw";
+
+interface BackHeaderType {
+  title: string;
+}
+
+const BackHeaderContainer = styled.div`
+  position: relative;
+  width: 100%;
+  height: ${px2vw(50)};
+  border-bottom: 1px solid #d9d9d9;
+  > img {
+    position: absolute;
+    top: ${px2vw(11)};
+    left: ${px2vw(12)};
+    cursor: pointer;
+  }
+  > p {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 20px;
+    font-weight: 600;
+  }
+`;
+
+const BackHeader = ({ title }: BackHeaderType) => {
+  return (
+    <BackHeaderContainer>
+      <img onClick={() => history.back()} src="/assets/arrow_back.png" alt="" />
+      <p>{title}</p>
+    </BackHeaderContainer>
+  );
+};
+
+export default BackHeader;
