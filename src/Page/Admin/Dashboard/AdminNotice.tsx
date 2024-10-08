@@ -1,0 +1,102 @@
+import styled from "styled-components";
+import Button from "../../../components/Button";
+import px2vwPc from "../../../Util/px2vwPc";
+import { useState } from "react";
+import UploadNotice from "../Components/UploadNotice";
+import EditNotice from "../Components/EdtiNotice";
+import { DashboardContainer } from "../Components/DashboardStyle";
+
+const AdminNoticeContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  position: relative;
+  
+  table {
+    border-collapse: collapse;
+    margin-top: ${px2vwPc(30)};
+    th,
+    td {
+      text-align: center;
+      padding: ${px2vwPc(15)} 0px;
+      border: 1px solid #e0e0e0;
+      &:first-of-type {
+        border-left: none;
+      }
+      &:last-of-type {
+        border-right: none;
+      }
+    }
+    thead {
+      > tr {
+        border-bottom: 2px solid #707070;
+        border-top: 2px solid #707070;
+        th {
+          &:first-of-type {
+            width: ${px2vwPc(100)};
+          }
+          &:nth-of-type(2) {
+            width: ${px2vwPc(1100)};
+            padding-left: ${px2vwPc(10)};
+            text-align: start;
+          }
+          &:nth-of-type(3) {
+            width: ${px2vwPc(250)};
+          }
+        }
+      }
+    }
+
+    tbody {
+      tr {
+        td {
+          font: 400 14px "Pretendard";
+          &:nth-of-type(2) {
+            text-align: start;
+            padding-left: ${px2vwPc(10)};
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+`;
+
+const AdminNotice = () => {
+  const [showUploadNotice, setShowUploadNotice] = useState<boolean>(false);
+  const [showEditNotice, setShowEditNotice] = useState<boolean>(false);
+
+  return (
+    <AdminNoticeContainer>
+      {showUploadNotice ? <UploadNotice setShow={setShowUploadNotice} /> : null}
+      {showEditNotice ? <EditNotice setShow={setShowEditNotice} /> : null}
+      <DashboardContainer>
+        <p className="dashboard-title">공지 작성</p>
+        <Button
+          context="공지작성"
+          color="#427D4F"
+          borderColor="#427D4F"
+          onClick={() => setShowUploadNotice(true)}
+          width={px2vwPc(130)}
+        />
+        <table>
+          <thead>
+            <tr>
+              <th>번호</th>
+              <th>제목</th>
+              <th>작성일자</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td onClick={() => setShowEditNotice(true)}>공지 제묵</td>
+              <td>2024-09-10</td>
+            </tr>
+          </tbody>
+        </table>
+      </DashboardContainer>
+    </AdminNoticeContainer>
+  );
+};
+
+export default AdminNotice;

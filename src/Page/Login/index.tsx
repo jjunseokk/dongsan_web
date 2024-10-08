@@ -9,7 +9,6 @@ import { useNavigate } from "react-router-dom";
 const LoginContainer = styled.div`
   > .login-wrap {
     padding: 0px ${px2vw(25)};
-
     > div {
       &:nth-of-type(1) {
         margin-top: ${px2vw(30)};
@@ -26,7 +25,8 @@ const LoginContainer = styled.div`
 
 export const PopupContainer = styled.div`
   width: ${px2vw(351)};
-  height: ${px2vw(179)};
+  /* height: ${px2vw(179)}; */
+  padding: ${px2vw(20)} ${px2vw(21)};
   border: none;
   box-shadow: 1px 1px 2px 1px #00000040;
   background: #ffffff;
@@ -87,7 +87,7 @@ const Login = () => {
           <SignButton
             context="회원가입"
             color="#151515"
-            onClick={() => navigate('/signUp')}
+            onClick={() => navigate("/signUp")}
             borderColor="none"
           />
         </div>
@@ -98,7 +98,7 @@ const Login = () => {
           <SignButton
             context="확인"
             color="#427D4F"
-            onClick={()=>navigate('/main')}
+            onClick={() => navigate("/main")}
             borderColor="#427D4F"
           />
         </PopupContainer>

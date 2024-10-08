@@ -12,13 +12,11 @@ export const HomeContainer = styled.div`
     display: flex;
     align-items: center;
     gap: ${px2vw(9)};
+    margin-top: ${px2vw(30)};
 
     > p {
       color: #427d4f;
       font: 700 25px "Pretendard";
-    }
-    > img {
-      width: ${px2vw(18)};
     }
   }
   .home-today-qt {
@@ -127,16 +125,15 @@ export const HomeContainer = styled.div`
     .comment-popup {
       bottom: 0px;
       transition: all 0.5s;
+      z-index: 10;
       > .popup-header {
         border-bottom: 1px solid #ababab;
         padding: ${px2vw(20)};
         > .title {
-          font-size: 25px;
-          font-weight: 600;
+          font: 600 25px "Pretendard";
         }
         > .description {
-          font-size: 15px;
-          font-weight: 400;
+          font: 400 15px "Pretendard";
           color: #888888;
           margin-top: ${px2vw(5)};
         }
@@ -161,8 +158,7 @@ export const HomeContainer = styled.div`
               align-items: center;
               gap: ${px2vw(10)};
               > p {
-                font-size: 15px;
-                font-weight: 400;
+                font: 400 15px "Pretendard";
                 color: #427d4f;
                 &:last-of-type {
                   color: #888888;
@@ -175,8 +171,7 @@ export const HomeContainer = styled.div`
               width: 100%;
               height: ${px2vw(35)};
               margin-top: ${px2vw(10)};
-              font-size: 15px;
-              font-weight: 400;
+              font: 400 15px "Pretendard";
               padding-left: ${px2vw(5)};
             }
             > div {
@@ -194,8 +189,7 @@ export const HomeContainer = styled.div`
           }
 
           > p {
-            font-size: 15px;
-            font-weight: 400;
+            font: 400 15px "Pretendard";
             margin-top: ${px2vw(10)};
           }
           .modal-menu {

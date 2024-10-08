@@ -8,34 +8,49 @@ interface InputType {
   type?: string;
   setValue: React.Dispatch<SetStateAction<string>>;
   value: string;
+  width?: number | string;
 }
 
-const InputContainer = styled.div`
+type InputContainerStyle = {
+  $width: string | undefined | number;
+};
+
+const InputContainer = styled.div<InputContainerStyle>`
+  width: ${({ $width }) => ($width ? $width : "100%")};
   > p {
-    font-size: 15px;
     color: #151515;
-    font-weight: 600;
+    font: 600 15px "Pretendard";
   }
   > input {
-    border: 1px solid;
     border: 1px solid #d9d9d9;
     height: ${px2vw(40)};
     width: 100%;
     padding: ${px2vw(11)} ${px2vw(12)};
     border-radius: 5px;
     margin-top: ${px2vw(10)};
+    font: 600 15px "Pretendard";
+
     &::placeholder {
       color: #d9d9d9;
-      font-size: 15px;
-      font-weight: 600;
+      font: 600 15px "Pretendard";
+    }
+    &:focus {
+      outline: none;
     }
   }
 `;
 
-const Input = ({ title, placeholder, type, value, setValue }: InputType) => {
+const Input = ({
+  width,
+  title,
+  placeholder,
+  type,
+  value,
+  setValue,
+}: InputType) => {
   return (
-    <InputContainer>
-      <p>{title}</p>
+    <InputContainer $width={width}>
+      {title === "none" ? null : <p>{title}</p>}
       <input
         value={value}
         onChange={(e) => setValue(e.target.value)}

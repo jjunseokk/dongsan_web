@@ -7,14 +7,14 @@ interface SignButtonType {
   disabled?: boolean;
   onClick: () => void;
   borderColor: string;
-  width?: number;
+  width?: number | string;
 }
 
 interface SignButtonStyleType {
   $bgColor: string;
   $color: string;
   $borderColor: string;
-  $width?: number;
+  $width?: number | string;
 }
 
 const SignButtonContainer = styled.button<SignButtonStyleType>`

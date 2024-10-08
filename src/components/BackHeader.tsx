@@ -3,6 +3,7 @@ import { px2vw } from "../Util/px2vw";
 
 interface BackHeaderType {
   title: string;
+  backHandle?: boolean;
 }
 
 const BackHeaderContainer = styled.div`
@@ -26,10 +27,17 @@ const BackHeaderContainer = styled.div`
   }
 `;
 
-const BackHeader = ({ title }: BackHeaderType) => {
+const BackHeader = ({ title, backHandle }: BackHeaderType) => {
   return (
     <BackHeaderContainer>
-      <img onClick={() => history.back()} src="/assets/arrow_back.png" alt="" />
+      {backHandle === false ? null : (
+        <img
+          onClick={() => history.back()}
+          src="/assets/arrow_back.png"
+          alt="back-arrow"
+        />
+      )}
+
       <p>{title}</p>
     </BackHeaderContainer>
   );
