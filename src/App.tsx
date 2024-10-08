@@ -1,7 +1,6 @@
 import "./App.scss";
 import {
   BrowserRouter,
-  createBrowserRouter,
   Route,
   Routes,
 } from "react-router-dom";
