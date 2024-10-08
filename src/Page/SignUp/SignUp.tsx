@@ -5,7 +5,7 @@ import Input from "../../components/Input";
 import { px2vw } from "../../Util/px2vw";
 import SignButton from "../../components/Button";
 import { useNavigate } from "react-router-dom";
-import { PopupContainer } from "../Login/Login";
+import { PopupContainer } from "../Login";
 
 const SignUpContainer = styled.div`
   .signUp-input {

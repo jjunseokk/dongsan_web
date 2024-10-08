@@ -2,8 +2,9 @@ import { useRef, useState } from "react";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import { HomeContainer } from "./HomeStyle";
-import { PopupContainer } from "../Login/Login";
+import { PopupContainer } from "../Login";
 import Button from "../../components/Button";
+import BottomMenu from "../../components/BottomMenu";
 
 const Home = () => {
   const playRef = useRef<any>(null);
@@ -53,7 +54,6 @@ const Home = () => {
       ) : null}
       <div className="home-date">
         <p>2024.09.09</p>
-        <img src="/assets/home-calendar.png" alt="" />
       </div>
       <p className="home-today-qt">오늘의 묵상</p>
       <div className="home-qt-track">
@@ -351,6 +351,7 @@ const Home = () => {
           </div>
         </div>
       </div>
+      <BottomMenu />
     </HomeContainer>
   );
 };

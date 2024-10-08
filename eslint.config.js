@@ -35,6 +35,7 @@ export default new ESLint({
         { allowConstantExport: true },
       ],
       '@typescript-eslint/no-unused-vars': ['error'], // 타입스크립트에서 사용하지 않는 변수에 대한 규칙 추가
+      
     },
   },
   useEslintrc: false, // 다른 .eslintrc 파일 무시
