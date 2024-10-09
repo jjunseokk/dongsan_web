@@ -3,7 +3,7 @@ import { px2vw } from "../Util/px2vw";
 import { useLocation, useNavigate } from "react-router-dom";
 
 const BottomMenuContainer = styled.div`
-  position: absolute;
+  position: fixed;
   bottom: 0px;
   left: 0px;
   width: 100%;
