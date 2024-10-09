@@ -5,8 +5,9 @@ import { useState } from "react";
 import UploadMeditation from "../Components/UploadMeditation";
 import EditMeditation from "../Components/EditMeditation";
 import { DashboardContainer } from "../Components/DashboardStyle";
+import { motion } from "framer-motion";
 
-const AdminMeditationContainer = styled.div`
+const AdminMeditationContainer = styled(motion.div)`
   width: 100%;
   height: 100%;
   position: relative;
@@ -23,7 +24,7 @@ const AdminMeditationContainer = styled.div`
     th,
     td {
       text-align: center;
-      padding: ${px2vwPc(15)} 0px;
+      padding: ${px2vwPc(10)} 0px;
       border: 1px solid #e0e0e0;
       &:first-of-type {
         border-left: none;
@@ -89,7 +90,10 @@ const AdminMeditation = () => {
   const handleDeleteMeditation = () => {};
 
   return (
-    <AdminMeditationContainer>
+    <AdminMeditationContainer
+      initial={{ opacity: 0, x: -10 }}
+      whileInView={{ opacity: 1, x: 0 }}
+    >
       {showUpload ? <UploadMeditation setShow={setShowUpload} /> : null}
       {showEdit ? <EditMeditation setShow={setShowEdit} /> : null}
       <DashboardContainer>

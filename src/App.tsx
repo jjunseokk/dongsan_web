@@ -1,9 +1,5 @@
 import "./App.scss";
-import {
-  BrowserRouter,
-  Route,
-  Routes,
-} from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import styled from "styled-components";
 import Login from "./Page/Login";
 import Splash from "./Page/Login/Splash";
@@ -21,6 +17,7 @@ import AdminNotice from "./Page/Admin/Dashboard/AdminNotice";
 import AdminMeditation from "./Page/Admin/Dashboard/AdminMeditation";
 import AdminUserList from "./Page/Admin/Dashboard/AdminUserList";
 import AdminUserDetail from "./Page/Admin/Dashboard/AdminUserDetail";
+import AdminUserApprove from "./Page/Admin/Dashboard/AdminUserApprove";
 
 const userSize = window.innerWidth;
 
@@ -60,6 +57,7 @@ function App() {
             <Route path="meditation" element={<AdminMeditation />} />
             <Route path="userList" element={<AdminUserList />} />
             <Route path="userList/:id/detail" element={<AdminUserDetail />} />
+            <Route path="userList/approve" element={<AdminUserApprove />} />
           </Route>
 
           <Route path="/*" element={<Splash />} />

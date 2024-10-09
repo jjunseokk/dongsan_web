@@ -63,7 +63,9 @@ const Admin = () => {
             묵상 추가/수정/삭제
           </p>
           <p className="title">성도 관리</p>
-          <p>가입 승인</p>
+          <p onClick={() => navigate("/dongsan/admin/userList/approve")}>
+            가입 승인
+          </p>
           <p onClick={() => navigate("/dongsan/admin/userList")}>성도</p>
           <p className="title">대시보드</p>
           <p>문의 내역</p>
