@@ -57,10 +57,12 @@ const UploadNoticeContainer = styled.div`
         }
       }
     }
-    > button {
-      position: absolute;
-      bottom: ${px2vwPc(50)};
-      right: ${px2vwPc(50)};
+    .btn-area {
+      display: flex;
+      align-items: center;
+      justify-content: end;
+      gap: ${px2vwPc(20)};
+      margin-top: ${px2vwPc(10)};
     }
   }
 `;
@@ -71,6 +73,10 @@ const UploadNotice = ({ setShow }: UploadNoticeStyle) => {
   const handleNoticeSave = () => {
     console.log("ss");
   };
+
+  const handleNoticeDelete = () =>{
+    console.log("ss")
+  }
   return (
     <UploadNoticeContainer>
       <div onClick={() => setShow(false)} className="uploadNotice-bg"></div>
@@ -89,13 +95,22 @@ const UploadNotice = ({ setShow }: UploadNoticeStyle) => {
           <p>공지 내용</p>
           <textarea placeholder="내용을 입력해주세요." />
         </div>
-        <Button
-          context="저장"
-          color="#427d4f"
-          borderColor="#427d4f"
-          onClick={handleNoticeSave}
-          width={px2vwPc(150)}
-        />
+        <div className="btn-area">
+          <Button
+            context="삭제"
+            color="#ff1919"
+            borderColor="#ff1919"
+            onClick={handleNoticeDelete}
+            width={px2vwPc(150)}
+          />
+          <Button
+            context="저장"
+            color="#427d4f"
+            borderColor="#427d4f"
+            onClick={handleNoticeSave}
+            width={px2vwPc(150)}
+          />
+        </div>
       </motion.div>
     </UploadNoticeContainer>
   );

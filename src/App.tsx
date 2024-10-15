@@ -35,34 +35,33 @@ const AppContainer = styled.div<AppContainerStyle>`
   }
 `;
 
+
 function App() {
   return (
     <AppContainer $width={userSize}>
-      {/* <RouterProvider router={router} /> */}
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Splash />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signUp" element={<SignUp />} />
-          <Route path="/main" element={<Home />} />
-          <Route path="/meditation" element={<Meditation />} />
-          <Route path="/meditation/:id" element={<MeditationPlay />} />
-          <Route path="/story" element={<Story />} />
-          <Route path="/myPage" element={<MyPage />} />
-          <Route path="/myPage/service" element={<Service />} />
-          <Route path="/myPage/notice" element={<Notice />} />
-          <Route path="/myPage/edit-password" element={<EditPw />} />
-          <Route path="/dongsan/admin" element={<Admin />}>
-            <Route path="notice" element={<AdminNotice />} />
-            <Route path="meditation" element={<AdminMeditation />} />
-            <Route path="userList" element={<AdminUserList />} />
-            <Route path="userList/:id/detail" element={<AdminUserDetail />} />
-            <Route path="userList/approve" element={<AdminUserApprove />} />
-          </Route>
-
-          <Route path="/*" element={<Splash />} />
-        </Routes>
-      </BrowserRouter>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Splash />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signUp" element={<SignUp />} />
+            <Route path="/main" element={<Home />} />
+            <Route path="/meditation" element={<Meditation />} />
+            <Route path="/meditation/:id" element={<MeditationPlay />} />
+            <Route path="/story" element={<Story />} />
+            <Route path="/myPage" element={<MyPage />} />
+            <Route path="/myPage/service" element={<Service />} />
+            <Route path="/myPage/notice" element={<Notice />} />
+            <Route path="/myPage/edit-password" element={<EditPw />} />
+            <Route path="/dongsan/admin" element={<Admin />}>
+              <Route path="notice" element={<AdminNotice />} />
+              <Route path="meditation" element={<AdminMeditation />} />
+              <Route path="userList" element={<AdminUserList />} />
+              <Route path="userList/:id/detail" element={<AdminUserDetail />} />
+              <Route path="userList/approve" element={<AdminUserApprove />} />
+            </Route>
+            <Route path="/*" element={<Splash />} />
+          </Routes>
+        </BrowserRouter>
     </AppContainer>
   );
 }

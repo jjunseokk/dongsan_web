@@ -2,11 +2,15 @@ import styled from "styled-components";
 import { motion } from "framer-motion";
 import px2vwPc from "../../../Util/px2vwPc";
 import Input from "../../../components/Input";
-import React, { SetStateAction, useRef, useState } from "react";
+import React, { SetStateAction, useEffect, useRef, useState } from "react";
 import Button from "../../../components/Button";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { editMeditation, getMeditationDetail } from "../../../Api/User";
+import { postMeditation } from "../../../Type";
 
 interface EditMeditationStyle {
   setShow: React.Dispatch<SetStateAction<boolean>>;
+  id: number;
 }
 
 const EditMeditationContainer = styled.div`
@@ -43,9 +47,10 @@ const EditMeditationContainer = styled.div`
         justify-content: center;
         align-items: center;
         cursor: pointer;
-        > p {
-          font: 700 18px "Pretendard";
-          color: #ffffff;
+        overflow: hidden;
+        > img {
+          width: 100%;
+          height: 100%;
         }
         > input {
           display: none;
@@ -84,12 +89,68 @@ const EditMeditationContainer = styled.div`
   }
 `;
 
-const EditMeditation = ({ setShow }: EditMeditationStyle) => {
+const EditMeditation = ({ setShow, id }: EditMeditationStyle) => {
   const thumbnailRef = useRef<any>(null);
   const [meditationTitle, setMeditationTitle] = useState("");
   const [meditationBible, setMeditationBible] = useState("");
+  const [thumbnail, setThumbnail] = useState<any>();
+  const [music, setMusic] = useState<any>();
+  const [still, setStill] = useState<any>(null);
 
-  const handleEditMeditation = () => {};
+  const { data: detailData, status } = useQuery({
+    queryKey: ["detail"],
+    queryFn: () => getMeditationDetail(id),
+  });
+
+  const editMeditationMutation = useMutation({
+    mutationKey: ["editMeditation"],
+    mutationFn: (data: any) => editMeditation(data, id),
+    onSuccess: (res) => {
+      if (res.status === 200) {
+        window.location.reload();
+      }
+    },
+  });
+
+  const handleImg = (e: any) => {
+    const file = e.target.files[0];
+    setThumbnail(file);
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setStill(reader.result);
+    };
+  };
+
+  const handleGetMusic = (e: any) => {
+    const file = e.target.files[0];
+    setMusic(file);
+  };
+
+  const handleEditMeditation = () => {
+    const formData = new FormData();
+
+    formData.append("title", meditationTitle);
+    formData.append("word", meditationBible);
+    if (typeof thumbnail === "object") {
+      formData.append("thumbnail", thumbnail);
+    }
+    if (typeof music === "object") {
+      formData.append("music", music);
+    }
+    editMeditationMutation.mutate(formData);
+  };
+
+  const cnaRegister = meditationTitle && meditationBible && thumbnail && music;
+
+  useEffect(() => {
+    setMeditationTitle(detailData?.data.meditationDetail[0].title);
+    setMeditationBible(detailData?.data.meditationDetail[0].word);
+    setStill(detailData?.data.meditationDetail[0].thumbnail);
+    setMusic(detailData?.data.meditationDetail[0].music);
+    setThumbnail(detailData?.data.meditationDetail[0].thumbnail);
+  }, [status]);
+
   return (
     <EditMeditationContainer>
       <div onClick={() => setShow(false)} className="edit-meditation-bg"></div>
@@ -103,8 +164,13 @@ const EditMeditation = ({ setShow }: EditMeditationStyle) => {
             onClick={() => thumbnailRef.current.click()}
             className="edit-meditation-thumbnail"
           >
-            <p>추가</p>
-            <input ref={thumbnailRef} type="file" accept=".jpg,.png,.jpeg" />
+            <img src={still} alt="" />
+            <input
+              onChange={handleImg}
+              ref={thumbnailRef}
+              type="file"
+              accept=".jpg,.png,.jpeg"
+            />
           </div>
           <p>* 정사각형의 이미지를 넣어주세요.</p>
         </div>
@@ -123,7 +189,7 @@ const EditMeditation = ({ setShow }: EditMeditationStyle) => {
           />
           <div className="edit-mp3">
             <p>음원 파일</p>
-            <input type="file" accept="audio/*" />
+            <input onChange={handleGetMusic} type="file" accept="audio/*" />
           </div>
         </div>
         <Button
@@ -132,7 +198,7 @@ const EditMeditation = ({ setShow }: EditMeditationStyle) => {
           borderColor="#427d4f"
           onClick={handleEditMeditation}
           width={px2vwPc(200)}
-          disabled={true}
+          disabled={!cnaRegister}
         />
       </motion.div>
     </EditMeditationContainer>

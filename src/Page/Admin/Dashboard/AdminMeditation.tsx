@@ -6,6 +6,9 @@ import UploadMeditation from "../Components/UploadMeditation";
 import EditMeditation from "../Components/EditMeditation";
 import { DashboardContainer } from "../Components/DashboardStyle";
 import { motion } from "framer-motion";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { deleteMeditation, getMeditation } from "../../../Api/User";
+import { meditation } from "../../../Type";
 
 const AdminMeditationContainer = styled(motion.div)`
   width: 100%;
@@ -87,7 +90,36 @@ const AdminMeditationContainer = styled(motion.div)`
 const AdminMeditation = () => {
   const [showUpload, setShowUpload] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
-  const handleDeleteMeditation = () => {};
+  const [selectedItems, setSelectedItems] = useState([]); // New state to track selected items
+  const [id, setId] = useState<number>(0);
+
+  const { data: meditationList } = useQuery({
+    queryKey: ["getMeditation"],
+    queryFn: () => getMeditation(),
+  });
+
+  const deleteMeditationMutation = useMutation({
+    mutationKey: ["deleteMeditation"],
+    mutationFn: (ids: number[]) => deleteMeditation(ids),
+    onSuccess: (res) => {
+      if (res.status === 200) {
+        window.location.reload();
+      }
+    },
+  });
+
+  const handleCheckboxChange = (id: number) => {
+    setSelectedItems(
+      (prevSelectedItems: any) =>
+        prevSelectedItems.includes(id)
+          ? prevSelectedItems.filter((item: any) => item !== id) // 체크해제
+          : [...prevSelectedItems, id] // 체크
+    );
+  };
+
+  const handleDeleteMeditation = () => {
+    deleteMeditationMutation.mutate(selectedItems);
+  };
 
   return (
     <AdminMeditationContainer
@@ -95,7 +127,7 @@ const AdminMeditation = () => {
       whileInView={{ opacity: 1, x: 0 }}
     >
       {showUpload ? <UploadMeditation setShow={setShowUpload} /> : null}
-      {showEdit ? <EditMeditation setShow={setShowEdit} /> : null}
+      {showEdit ? <EditMeditation id={id} setShow={setShowEdit} /> : null}
       <DashboardContainer>
         <p className="dashboard-title">묵상/추가/삭제 관리</p>
         <div className="admin-meditation-btn">
@@ -128,15 +160,29 @@ const AdminMeditation = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td onClick={() => setShowEdit(true)}>묵상 제목</td>
-              <td>잠언 1:1</td>
-              <td>2024-09-10</td>
-              <td>
-                <input type="checkbox" />
-              </td>
-            </tr>
+            {meditationList?.data.meditationList.map(
+              (value: meditation, index: number) => (
+                <tr key={value.id}>
+                  <td>{index + 1}</td>
+                  <td
+                    onClick={() => {
+                      setShowEdit(true);
+                      setId(value.id);
+                    }}
+                  >
+                    {value.title}
+                  </td>
+                  <td>{value.word}</td>
+                  <td>{value.createDate}</td>
+                  <td>
+                    <input
+                      onChange={() => handleCheckboxChange(value.id)}
+                      type="checkbox"
+                    />
+                  </td>
+                </tr>
+              )
+            )}
           </tbody>
         </table>
       </DashboardContainer>
