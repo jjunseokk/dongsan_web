@@ -5,19 +5,20 @@ import { useState } from "react";
 import UploadNotice from "../Components/UploadNotice";
 import EditNotice from "../Components/EdtiNotice";
 import { DashboardContainer } from "../Components/DashboardStyle";
+import { motion } from "framer-motion";
 
-const AdminNoticeContainer = styled.div`
+const AdminNoticeContainer = styled(motion.div)`
   width: 100%;
   height: 100%;
   position: relative;
-  
+
   table {
     border-collapse: collapse;
     margin-top: ${px2vwPc(30)};
     th,
     td {
       text-align: center;
-      padding: ${px2vwPc(15)} 0px;
+      padding: ${px2vwPc(10)} 0px;
       border: 1px solid #e0e0e0;
       &:first-of-type {
         border-left: none;
@@ -66,7 +67,10 @@ const AdminNotice = () => {
   const [showEditNotice, setShowEditNotice] = useState<boolean>(false);
 
   return (
-    <AdminNoticeContainer>
+    <AdminNoticeContainer
+      initial={{ opacity: 0, x: -10 }}
+      whileInView={{ opacity: 1, x: 0 }}
+    >
       {showUploadNotice ? <UploadNotice setShow={setShowUploadNotice} /> : null}
       {showEditNotice ? <EditNotice setShow={setShowEditNotice} /> : null}
       <DashboardContainer>
