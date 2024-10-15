@@ -6,7 +6,6 @@ import React, { SetStateAction, useEffect, useRef, useState } from "react";
 import Button from "../../../components/Button";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { editMeditation, getMeditationDetail } from "../../../Api/User";
-import { postMeditation } from "../../../Type";
 
 interface EditMeditationStyle {
   setShow: React.Dispatch<SetStateAction<boolean>>;

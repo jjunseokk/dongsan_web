@@ -1,4 +1,3 @@
-import { AxiosRequestConfig } from "axios";
 import AxiosInstance from "../../AxiosInstance";
 import { postMeditation } from "../../Type";
 
