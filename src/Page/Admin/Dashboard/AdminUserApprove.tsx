@@ -74,7 +74,11 @@ const AdminUserApproveContainer = styled(motion.div)`
 `;
 
 const AdminUserApprove = () => {
-  const [approve, setApprove] = useState("not approved");
+  const [approve, setApprove] = useState(0);
+
+  const handleApprove = (value: number) => {
+    setApprove(value);
+  };
   return (
     <AdminUserApproveContainer
       initial={{ opacity: 0, x: -10 }}
@@ -100,24 +104,24 @@ const AdminUserApprove = () => {
               <td>박준석</td>
               <td>010-2313-8636</td>
               <td>2024-10-11</td>
-              <td className={approve === "not approved" ? "active" : ""}>
-                {approve === "not approved" ? "미승인" : "승인"}
+              <td className={approve === 0 ? "active" : ""}>
+                {approve === 0 ? "미승인" : "승인"}
               </td>
               <td>
-                {approve === "not approved" ? (
+                {approve === 0 ? (
                   <>
                     <Button
                       context="승인"
                       color="#427d4f"
                       borderColor="#427d4f"
-                      onClick={() => console.log("ss")}
+                      onClick={() => handleApprove(1)}
                       width={px2vwPc(90)}
                     />
                     <Button
                       context="거절"
                       color="#FF1919"
                       borderColor="#FF1919"
-                      onClick={() => console.log("ss")}
+                      onClick={() => handleApprove(-1)}
                       width={px2vwPc(90)}
                     />
                   </>
