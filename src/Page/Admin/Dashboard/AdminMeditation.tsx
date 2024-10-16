@@ -7,7 +7,7 @@ import EditMeditation from "../Components/EditMeditation";
 import { DashboardContainer } from "../Components/DashboardStyle";
 import { motion } from "framer-motion";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { deleteMeditation, getMeditation } from "../../../Api/User";
+import { deleteMeditation, getMeditation } from "../../../Api/Admin";
 import { meditation } from "../../../Type";
 
 const AdminMeditationContainer = styled(motion.div)`

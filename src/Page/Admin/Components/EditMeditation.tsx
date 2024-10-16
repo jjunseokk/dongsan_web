@@ -5,7 +5,7 @@ import Input from "../../../components/Input";
 import React, { SetStateAction, useEffect, useRef, useState } from "react";
 import Button from "../../../components/Button";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { editMeditation, getMeditationDetail } from "../../../Api/User";
+import { editMeditation, getMeditationDetail } from "../../../Api/Admin";
 
 interface EditMeditationStyle {
   setShow: React.Dispatch<SetStateAction<boolean>>;
@@ -97,7 +97,7 @@ const EditMeditation = ({ setShow, id }: EditMeditationStyle) => {
   const [still, setStill] = useState<any>(null);
 
   const { data: detailData, status } = useQuery({
-    queryKey: ["detail"],
+    queryKey: ["detail", id],
     queryFn: () => getMeditationDetail(id),
   });
 
