@@ -75,7 +75,6 @@ const AdminUserList = () => {
     queryFn: () => getUserList(),
   });
 
-  console.log(userList?.data.profile);
   return (
     <AdminUserListContainer
       initial={{ opacity: 0, x: -10 }}
@@ -95,23 +94,25 @@ const AdminUserList = () => {
             </tr>
           </thead>
           <tbody>
-            {userList?.data.profile.map((value: getUser, index: number) => {
-              return (
-                <tr key={value.id}>
-                  <td>{index + 1}</td>
-                  <td>{value.userId}</td>
-                  <td
-                    onClick={() =>
-                      navigate(`/dongsan/admin/userList/${value.id}/detail`)
-                    }
-                  >
-                    {value.name}
-                  </td>
-                  <td>{value.phoneNumber}</td>
-                  <td>{value.createDate}</td>
-                </tr>
-              );
-            })}
+            {userList?.data.profile
+              .filter((item: getUser) => item.userApprove === true)
+              .map((value: getUser, index: number) => {
+                return (
+                  <tr key={value.id}>
+                    <td>{index + 1}</td>
+                    <td>{value.userId}</td>
+                    <td
+                      onClick={() =>
+                        navigate(`/dongsan/admin/userList/${value.id}/detail`)
+                      }
+                    >
+                      {value.name}
+                    </td>
+                    <td>{value.phoneNumber}</td>
+                    <td>{value.createDate}</td>
+                  </tr>
+                );
+              })}
           </tbody>
         </table>
       </DashboardContainer>

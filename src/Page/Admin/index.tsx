@@ -19,12 +19,12 @@ const AdminContainer = styled.div`
       justify-content: center;
       align-items: center;
       > img {
-        width: 90%;
+        width: 70%;
       }
     }
     .menu-unit {
       padding: ${px2vwPc(20)} ${px2vwPc(25)};
-      margin-top: ${px2vwPc(50)};
+      margin-top: 20px;
 
       > p {
         font: 500 16px "Pretendard";
