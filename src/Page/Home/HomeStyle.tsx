@@ -40,6 +40,9 @@ export const HomeContainer = styled.div`
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
       .active {
         animation: playTrack 5s linear infinite;
       }

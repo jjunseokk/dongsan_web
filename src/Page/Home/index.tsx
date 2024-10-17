@@ -5,8 +5,13 @@ import { HomeContainer } from "./HomeStyle";
 import { PopupContainer } from "../Login";
 import Button from "../../components/Button";
 import BottomMenu from "../../components/BottomMenu";
+import { useQuery } from "@tanstack/react-query";
+import { getTodayMeditation } from "../../Api/Client";
 
 const Home = () => {
+  const date = new Date(); //현재 시간
+  const currentDate = date.toISOString().split("T")[0]; // 현재시간 형식 변경 YYYY-MM-DD
+
   const playRef = useRef<any>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isHeart, setIsHeart] = useState<boolean>(false);
@@ -18,6 +23,14 @@ const Home = () => {
   const [showModalMenu, setShowModalMenu] = useState<boolean>(false);
   const [showDeletePopup, setShowDeletePopup] = useState<boolean>(false);
 
+  const { data: todayMeditation } = useQuery({
+    queryKey: ["today"],
+    queryFn: () => getTodayMeditation(currentDate),
+  });
+
+  console.log(todayMeditation?.data);
+
+  console.log(todayMeditation?.data);
   const handlePlayPause = () => {
     const audioElement = playRef.current.audio.current;
 
@@ -53,22 +66,39 @@ const Home = () => {
         </PopupContainer>
       ) : null}
       <div className="home-date">
-        <p>2024.09.09</p>
+        <p>
+          {todayMeditation?.data.today
+            ? todayMeditation?.data?.today?.createDate
+            : "XXXX-XX-XX"}
+        </p>
       </div>
       <p className="home-today-qt">오늘의 묵상</p>
       <div className="home-qt-track">
         <div className="track-bg">
           <img
             className={isPlaying ? "active" : ""}
-            src="/assets/track_bg.png"
+            // src={"/assets/track_bg.png"}
+            src={
+              todayMeditation?.data.today
+                ? todayMeditation?.data?.today?.thumbnail
+                : "/assets/track_bg.png"
+            }
             alt=""
           />
           <div className="track-center-white"></div>
         </div>
       </div>
       <div className="home-qt-info">
-        <p className="qt-title">묵상제목</p>
-        <p className="qt-chapter">잠언 12:1</p>
+        <p className="qt-title">
+          {todayMeditation?.data.today
+            ? todayMeditation?.data?.today?.title
+            : "오늘의 묵상은 없습니다."}
+        </p>
+        <p className="qt-chapter">
+          {todayMeditation?.data.today
+            ? todayMeditation?.data?.today?.word
+            : "오늘의 묵상은 없습니다."}
+        </p>
         <div className="qt-audio-controller">
           <img src="/assets/audio-prev.png" alt="prev" />
           <img
@@ -86,8 +116,12 @@ const Home = () => {
           onPause={() => setIsPlaying(false)}
           showSkipControls={true}
           showJumpControls={false}
-          // src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3"
-          src="/assets/play.mp3"
+          src={
+            todayMeditation?.data.today
+              ? todayMeditation?.data?.today?.music
+              : undefined
+          }
+          // src="/assets/play.mp3"
           style={{ display: "none" }}
         />
         <div className="home-qt-activeArea">
