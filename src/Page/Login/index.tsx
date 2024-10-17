@@ -1,14 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import Input from "../../components/Input";
 import BackHeader from "../../components/BackHeader";
 import { px2vw } from "../../Util/px2vw";
 import SignButton from "../../components/Button";
 import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
+import { showLogin } from "../../Api/User";
+import { login } from "../../Type";
+import { useCookies } from "react-cookie";
 
 const LoginContainer = styled.div`
   > .login-wrap {
     padding: 0px ${px2vw(25)};
+    .login-warning {
+      color: #ff1919;
+      margin-top: ${px2vw(5)};
+      font: 400 12px "Prentendard";
+    }
     > div {
       &:nth-of-type(1) {
         margin-top: ${px2vw(30)};
@@ -52,22 +61,43 @@ export const PopupContainer = styled.div`
 
 const Login = () => {
   const navigate = useNavigate();
-  const [userName, setUserName] = useState<string>("");
+  const [userId, setUseId] = useState<string>("");
   const [userPw, setUserPw] = useState<string>("");
   const [showSuccessPopup, setShowSuccessPopup] = useState<boolean>(false);
+  const [warning, setWarning] = useState<string>("");
+  const [cookies, setCookie] = useCookies(["login"]);
+
+  const canRegister = userId && userPw;
+
+  const loginMutation = useMutation({
+    mutationKey: ["login"],
+    mutationFn: (data: login) => showLogin(data),
+    onSuccess: (res) => {
+      if (res.status === 200) {
+        setShowSuccessPopup(true);
+        setCookie("login", res.data.token);
+      }
+    },
+    onError: (err: any) => {
+      setWarning(err.response.data.Error);
+    },
+  });
 
   const handleLogin = () => {
-    setShowSuccessPopup(true);
+    loginMutation.mutate({
+      userId,
+      password: userPw, // login 타입에 맞춰 필드 이름 조정
+    });
   };
   return (
     <LoginContainer>
       <BackHeader title="로그인" />
       <div className="login-wrap">
         <Input
-          title="이름"
-          placeholder="홍길동"
-          setValue={setUserName}
-          value={userName}
+          title="아이디"
+          placeholder="아이디를 입력해주세요."
+          setValue={setUseId}
+          value={userId}
         />
         <Input
           title="비밀번호"
@@ -76,10 +106,11 @@ const Login = () => {
           setValue={setUserPw}
           value={userPw}
         />
+        <p className="login-warning">{warning}</p>
         <div className="login-btn-area">
           <SignButton
             context="로그인하기"
-            disabled={userName && userPw ? false : true}
+            disabled={!canRegister}
             color="#427D4F"
             onClick={handleLogin}
             borderColor="#427D4F"

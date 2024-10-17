@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { px2vw } from "../../Util/px2vw";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useCookies } from "react-cookie";
 
 const SplashContainer = styled.div`
   text-align: center;
@@ -57,9 +59,18 @@ const SplashContainer = styled.div`
 
 const Splash = () => {
   const navigate = useNavigate();
+
+  const [cookies] = useCookies(["login"]);
+
+  useEffect(() => {
+    if (cookies.login) {
+      navigate("/main");
+    }
+  }, []);
+
   return (
     <SplashContainer>
-      <img className="login-logo" src='/assets/login-logo.png' alt="" />
+      <img className="login-logo" src="/assets/login-logo.png" alt="" />
       <p className="login-slogan">
         하나님의 나라를 이루는 교회
         <br />
@@ -69,7 +80,7 @@ const Splash = () => {
         <button onClick={() => navigate("/login")}>로그인</button>
         <button onClick={() => navigate("/signUp")}>회원가입</button>
       </div>
-      <img className="login-bg" src='/assets/login-bg.png' alt="" />
+      <img className="login-bg" src="/assets/login-bg.png" alt="" />
     </SplashContainer>
   );
 };

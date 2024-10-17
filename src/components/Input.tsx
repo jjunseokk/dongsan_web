@@ -53,9 +53,17 @@ const Input = ({
       {title === "none" ? null : <p>{title}</p>}
       <input
         value={value}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={
+          type === "tel"
+            ? (e) =>
+                setValue(
+                  e.target.value.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3")
+                )
+            : (e) => setValue(e.target.value)
+        }
         type={type}
         placeholder={placeholder}
+        maxLength={type === "tel" ? 12 : undefined}
       />
     </InputContainer>
   );

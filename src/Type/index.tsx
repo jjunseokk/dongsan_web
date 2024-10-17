@@ -33,7 +33,23 @@ export interface getUser {
   thumbnail: null | string;
 }
 
+// 가입 승인 타입
 export interface updateApprove {
   id: number;
   approve: boolean;
+}
+
+// 로그인 타입
+export interface login {
+  userId: string;
+  password: string;
+}
+
+// 회원가입 타입
+export interface signUp {
+  userId: string;
+  name: string;
+  password: string;
+  phoneNumber: string;
+  pastor: string;
 }

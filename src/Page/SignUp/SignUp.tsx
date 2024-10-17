@@ -6,6 +6,9 @@ import { px2vw } from "../../Util/px2vw";
 import SignButton from "../../components/Button";
 import { useNavigate } from "react-router-dom";
 import { PopupContainer } from "../Login";
+import { useMutation } from "@tanstack/react-query";
+import { signUp } from "../../Type";
+import { showSignUp } from "../../Api/User";
 
 const SignUpContainer = styled.div`
   .signUp-input {
@@ -42,14 +45,33 @@ const SignUpContainer = styled.div`
 
 const SignUp = () => {
   const navigate = useNavigate();
+  const [userId, setUserId] = useState<string>("");
   const [userName, setUserName] = useState<string>("");
   const [userPassword, setUserPassword] = useState<string>("");
   const [checkPassword, setCheckPassword] = useState<string>("");
   const [userPhone, setUserPhone] = useState<string>("");
   const [pastor, setPastor] = useState<string>("");
   const [successSignUp, setSuccessSignUp] = useState<boolean>(false);
+  const [warning, setWarning] = useState<string>("");
+
+  const signUpMutation = useMutation({
+    mutationKey: ["signUp"],
+    mutationFn: (data: signUp) => showSignUp(data),
+    onSuccess: (res) => {
+      if (res.status === 200) {
+        setSuccessSignUp(true);
+      }
+    },
+    onError: (err: any) => {
+      setWarning(err.response.data.Error);
+    },
+  });
+
+  const regex =
+    /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,16}$/;
 
   const canRegister =
+    userId &&
     userName &&
     userPassword &&
     userPassword === checkPassword &&
@@ -57,13 +79,25 @@ const SignUp = () => {
     pastor === "임도한";
 
   const handleSingUp = () => {
-    setSuccessSignUp(true);
+    signUpMutation.mutate({
+      userId,
+      name: userName,
+      password: userPassword,
+      phoneNumber: userPhone,
+      pastor: pastor,
+    });
   };
 
   return (
     <SignUpContainer>
       <BackHeader title="회원가입" />
       <div className="signUp-input">
+        <Input
+          title="아이디"
+          placeholder="아이디를 입력해주세요."
+          setValue={setUserId}
+          value={userId}
+        />
         <Input
           title="이름"
           placeholder="홍길동"
@@ -78,9 +112,11 @@ const SignUp = () => {
             value={userPassword}
             type="password"
           />
-          <p className="warning">
-            영문, 숫자, 특수문자 조합으로 8글자 이상 16자 이하로 입력하세요.
-          </p>
+          {regex.test(userPassword) ? null : (
+            <p className="warning">
+              영문, 숫자, 특수문자 조합으로 8글자 이상 16자 이하로 입력하세요.
+            </p>
+          )}
         </div>
         <div className="caption-input">
           <Input
@@ -120,7 +156,7 @@ const SignUp = () => {
           color="#427D4F"
           borderColor="#427D4F"
           onClick={handleSingUp}
-          disabled={canRegister ? false : true}
+          disabled={!canRegister}
         />
         <SignButton
           context="불편사항 문의하기"

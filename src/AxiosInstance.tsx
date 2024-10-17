@@ -8,6 +8,7 @@ const AxiosInstance = axios.create({
     "Access-Control-Allow-Credentials": true,
   },
   baseURL,
+  withCredentials: true,
 });
 
 export default AxiosInstance;
