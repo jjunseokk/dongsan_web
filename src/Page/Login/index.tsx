@@ -1,4 +1,6 @@
-import { useEffect, useState } from "react";
+/* eslint-disable no-unused-vars */
+
+import { useState } from "react";
 import styled from "styled-components";
 import Input from "../../components/Input";
 import BackHeader from "../../components/BackHeader";
@@ -65,7 +67,8 @@ const Login = () => {
   const [userPw, setUserPw] = useState<string>("");
   const [showSuccessPopup, setShowSuccessPopup] = useState<boolean>(false);
   const [warning, setWarning] = useState<string>("");
-  const [cookies, setCookie] = useCookies(["login"]);
+
+  const [, setCookie] = useCookies(["login"]);
 
   const canRegister = userId && userPw;
 

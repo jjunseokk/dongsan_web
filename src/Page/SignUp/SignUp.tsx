@@ -92,12 +92,16 @@ const SignUp = () => {
     <SignUpContainer>
       <BackHeader title="회원가입" />
       <div className="signUp-input">
-        <Input
-          title="아이디"
-          placeholder="아이디를 입력해주세요."
-          setValue={setUserId}
-          value={userId}
-        />
+        <div className="caption-input">
+          <Input
+            title="아이디"
+            placeholder="아이디를 입력해주세요."
+            setValue={setUserId}
+            value={userId}
+          />
+          {warning ? <p className="warning">{warning}</p> : null}
+        </div>
+
         <Input
           title="이름"
           placeholder="홍길동"
