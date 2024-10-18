@@ -50,7 +50,7 @@ export const PopupContainer = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  z-index: 10;
+  z-index: 999;
   > p {
     font-size: 20;
     font-weight: 600;

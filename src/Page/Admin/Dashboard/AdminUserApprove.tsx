@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import px2vwPc from "../../../Util/px2vwPc";
 import Button from "../../../components/Button";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { getUserList } from "../../../Api/User";
+import { getUserList } from "../../../Api/Admin";
 import { getUser, updateApprove } from "../../../Type";
 import { showApprove } from "../../../Api/Admin";
 

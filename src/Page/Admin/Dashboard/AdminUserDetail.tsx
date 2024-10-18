@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import px2vwPc from "../../../Util/px2vwPc";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { getUserDetail } from "../../../Api/User";
+import { getUserDetail } from "../../../Api/Admin";
 
 const AdminUserDetailContainer = styled(motion.div)`
   width: 100%;
@@ -60,14 +60,11 @@ const AdminUserDetailContainer = styled(motion.div)`
 `;
 const AdminUserDetail = () => {
   const path = useParams();
-  console.log(path.id);
 
   const { data: detailUser } = useQuery({
     queryKey: ["detailUser"],
     queryFn: () => getUserDetail(path.id),
   });
-
-  console.log(detailUser?.data.user[0]);
 
   return (
     <AdminUserDetailContainer

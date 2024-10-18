@@ -4,7 +4,7 @@ import { DashboardContainer } from "../Components/DashboardStyle";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
-import { getUserList } from "../../../Api/User";
+import { getUserList } from "../../../Api/Admin";
 import { getUser } from "../../../Type";
 
 const AdminUserListContainer = styled(motion.div)`

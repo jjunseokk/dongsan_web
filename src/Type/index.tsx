@@ -53,3 +53,28 @@ export interface signUp {
   phoneNumber: string;
   pastor: string;
 }
+
+// 댓글 쓰기 타입
+export interface comments {
+  context: string;
+  meditationId: number;
+  token: string;
+}
+
+// 댓글 조회 타입
+export interface getCommentsType {
+  id: number;
+  writer: string;
+  context: string;
+  meditationId: number;
+  createDate: string;
+  commentId: number;
+  userId : string;
+}
+
+// 댓글 수정 타입
+export interface editCommentsType {
+  id: number;
+  context: string;
+  meditationId: number;
+}

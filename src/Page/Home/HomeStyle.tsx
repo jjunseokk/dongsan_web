@@ -176,6 +176,7 @@ export const HomeContainer = styled.div`
               margin-top: ${px2vw(10)};
               font: 400 15px "Pretendard";
               padding-left: ${px2vw(5)};
+              border: 1px solid #427d4f;
             }
             > div {
               display: flex;
@@ -197,7 +198,7 @@ export const HomeContainer = styled.div`
           }
           .modal-menu {
             width: ${px2vw(116)};
-            height: ${px2vw(84)};
+            /* height: ${px2vw(84)}; */
             box-shadow: 1px 1px 5px 1px #00000040;
             border-radius: 5px;
             position: absolute;

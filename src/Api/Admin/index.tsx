@@ -30,6 +30,16 @@ const deleteMeditation = (ids: number[]) => {
 const showApprove = (data: updateApprove) => {
   return AxiosInstance.patch(`/admin/approve`, data);
 };
+
+// 유저 목록
+const getUserList = () => {
+  return AxiosInstance.get(`/users/getProfile`);
+};
+
+// 유저 상세 목록
+const getUserDetail = (id: string | undefined) => {
+  return AxiosInstance.get(`/users/getDetailProfile?id=${id}`);
+};
 export {
   getMeditation,
   createMeditation,
@@ -37,4 +47,6 @@ export {
   getMeditationDetail,
   editMeditation,
   showApprove,
+  getUserList,
+  getUserDetail,
 };
