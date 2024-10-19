@@ -31,7 +31,7 @@ const Home = () => {
   const [showModalMenu, setShowModalMenu] = useState<number | null>(null); // 수정or삭제 메뉴창
   const [showDeletePopup, setShowDeletePopup] = useState<boolean>(false); // 삭제 시 팝업
   const [cookie] = useCookies(["login"]); // token 값
-  const { profile, setProfile } = userProfileStore();
+  const { setProfile } = userProfileStore();
 
   // 오늘의 묵상
   const { data: todayMeditation, status } = useQuery({
