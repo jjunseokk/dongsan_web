@@ -52,7 +52,7 @@ const Input = ({
     <InputContainer $width={width}>
       {title === "none" ? null : <p>{title}</p>}
       <input
-        value={value}
+        value={value || ""}
         onChange={
           type === "tel"
             ? (e) =>
