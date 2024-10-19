@@ -7,12 +7,19 @@ import Button from "../../components/Button";
 import BottomMenu from "../../components/BottomMenu";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import {
+  deleteComments,
   editComments,
   getComments,
   getTodayMeditation,
   writeComment,
 } from "../../Api/Client";
-import { comments, editCommentsType, getCommentsType } from "../../Type";
+import {
+  comments,
+  deleteCommentsType,
+  DeletePopupState,
+  editCommentsType,
+  getCommentsType,
+} from "../../Type";
 import { useCookies } from "react-cookie";
 import { getProfile } from "../../Api/User";
 import userProfileStore from "../../Store";
@@ -29,7 +36,10 @@ const Home = () => {
   const [edit, setEdit] = useState<string>(""); // 수정 글
   const [comment, setComment] = useState<string>(""); // 댓글
   const [showModalMenu, setShowModalMenu] = useState<number | null>(null); // 수정or삭제 메뉴창
-  const [showDeletePopup, setShowDeletePopup] = useState<boolean>(false); // 삭제 시 팝업
+  const [showDeletePopup, setShowDeletePopup] = useState<DeletePopupState>({
+    id: null,
+    isOpen: false,
+  }); // 삭제 시 팝업
   const [cookie] = useCookies(["login"]); // token 값
   const { setProfile } = userProfileStore();
 
@@ -74,6 +84,23 @@ const Home = () => {
     },
   });
 
+  // 댓글삭제 뮤테이션
+  const deleteMutation = useMutation({
+    mutationKey: ["delete"],
+    mutationFn: (data: deleteCommentsType) => deleteComments(data),
+    onSuccess: (res) => {
+      if (res.status === 200) {
+        setShowDeletePopup({
+          id: null,
+          isOpen: false,
+        });
+        queryClient.invalidateQueries({
+          queryKey: ["comment", status],
+        });
+      }
+    },
+  });
+
   // 음원 재생/정지
   const handlePlayPause = () => {
     const audioElement = playRef.current.audio.current;
@@ -104,11 +131,12 @@ const Home = () => {
       meditationId: todayMeditation?.data?.today.id,
     });
   };
-
   // 댓글 삭제 버튼
   const handleDeleteComment = () => {
-    console.log("삭제");
-    setShowDeletePopup(false);
+    deleteMutation.mutate({
+      id: Number(showDeletePopup.id),
+      meditationId: todayMeditation?.data?.today.id,
+    });
   };
 
   // 댓글 수정시 해당 아이템에 수정 input 교체 후 내용입력.
@@ -128,9 +156,19 @@ const Home = () => {
     setProfile(profileData?.data.user as any);
   }, [status]);
 
+  useEffect(() => {
+    const audioElement = playRef.current.audio.current;
+
+    if (todayMeditation?.data.today.music) {
+      // 음악 파일이 설정되었을 때, 자동으로 재생하지 않도록 pause
+      audioElement.pause();
+      setIsPlaying(false);
+    }
+  }, [todayMeditation?.data.today.music]);
+
   return (
     <HomeContainer>
-      {showDeletePopup ? (
+      {showDeletePopup.isOpen ? (
         <PopupContainer>
           <p>삭제하시겠습니까?</p>
           <Button
@@ -193,7 +231,7 @@ const Home = () => {
           showSkipControls={true}
           showJumpControls={false}
           autoPlay={false}
-          src={todayMeditation?.data.today}
+          src={todayMeditation?.data.today.music}
           // src="/assets/play.mp3"
           style={{ display: "none" }}
         />
@@ -261,7 +299,14 @@ const Home = () => {
                       profileData?.data.user.userId === value.userId ? (
                         <div className="modal-menu">
                           <p onClick={() => handleEdit(index)}>수정하기</p>
-                          <p onClick={() => setShowDeletePopup(true)}>
+                          <p
+                            onClick={() =>
+                              setShowDeletePopup({
+                                id: value.commentId,
+                                isOpen: true,
+                              })
+                            }
+                          >
                             삭제하기
                           </p>
                         </div>

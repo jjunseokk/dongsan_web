@@ -79,6 +79,18 @@ export interface editCommentsType {
   meditationId: number;
 }
 
+// 댓글 삭제 타입
+export interface deleteCommentsType {
+  id: number;
+  meditationId: number;
+}
+
+// 댓글 삭제 state 타입
+export type DeletePopupState = {
+  id: number | null;
+  isOpen: boolean;
+};
+
 // 공지사항 타입
 export interface noticeType {
   context: string;
