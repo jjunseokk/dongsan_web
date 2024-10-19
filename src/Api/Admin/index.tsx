@@ -7,7 +7,7 @@ const getMeditation = () => {
 };
 
 // 묵상상세조회
-const getMeditationDetail = (id: number) => {
+const getMeditationDetail = (id: undefined | number) => {
   return AxiosInstance.get(`admin/MeditationDetail?id=${id}`);
 };
 

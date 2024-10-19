@@ -31,6 +31,9 @@ export const MeditationContainer = styled.div`
         top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
         .active {
           animation: playTrack 5s linear infinite;
         }
@@ -185,7 +188,6 @@ export const MeditationContainer = styled.div`
             }
             .modal-menu {
               width: ${px2vw(116)};
-              height: ${px2vw(84)};
               box-shadow: 1px 1px 5px 1px #00000040;
               border-radius: 5px;
               position: absolute;

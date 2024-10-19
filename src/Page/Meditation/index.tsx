@@ -3,6 +3,9 @@ import BottomMenu from "../../components/BottomMenu";
 import BackHeader from "../../components/BackHeader";
 import { px2vw } from "../../Util/px2vw";
 import { useNavigate } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { getMeditation } from "../../Api/Admin";
+import { meditation } from "../../Type";
 
 const MeditationContainer = styled.div`
   height: 100vh;
@@ -42,100 +45,30 @@ const MeditationContainer = styled.div`
 
 const Meditation = () => {
   const navigate = useNavigate();
+  const { data: meditation } = useQuery({
+    queryKey: ["meditation"],
+    queryFn: () => getMeditation(),
+  });
+
   return (
     <MeditationContainer>
       <BackHeader backHandle={false} title="묵상" />
       <div className="meditation-wrap">
-        <div
-          onClick={() => navigate("/meditation/1")}
-          className="meditation-item"
-        >
-          <div>
-            <p>2024.10.05</p>
-            <p>잠언 1장 2절</p>
-          </div>
-          <img src="/assets/right_arrow.png" alt="" />
-        </div>
-        <div
-          onClick={() => navigate("/meditation/1")}
-          className="meditation-item"
-        >
-          <div>
-            <p>2024.10.05</p>
-            <p>잠언 1장 2절</p>
-          </div>
-          <img src="/assets/right_arrow.png" alt="" />
-        </div>
-        <div
-          onClick={() => navigate("/meditation/1")}
-          className="meditation-item"
-        >
-          <div>
-            <p>2024.10.05</p>
-            <p>잠언 1장 2절</p>
-          </div>
-          <img src="/assets/right_arrow.png" alt="" />
-        </div>
-        <div
-          onClick={() => navigate("/meditation/1")}
-          className="meditation-item"
-        >
-          <div>
-            <p>2024.10.05</p>
-            <p>잠언 1장 2절</p>
-          </div>
-          <img src="/assets/right_arrow.png" alt="" />
-        </div>
-        <div
-          onClick={() => navigate("/meditation/1")}
-          className="meditation-item"
-        >
-          <div>
-            <p>2024.10.05</p>
-            <p>잠언 1장 2절</p>
-          </div>
-          <img src="/assets/right_arrow.png" alt="" />
-        </div>
-        <div
-          onClick={() => navigate("/meditation/1")}
-          className="meditation-item"
-        >
-          <div>
-            <p>2024.10.05</p>
-            <p>잠언 1장 2절</p>
-          </div>
-          <img src="/assets/right_arrow.png" alt="" />
-        </div>
-        <div
-          onClick={() => navigate("/meditation/1")}
-          className="meditation-item"
-        >
-          <div>
-            <p>2024.10.05</p>
-            <p>잠언 1장 2절</p>
-          </div>
-          <img src="/assets/right_arrow.png" alt="" />
-        </div>
-        <div
-          onClick={() => navigate("/meditation/1")}
-          className="meditation-item"
-        >
-          <div>
-            <p>2024.10.05</p>
-            <p>잠언 1장 2절</p>
-          </div>
-          <img src="/assets/right_arrow.png" alt="" />
-        </div>
-        <div
-          onClick={() => navigate("/meditation/1")}
-          className="meditation-item"
-        >
-          <div>
-            <p>2024.10.05</p>
-            <p>잠언 1장 2절</p>
-          </div>
-          <img src="/assets/right_arrow.png" alt="" />
-        </div>
+        {meditation?.data.meditationList.map((value: meditation) => {
+          return (
+            <div
+              key={value.id}
+              onClick={() => navigate(`/meditation/${value.id}`)}
+              className="meditation-item"
+            >
+              <div>
+                <p>{value.createDate}</p>
+                <p>{value.word}</p>
+              </div>
+              <img src="/assets/right_arrow.png" alt="" />
+            </div>
+          );
+        })}
       </div>
       <BottomMenu />
     </MeditationContainer>

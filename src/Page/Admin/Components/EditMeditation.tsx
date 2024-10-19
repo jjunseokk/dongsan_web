@@ -143,11 +143,11 @@ const EditMeditation = ({ setShow, id }: EditMeditationStyle) => {
   const cnaRegister = meditationTitle && meditationBible && thumbnail && music;
 
   useEffect(() => {
-    setMeditationTitle(detailData?.data.meditationDetail[0].title);
-    setMeditationBible(detailData?.data.meditationDetail[0].word);
-    setStill(detailData?.data.meditationDetail[0].thumbnail);
-    setMusic(detailData?.data.meditationDetail[0].music);
-    setThumbnail(detailData?.data.meditationDetail[0].thumbnail);
+    setMeditationTitle(detailData?.data.meditationDetail.title);
+    setMeditationBible(detailData?.data.meditationDetail.word);
+    setStill(detailData?.data.meditationDetail.thumbnail);
+    setMusic(detailData?.data.meditationDetail.music);
+    setThumbnail(detailData?.data.meditationDetail.thumbnail);
   }, [status]);
 
   return (

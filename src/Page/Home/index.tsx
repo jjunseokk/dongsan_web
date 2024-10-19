@@ -193,11 +193,7 @@ const Home = () => {
           showSkipControls={true}
           showJumpControls={false}
           autoPlay={false}
-          src={
-            todayMeditation?.data.today
-              ? todayMeditation?.data?.today?.music
-              : undefined
-          }
+          src={todayMeditation?.data.today}
           // src="/assets/play.mp3"
           style={{ display: "none" }}
         />
