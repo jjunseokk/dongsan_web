@@ -25,4 +25,19 @@ const editComments = (data: editCommentsType) => {
   return AxiosInstance.patch(`/client/editComments`, data);
 };
 
-export { getTodayMeditation, writeComment, getComments, editComments };
+// 프로필 사진 변경
+const changeProfile = (data: any, token: string) => {
+  return AxiosInstance.patch(`/client/profileThumbnail`, data, {
+    headers: {
+      Authorization: token,
+    },
+  });
+};
+
+export {
+  getTodayMeditation,
+  writeComment,
+  getComments,
+  editComments,
+  changeProfile,
+};

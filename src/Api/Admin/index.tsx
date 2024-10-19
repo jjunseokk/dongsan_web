@@ -40,6 +40,10 @@ const getUserList = () => {
 const getUserDetail = (id: string | undefined) => {
   return AxiosInstance.get(`/users/getDetailProfile?id=${id}`);
 };
+
+const getNotice = () => {
+  return AxiosInstance.get(`/admin/notice`);
+};
 export {
   getMeditation,
   createMeditation,
@@ -49,4 +53,5 @@ export {
   showApprove,
   getUserList,
   getUserDetail,
+  getNotice,
 };

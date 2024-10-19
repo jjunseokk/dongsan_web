@@ -69,7 +69,7 @@ export interface getCommentsType {
   meditationId: number;
   createDate: string;
   commentId: number;
-  userId : string;
+  userId: string;
 }
 
 // 댓글 수정 타입
@@ -78,3 +78,13 @@ export interface editCommentsType {
   context: string;
   meditationId: number;
 }
+
+// 공지사항 타입
+export interface noticeType {
+  context: string;
+  createDate: string;
+  id: number;
+  title: string;
+}
+
+

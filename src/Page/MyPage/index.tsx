@@ -4,6 +4,7 @@ import BackHeader from "../../components/BackHeader";
 import { px2vw } from "../../Util/px2vw";
 import Button from "../../components/Button";
 import { useNavigate } from "react-router-dom";
+import userProfileStore from "../../Store";
 
 const MyPageContainer = styled.div`
   .myPage-wrap {
@@ -19,19 +20,16 @@ const MyPageContainer = styled.div`
         border-radius: 50%;
         position: relative;
         background-color: #d9d9d9;
+        overflow: hidden;
+
         > img {
-          position: absolute;
-          right: 0;
-          bottom: 0;
+          width: 100%;
+          height: 100%;
         }
       }
       .profile-info {
         > p {
           font: 600 20px "Pretendard";
-          &:last-of-type {
-            font: 400 14px "Pretendard";
-            margin-top: ${px2vw(5)};
-          }
         }
       }
     }
@@ -58,16 +56,18 @@ const MyPageContainer = styled.div`
 
 const MyPage = () => {
   const navigate = useNavigate();
+  const { profile } = userProfileStore();
+  
   return (
     <MyPageContainer>
       <BackHeader backHandle={false} title="마이페이지" />
       <div className="myPage-wrap">
         <div className="myPage-profile">
           <div className="profile-img">
+            <img src={profile?.thumbnail} alt="" />
           </div>
           <div className="profile-info">
             <p>박준석</p>
-            <p>청년</p>
           </div>
         </div>
         <div className="profile-info-edit">

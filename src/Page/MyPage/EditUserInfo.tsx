@@ -5,6 +5,10 @@ import { useRef, useState } from "react";
 import { PopupContainer } from "../Login";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
+import userProfileStore from "../../Store";
+import { useMutation } from "@tanstack/react-query";
+import { changeProfile } from "../../Api/Client";
+import { useCookies } from "react-cookie";
 
 const EditUserInfoContainer = styled.div`
   .modal-bg {
@@ -79,13 +83,21 @@ const EditUserInfo = () => {
   const [newPw, setNewPw] = useState<string>("");
   const [checkPw, setCheckPw] = useState<string>("");
   const fileRef = useRef<any>(null);
-  const [thumbnail, setThumbnail] = useState("");
+  const [thumbnail, setThumbnail] = useState<string>("");
+  const { profile, setProfile } = userProfileStore();
+  const [cookie] = useCookies(["login"]);
+
+  const changeProfileMutation = useMutation({
+    mutationKey: ["profileThumbnail"],
+    mutationFn: (data: any) => changeProfile(data, cookie.login),
+    onSuccess: (res) => {
+      setProfile({ thumbnail: res.data.thumbnail });
+    },
+  });
 
   const handleGetProfile = (e: any) => {
     const { files } = e.target;
     const uploadFile = files[0];
-
-    console.log(uploadFile);
 
     const reader: any = new FileReader();
     reader.readAsDataURL(uploadFile);
@@ -93,6 +105,13 @@ const EditUserInfo = () => {
     reader.onloadend = () => {
       setThumbnail(reader.result);
     };
+
+    if (uploadFile) {
+      const formData = new FormData();
+
+      formData.append("thumbnail", uploadFile);
+      changeProfileMutation.mutate(formData);
+    }
   };
 
   return (
@@ -143,12 +162,19 @@ const EditUserInfo = () => {
             onClick={() => fileRef.current.click()}
             className="profile-thumbnail"
           >
-            <img src={thumbnail} alt="" />
+            <img
+              src={profile?.thumbnail ? profile?.thumbnail : thumbnail}
+              alt=""
+            />
             <img src="/assets/setting.png" alt="" />
-            <input onChange={handleGetProfile} type="file" ref={fileRef} />
+            <input
+              onChange={handleGetProfile}
+              type="file"
+              ref={fileRef}
+              accept="image/*"
+            />
           </div>
-          <p>박준석</p>
-          <p>청년</p>
+          <p>{profile?.name}</p>
         </div>
 
         <div onClick={() => setShowModal(true)} className="edit-item">

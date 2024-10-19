@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import { HomeContainer } from "./HomeStyle";
@@ -15,6 +15,7 @@ import {
 import { comments, editCommentsType, getCommentsType } from "../../Type";
 import { useCookies } from "react-cookie";
 import { getProfile } from "../../Api/User";
+import userProfileStore from "../../Store";
 
 const Home = () => {
   const date = new Date(); //현재 시간
@@ -30,6 +31,7 @@ const Home = () => {
   const [showModalMenu, setShowModalMenu] = useState<number | null>(null); // 수정or삭제 메뉴창
   const [showDeletePopup, setShowDeletePopup] = useState<boolean>(false); // 삭제 시 팝업
   const [cookie] = useCookies(["login"]); // token 값
+  const { profile, setProfile } = userProfileStore();
 
   // 오늘의 묵상
   const { data: todayMeditation, status } = useQuery({
@@ -85,11 +87,6 @@ const Home = () => {
     }
   };
 
-  const { data: profile } = useQuery({
-    queryKey: ["profile"],
-    queryFn: () => getProfile(cookie.login),
-  });
-
   // 댓글 쓰기 버튼
   const handleAddComment = () => {
     writeMutation.mutate({
@@ -120,6 +117,16 @@ const Home = () => {
     setShowModalMenu(null);
     setEdit(comments?.data.comment[index].context);
   };
+
+  // 프로필
+  const { data: profileData } = useQuery({
+    queryKey: ["profile"],
+    queryFn: () => getProfile(cookie.login),
+  });
+
+  useEffect(() => {
+    setProfile(profileData?.data.user as any);
+  }, [status]);
 
   return (
     <HomeContainer>
@@ -255,7 +262,7 @@ const Home = () => {
                     )}
 
                     {showModalMenu === index ? (
-                      profile?.data.user.userId === value.userId ? (
+                      profileData?.data.user.userId === value.userId ? (
                         <div className="modal-menu">
                           <p onClick={() => handleEdit(index)}>수정하기</p>
                           <p onClick={() => setShowDeletePopup(true)}>
