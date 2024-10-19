@@ -33,7 +33,7 @@ const showApprove = (data: updateApprove) => {
 
 // 유저 목록
 const getUserList = () => {
-  return AxiosInstance.get(`/users/getProfile`);
+  return AxiosInstance.get(`/admin/getProfile`);
 };
 
 // 유저 상세 목록

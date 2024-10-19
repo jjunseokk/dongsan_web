@@ -59,6 +59,14 @@ export const PopupContainer = styled.div`
     width: ${px2vw(309)};
     margin-top: ${px2vw(30)};
   }
+  > div {
+    display: flex;
+    gap: ${px2vw(10)};
+    margin-top: ${px2vw(30)};
+    > button {
+      width: ${px2vw(309/2)};
+    }
+  }
 `;
 
 const Login = () => {

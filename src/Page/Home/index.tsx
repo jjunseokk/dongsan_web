@@ -159,12 +159,12 @@ const Home = () => {
   useEffect(() => {
     const audioElement = playRef.current.audio.current;
 
-    if (todayMeditation?.data.today.music) {
+    if (todayMeditation?.data?.today?.music) {
       // 음악 파일이 설정되었을 때, 자동으로 재생하지 않도록 pause
       audioElement.pause();
       setIsPlaying(false);
     }
-  }, [todayMeditation?.data.today.music]);
+  }, [todayMeditation?.data?.today?.music]);
 
   return (
     <HomeContainer>
@@ -231,7 +231,7 @@ const Home = () => {
           showSkipControls={true}
           showJumpControls={false}
           autoPlay={false}
-          src={todayMeditation?.data.today.music}
+          src={todayMeditation?.data?.today?.music}
           // src="/assets/play.mp3"
           style={{ display: "none" }}
         />

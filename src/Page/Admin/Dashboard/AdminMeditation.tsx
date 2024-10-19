@@ -9,6 +9,7 @@ import { motion } from "framer-motion";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { deleteMeditation, getMeditation } from "../../../Api/Admin";
 import { meditation } from "../../../Type";
+import { PopupContainer } from "../../Login";
 
 const AdminMeditationContainer = styled(motion.div)`
   width: 100%;
@@ -90,6 +91,7 @@ const AdminMeditationContainer = styled(motion.div)`
 const AdminMeditation = () => {
   const [showUpload, setShowUpload] = useState(false);
   const [showEdit, setShowEdit] = useState(false);
+  const [showDeletePopup, setShowDeletePopup] = useState<boolean>(false);
   const [selectedItems, setSelectedItems] = useState([]); // New state to track selected items
   const [id, setId] = useState<number>(0);
 
@@ -128,6 +130,26 @@ const AdminMeditation = () => {
     >
       {showUpload ? <UploadMeditation setShow={setShowUpload} /> : null}
       {showEdit ? <EditMeditation id={id} setShow={setShowEdit} /> : null}
+      {showDeletePopup ? (
+        <PopupContainer>
+          <p>{selectedItems.length}개의 묵상을 삭제하시겠습니까?</p>
+          <div>
+            <Button
+              context="예"
+              color="#ff1919"
+              onClick={handleDeleteMeditation}
+              borderColor="#ff1919"
+            />
+            <Button
+              context="아니오"
+              color="#427d4f"
+              onClick={() => setShowDeletePopup(false)}
+              borderColor="#427d4f"
+            />
+          </div>
+        </PopupContainer>
+      ) : null}
+
       <DashboardContainer>
         <p className="dashboard-title">묵상/추가/삭제 관리</p>
         <div className="admin-meditation-btn">
@@ -142,7 +164,7 @@ const AdminMeditation = () => {
             context="선택 삭제"
             color="#427D4F"
             borderColor="#427D4F"
-            onClick={handleDeleteMeditation}
+            onClick={() => setShowDeletePopup(true)}
             width={px2vwPc(130)}
           />
         </div>
