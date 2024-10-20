@@ -29,7 +29,6 @@ const UploadNoticeContainer = styled.div`
     background: #ffffff;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     width: ${px2vwPc(1000)};
-    height: ${px2vwPc(750)};
     padding: ${px2vwPc(50)};
     border-radius: 10px;
     > .notice-content {

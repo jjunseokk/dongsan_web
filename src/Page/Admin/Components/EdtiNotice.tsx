@@ -7,6 +7,7 @@ import { px2vw } from "../../../Util/px2vw";
 import Button from "../../../components/Button";
 
 interface EditNoticeStyle {
+  index: number | null;
   setShow: React.Dispatch<SetStateAction<boolean>>;
 }
 
@@ -29,7 +30,6 @@ const EditNoticeContainer = styled.div`
     background: #ffffff;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     width: ${px2vwPc(1000)};
-    height: ${px2vwPc(700)};
     padding: ${px2vwPc(50)};
     border-radius: 10px;
     > .notice-content {
@@ -67,7 +67,7 @@ const EditNoticeContainer = styled.div`
   }
 `;
 
-const EditNotice = ({ setShow }: EditNoticeStyle) => {
+const EditNotice = ({ setShow, index }: EditNoticeStyle) => {
   const [noticeTitle, setNoticeTitle] = useState("");
 
   const handleNoticeSave = () => {

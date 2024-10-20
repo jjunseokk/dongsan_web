@@ -41,6 +41,7 @@ const getUserDetail = (id: string | undefined) => {
   return AxiosInstance.get(`/users/getDetailProfile?id=${id}`);
 };
 
+// 공지사항 조회
 const getNotice = () => {
   return AxiosInstance.get(`/admin/notice`);
 };

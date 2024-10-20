@@ -6,6 +6,9 @@ import UploadNotice from "../Components/UploadNotice";
 import EditNotice from "../Components/EdtiNotice";
 import { DashboardContainer } from "../Components/DashboardStyle";
 import { motion } from "framer-motion";
+import { useQuery } from "@tanstack/react-query";
+import { getNotice } from "../../../Api/Admin";
+import { noticeType } from "../../../Type";
 
 const AdminNoticeContainer = styled(motion.div)`
   width: 100%;
@@ -65,6 +68,12 @@ const AdminNoticeContainer = styled(motion.div)`
 const AdminNotice = () => {
   const [showUploadNotice, setShowUploadNotice] = useState<boolean>(false);
   const [showEditNotice, setShowEditNotice] = useState<boolean>(false);
+  const [id, setId] = useState<number | null>(null);
+
+  const { data: notice } = useQuery({
+    queryKey: ["notice"],
+    queryFn: () => getNotice(),
+  });
 
   return (
     <AdminNoticeContainer
@@ -72,7 +81,9 @@ const AdminNotice = () => {
       whileInView={{ opacity: 1, x: 0 }}
     >
       {showUploadNotice ? <UploadNotice setShow={setShowUploadNotice} /> : null}
-      {showEditNotice ? <EditNotice setShow={setShowEditNotice} /> : null}
+      {showEditNotice ? (
+        <EditNotice index={id} setShow={setShowEditNotice} />
+      ) : null}
       <DashboardContainer>
         <p className="dashboard-title">공지 작성</p>
         <Button
@@ -91,11 +102,22 @@ const AdminNotice = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td onClick={() => setShowEditNotice(true)}>공지 제묵</td>
-              <td>2024-09-10</td>
-            </tr>
+            {notice?.data.notice.map((value: noticeType, index: number) => {
+              return (
+                <tr key={value.id}>
+                  <td>{index + 1}</td>
+                  <td
+                    onClick={() => {
+                      setShowEditNotice(true);
+                      setId(index);
+                    }}
+                  >
+                    {value.title}
+                  </td>
+                  <td>{value.createDate}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </DashboardContainer>
