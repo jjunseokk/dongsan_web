@@ -82,7 +82,7 @@ const AdminNotice = () => {
     >
       {showUploadNotice ? <UploadNotice setShow={setShowUploadNotice} /> : null}
       {showEditNotice ? (
-        <EditNotice index={id} setShow={setShowEditNotice} />
+        <EditNotice id={id} setShow={setShowEditNotice} />
       ) : null}
       <DashboardContainer>
         <p className="dashboard-title">공지 작성</p>
@@ -109,7 +109,7 @@ const AdminNotice = () => {
                   <td
                     onClick={() => {
                       setShowEditNotice(true);
-                      setId(index);
+                      setId(value.id);
                     }}
                   >
                     {value.title}

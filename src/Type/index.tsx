@@ -99,4 +99,15 @@ export interface noticeType {
   title: string;
 }
 
+// 공지사항 작성 타입
+export interface createNoticeType {
+  title: string;
+  context: string;
+}
 
+// 공지사항 수정 타입
+export interface editNoticeType {
+  id: number;
+  title: string;
+  context: string;
+}

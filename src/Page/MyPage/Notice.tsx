@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { getNotice } from "../../Api/Admin";
 import { noticeType } from "../../Type";
+import BottomMenu from "../../components/BottomMenu";
 
 const NoticeContainer = styled.div`
   .notice-wrap {
@@ -44,7 +45,7 @@ const Notice = () => {
 
   return (
     <NoticeContainer>
-      <BackHeader title="공지사항" />
+      <BackHeader title="공지사항" backHandle={false} />
 
       <div className="notice-wrap">
         {notice?.data.notice.map((value: noticeType, index: number) => {
@@ -77,6 +78,7 @@ const Notice = () => {
           );
         })}
       </div>
+      <BottomMenu />
     </NoticeContainer>
   );
 };

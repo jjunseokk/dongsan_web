@@ -5,6 +5,9 @@ import px2vwPc from "../../../Util/px2vwPc";
 import { motion } from "framer-motion";
 import { px2vw } from "../../../Util/px2vw";
 import Button from "../../../components/Button";
+import { useMutation } from "@tanstack/react-query";
+import { createNoticeType } from "../../../Type";
+import { createNotice } from "../../../Api/Admin";
 
 interface UploadNoticeStyle {
   setShow: React.Dispatch<SetStateAction<boolean>>;
@@ -67,15 +70,27 @@ const UploadNoticeContainer = styled.div`
 `;
 
 const UploadNotice = ({ setShow }: UploadNoticeStyle) => {
-  const [noticeTitle, setNoticeTitle] = useState("");
+  const [noticeTitle, setNoticeTitle] = useState<string>("");
+  const [noticeContext, setNoticeContext] = useState<string>("");
+
+  const createNoticeMutation = useMutation({
+    mutationKey: ["createNotice"],
+    mutationFn: (data: createNoticeType) => createNotice(data),
+    onSuccess: (res) => {
+      if (res.status === 200) {
+        setShow(false);
+        window.location.reload();
+      }
+    },
+  });
 
   const handleNoticeSave = () => {
-    console.log("ss");
+    createNoticeMutation.mutate({
+      title: noticeTitle,
+      context: noticeContext,
+    });
   };
 
-  const handleNoticeDelete = () =>{
-    console.log("ss")
-  }
   return (
     <UploadNoticeContainer>
       <div onClick={() => setShow(false)} className="uploadNotice-bg"></div>
@@ -92,16 +107,12 @@ const UploadNotice = ({ setShow }: UploadNoticeStyle) => {
         />
         <div className="notice-content">
           <p>공지 내용</p>
-          <textarea placeholder="내용을 입력해주세요." />
+          <textarea
+            onChange={(e) => setNoticeContext(e.target.value)}
+            placeholder="내용을 입력해주세요."
+          />
         </div>
         <div className="btn-area">
-          <Button
-            context="삭제"
-            color="#ff1919"
-            borderColor="#ff1919"
-            onClick={handleNoticeDelete}
-            width={px2vwPc(150)}
-          />
           <Button
             context="저장"
             color="#427d4f"

@@ -1,5 +1,10 @@
 import AxiosInstance from "../../AxiosInstance";
-import { postMeditation, updateApprove } from "../../Type";
+import {
+  createNoticeType,
+  editNoticeType,
+  postMeditation,
+  updateApprove,
+} from "../../Type";
 
 // 묵상리스트 조회
 const getMeditation = () => {
@@ -45,6 +50,26 @@ const getUserDetail = (id: string | undefined) => {
 const getNotice = () => {
   return AxiosInstance.get(`/admin/notice`);
 };
+
+const getDetailNotice = (id: number) => {
+  return AxiosInstance.get(`/admin/noticeDetail?id=${id}`);
+};
+
+// 공지사항 작성
+const createNotice = (data: createNoticeType) => {
+  return AxiosInstance.post(`/admin/notice`, data);
+};
+
+// 공지사항 삭제
+const deleteNotice = (id: number) => {
+  return AxiosInstance.delete(`/admin/notice?id=${id}`);
+};
+
+// 공지사항 수정
+const editNotice = (data: editNoticeType) => {
+  return AxiosInstance.patch(`/admin/notice?`, data);
+};
+
 export {
   getMeditation,
   createMeditation,
@@ -55,4 +80,8 @@ export {
   getUserList,
   getUserDetail,
   getNotice,
+  getDetailNotice,
+  createNotice,
+  deleteNotice,
+  editNotice,
 };

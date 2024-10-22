@@ -137,8 +137,6 @@ const UploadMeditation = ({ setShow }: UploadMeditationStyle) => {
 
   const canRegister = meditationTitle && meditationBible && thumbnail && music;
 
-  console.log(canRegister);
-
   return (
     <UploadMeditationContainer>
       <div

@@ -1,14 +1,17 @@
 import styled from "styled-components";
 import Input from "../../../components/Input";
-import React, { SetStateAction, useState } from "react";
+import React, { SetStateAction, useEffect, useState } from "react";
 import px2vwPc from "../../../Util/px2vwPc";
 import { motion } from "framer-motion";
 import { px2vw } from "../../../Util/px2vw";
 import Button from "../../../components/Button";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { editNoticeType } from "../../../Type";
+import { deleteNotice, editNotice, getDetailNotice } from "../../../Api/Admin";
 
 interface EditNoticeStyle {
-  index: number | null;
   setShow: React.Dispatch<SetStateAction<boolean>>;
+  id: number | null;
 }
 
 const EditNoticeContainer = styled.div`
@@ -67,15 +70,52 @@ const EditNoticeContainer = styled.div`
   }
 `;
 
-const EditNotice = ({ setShow, index }: EditNoticeStyle) => {
+const EditNotice = ({ setShow, id }: EditNoticeStyle) => {
   const [noticeTitle, setNoticeTitle] = useState("");
+  const [noticeContext, setNoticeContext] = useState<string>("");
+
+  const { data: noticeDetail, status } = useQuery({
+    queryKey: ["detailNotice", id],
+    queryFn: () => getDetailNotice(Number(id)),
+  });
+
+  const createNoticeMutation = useMutation({
+    mutationKey: ["editNotice"],
+    mutationFn: (data: editNoticeType) => editNotice(data),
+    onSuccess: (res) => {
+      if (res.status === 200) {
+        setShow(false);
+        window.location.reload();
+      }
+    },
+  });
+
+  const deleteNoticeMutation = useMutation({
+    mutationKey: ["deleteNotice"],
+    mutationFn: (id: number) => deleteNotice(id),
+    onSuccess: (res) => {
+      if (res.status === 200) {
+        setShow(false);
+        window.location.reload();
+      }
+    },
+  });
 
   const handleNoticeSave = () => {
-    console.log("ss");
+    createNoticeMutation.mutate({
+      id: Number(id),
+      title: noticeTitle,
+      context: noticeContext,
+    });
   };
   const handleNoticeDelete = () => {
-    console.log("ss");
+    deleteNoticeMutation.mutate(Number(id));
   };
+
+  useEffect(() => {
+    setNoticeTitle(noticeDetail?.data.notice.title);
+    setNoticeContext(noticeDetail?.data.notice.context);
+  }, [status, id]);
   return (
     <EditNoticeContainer>
       <div onClick={() => setShow(false)} className="editNotice-bg"></div>
@@ -92,7 +132,11 @@ const EditNotice = ({ setShow, index }: EditNoticeStyle) => {
         />
         <div className="notice-content">
           <p>공지 내용</p>
-          <textarea placeholder="내용을 입력해주세요." />
+          <textarea
+            value={noticeContext}
+            onChange={(e) => setNoticeContext(e.target.value)}
+            placeholder="내용을 입력해주세요."
+          />
         </div>
         <div className="btn-area">
           <Button
