@@ -8,11 +8,11 @@ import BackHeader from "../../components/BackHeader";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCookies } from "react-cookie";
 import userProfileStore from "../../Store";
-import { getProfile } from "../../Api/User";
 import {
   deleteComments,
   editComments,
   getComments,
+  showHeart,
   writeComment,
 } from "../../Api/Client";
 import {
@@ -21,16 +21,15 @@ import {
   DeletePopupState,
   editCommentsType,
   getCommentsType,
+  showHeartType,
 } from "../../Type";
 import { getMeditationDetail } from "../../Api/Admin";
 import { useParams } from "react-router-dom";
-
 
 const MeditationPlay = () => {
   const queryClient = useQueryClient();
   const playRef = useRef<any>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false); // 음원 재생
-  const [isHeart, setIsHeart] = useState<boolean>(false); // 좋아요 버튼
   const [showComment, setShowComment] = useState<boolean>(false); // 댓글 쓰기 팝업
   const [showEdit, setShowEdit] = useState<number | null>(null); // 수정 시 input으로 변경
   const [edit, setEdit] = useState<string>(""); // 수정 글
@@ -41,7 +40,7 @@ const MeditationPlay = () => {
     isOpen: false,
   }); // 삭제 시 팝업
   const [cookie] = useCookies(["login"]); // token 값
-  const { setProfile } = userProfileStore();
+  const { profile } = userProfileStore();
   const path = useParams<any>();
 
   // 묵상상세
@@ -54,6 +53,19 @@ const MeditationPlay = () => {
   const { data: comments } = useQuery({
     queryKey: ["comment", status],
     queryFn: () => getComments(Number(path.id)),
+  });
+
+  // 좋아요 뮤테이션
+  const heartMutation = useMutation({
+    mutationKey: ["heart"],
+    mutationFn: (data: showHeartType) => showHeart(data),
+    onSuccess: (res) => {
+      if (res.status === 200) {
+        queryClient.invalidateQueries({
+          queryKey: ["today"],
+        });
+      }
+    },
   });
 
   // 댓글수정 뮤테이션
@@ -101,6 +113,14 @@ const MeditationPlay = () => {
     },
   });
 
+  // 좋아요 버튼
+  const handleHeart = () => {
+    heartMutation.mutate({
+      meditationId: Number(path?.id),
+      token: cookie.login,
+    });
+  };
+
   // 음원 재생/정지
   const handlePlayPause = () => {
     const audioElement = playRef.current.audio.current;
@@ -146,16 +166,6 @@ const MeditationPlay = () => {
     setShowModalMenu(null);
     setEdit(comments?.data.comment[index].context);
   };
-
-  // 프로필
-  const { data: profileData } = useQuery({
-    queryKey: ["profile"],
-    queryFn: () => getProfile(cookie.login),
-  });
-
-  useEffect(() => {
-    setProfile(profileData?.data.user as any);
-  }, [status]);
 
   useEffect(() => {
     const audioElement = playRef.current.audio.current;
@@ -232,11 +242,17 @@ const MeditationPlay = () => {
           <div className="meditation-qt-activeArea">
             <div>
               <img
-                onClick={() => setIsHeart(!isHeart)}
-                src={isHeart ? "/assets/heart-active.png" : "/assets/heart.png"}
+                onClick={handleHeart}
+                src={
+                  meditationDetail?.data.heart.some(
+                    (item: any) => item.userId === profile.userId
+                  )
+                    ? "/assets/heart-active.png"
+                    : "/assets/heart.png"
+                }
                 alt=""
               />
-              <p>1</p>
+              <p>{meditationDetail?.data.heart.length}</p>
             </div>
             <div onClick={() => setShowComment(true)}>
               <img src="/assets/comment.png" alt="" />
@@ -299,7 +315,7 @@ const MeditationPlay = () => {
                       )}
 
                       {showModalMenu === index ? (
-                        profileData?.data.user.userId === value.userId ? (
+                        profile?.userId === value.userId ? (
                           <div className="modal-menu">
                             <p onClick={() => handleEdit(index)}>수정하기</p>
                             <p

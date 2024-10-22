@@ -51,6 +51,7 @@ const getNotice = () => {
   return AxiosInstance.get(`/admin/notice`);
 };
 
+// 공지사항 상세 조회
 const getDetailNotice = (id: number) => {
   return AxiosInstance.get(`/admin/noticeDetail?id=${id}`);
 };

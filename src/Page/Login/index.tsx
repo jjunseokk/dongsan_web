@@ -59,7 +59,7 @@ export const PopupContainer = styled.div`
     width: ${px2vw(309)};
     margin-top: ${px2vw(30)};
   }
-  > div {
+  > .btn-area {
     display: flex;
     gap: ${px2vw(10)};
     margin-top: ${px2vw(30)};

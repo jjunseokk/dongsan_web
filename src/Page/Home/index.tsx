@@ -11,6 +11,7 @@ import {
   editComments,
   getComments,
   getTodayMeditation,
+  showHeart,
   writeComment,
 } from "../../Api/Client";
 import {
@@ -19,6 +20,7 @@ import {
   DeletePopupState,
   editCommentsType,
   getCommentsType,
+  showHeartType,
 } from "../../Type";
 import { useCookies } from "react-cookie";
 import { getProfile } from "../../Api/User";
@@ -32,7 +34,6 @@ const Home = () => {
   const queryClient = useQueryClient();
   const playRef = useRef<any>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false); // 음원 재생
-  const [isHeart, setIsHeart] = useState<boolean>(false); // 좋아요 버튼
   const [showComment, setShowComment] = useState<boolean>(false); // 댓글 쓰기 팝업
   const [showEdit, setShowEdit] = useState<number | null>(null); // 수정 시 input으로 변경
   const [edit, setEdit] = useState<string>(""); // 수정 글
@@ -55,6 +56,19 @@ const Home = () => {
   const { data: comments } = useQuery({
     queryKey: ["comment", status],
     queryFn: () => getComments(todayMeditation?.data?.today.id),
+  });
+
+  // 좋아요 뮤테이션
+  const heartMutation = useMutation({
+    mutationKey: ["heart"],
+    mutationFn: (data: showHeartType) => showHeart(data),
+    onSuccess: (res) => {
+      if (res.status === 200) {
+        queryClient.invalidateQueries({
+          queryKey: ["today"],
+        });
+      }
+    },
   });
 
   // 댓글수정 뮤테이션
@@ -102,6 +116,14 @@ const Home = () => {
       }
     },
   });
+
+  // 좋아요 버튼
+  const handleHeart = () => {
+    heartMutation.mutate({
+      meditationId: todayMeditation?.data.today.id,
+      token: cookie.login,
+    });
+  };
 
   // 음원 재생/정지
   const handlePlayPause = () => {
@@ -187,7 +209,12 @@ const Home = () => {
             ? todayMeditation?.data?.today?.createDate
             : "XXXX-XX-XX"}
         </p>
-        <img onClick={()=>navigate('/myPage')} className="home-myPage" src="/assets/setting-solid.png" alt="" />
+        <img
+          onClick={() => navigate("/myPage")}
+          className="home-myPage"
+          src="/assets/setting-solid.png"
+          alt=""
+        />
       </div>
       <p className="home-today-qt">오늘의 묵상</p>
       <div className="home-qt-track">
@@ -241,11 +268,17 @@ const Home = () => {
         <div className="home-qt-activeArea">
           <div>
             <img
-              onClick={() => setIsHeart(!isHeart)}
-              src={isHeart ? "/assets/heart-active.png" : "/assets/heart.png"}
+              onClick={handleHeart}
+              src={
+                todayMeditation?.data.heart.some(
+                  (item: any) => item.userId === profileData?.data.user.userId
+                )
+                  ? "/assets/heart-active.png"
+                  : "/assets/heart.png"
+              }
               alt=""
             />
-            <p>1</p>
+            <p>{todayMeditation?.data?.heart?.length}</p>
           </div>
           <div onClick={() => setShowComment(true)}>
             <img src="/assets/comment.png" alt="" />

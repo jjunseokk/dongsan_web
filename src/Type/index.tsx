@@ -111,3 +111,9 @@ export interface editNoticeType {
   title: string;
   context: string;
 }
+
+// 좋아요 타입
+export interface showHeartType {
+  meditationId: number;
+  token : string;
+}

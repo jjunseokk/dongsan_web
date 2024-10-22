@@ -1,5 +1,10 @@
 import AxiosInstance from "../../AxiosInstance";
-import { comments, deleteCommentsType, editCommentsType } from "../../Type";
+import {
+  comments,
+  deleteCommentsType,
+  editCommentsType,
+  showHeartType,
+} from "../../Type";
 
 // 오늘의 묵상
 const getTodayMeditation = (date: string) => {
@@ -39,6 +44,19 @@ const changeProfile = (data: any, token: string) => {
   });
 };
 
+// 좋아요
+const showHeart = (data: showHeartType) => {
+  return AxiosInstance.post(
+    `/client/heart`,
+    { meditationId: data.meditationId },
+    {
+      headers: {
+        Authorization: data.token,
+      },
+    }
+  );
+};
+
 export {
   getTodayMeditation,
   writeComment,
@@ -46,4 +64,5 @@ export {
   editComments,
   changeProfile,
   deleteComments,
+  showHeart,
 };

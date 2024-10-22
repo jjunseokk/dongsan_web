@@ -133,7 +133,7 @@ const AdminMeditation = () => {
       {showDeletePopup ? (
         <PopupContainer>
           <p>{selectedItems.length}개의 묵상을 삭제하시겠습니까?</p>
-          <div>
+          <div className="btn-area">
             <Button
               context="예"
               color="#ff1919"
