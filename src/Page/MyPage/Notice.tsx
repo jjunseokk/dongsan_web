@@ -31,6 +31,9 @@ const NoticeContainer = styled.div`
         background: #e7e7e7;
         padding: ${px2vw(30)} ${px2vw(25)};
         height: auto;
+        > p {
+          white-space: pre-wrap;
+        }
       }
     }
   }
