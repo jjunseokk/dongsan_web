@@ -7,11 +7,10 @@ import Home from "./Page/Home";
 import SignUp from "./Page/SignUp/SignUp";
 import Meditation from "./Page/Meditation";
 import Story from "./Page/Story";
-import MyPage from "./Page/MyPage";
+import EditUserInfo from "./Page/MyPage";
 import MeditationPlay from "./Page/Meditation/MeditationPlay";
 import Service from "./Page/MyPage/Service";
 import Notice from "./Page/MyPage/Notice";
-import EditPw from "./Page/MyPage/EditUserInfo";
 import Admin from "./Page/Admin";
 import AdminNotice from "./Page/Admin/Dashboard/AdminNotice";
 import AdminMeditation from "./Page/Admin/Dashboard/AdminMeditation";
@@ -48,10 +47,9 @@ function App() {
             <Route path="/meditation" element={<Meditation />} />
             <Route path="/meditation/:id" element={<MeditationPlay />} />
             <Route path="/story" element={<Story />} />
-            <Route path="/myPage" element={<MyPage />} />
+            <Route path="/myPage" element={<EditUserInfo />} />
             <Route path="/myPage/service" element={<Service />} />
             <Route path="/myPage/notice" element={<Notice />} />
-            <Route path="/myPage/edit-password" element={<EditPw />} />
             <Route path="/dongsan/admin" element={<Admin />}>
               <Route path="notice" element={<AdminNotice />} />
               <Route path="meditation" element={<AdminMeditation />} />

@@ -10,13 +10,17 @@ export const HomeContainer = styled.div`
 
   > .home-date {
     display: flex;
+    justify-content: space-between;
     align-items: center;
-    gap: ${px2vw(9)};
     margin-top: ${px2vw(30)};
 
     > p {
       color: #427d4f;
       font: 700 25px "Pretendard";
+    }
+    > .home-myPage {
+      width: ${px2vw(30)};
+      cursor: pointer;
     }
   }
   .home-today-qt {

@@ -23,8 +23,10 @@ import {
 import { useCookies } from "react-cookie";
 import { getProfile } from "../../Api/User";
 import userProfileStore from "../../Store";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
   const date = new Date(); //현재 시간
   const currentDate = date.toISOString().split("T")[0]; // 현재시간 형식 변경 YYYY-MM-DD
   const queryClient = useQueryClient();
@@ -185,6 +187,7 @@ const Home = () => {
             ? todayMeditation?.data?.today?.createDate
             : "XXXX-XX-XX"}
         </p>
+        <img onClick={()=>navigate('/myPage')} className="home-myPage" src="/assets/setting-solid.png" alt="" />
       </div>
       <p className="home-today-qt">오늘의 묵상</p>
       <div className="home-qt-track">

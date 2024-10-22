@@ -83,7 +83,7 @@ const BottomMenu = () => {
       </div>
       <div
         className={pathname.includes("/myPage") ? "active" : ""}
-        onClick={() => navigate("/myPage")}
+        onClick={() => navigate("/myPage/notice")}
       >
         <img
           src={
@@ -93,7 +93,7 @@ const BottomMenu = () => {
           }
           alt=""
         />
-        <p>마이</p>
+        <p>공지사항</p>
       </div>
     </BottomMenuContainer>
   );
