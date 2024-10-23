@@ -30,7 +30,7 @@ import { useNavigate } from "react-router-dom";
 const Home = () => {
   const navigate = useNavigate();
   const date = new Date(); //현재 시간
-  const currentDate = date.toISOString().split("T")[0]; // 현재시간 형식 변경 YYYY-MM-DD
+  const currentDate = date.toLocaleDateString('en-CA'); // 현재시간 형식 변경 YYYY-MM-DD
   const queryClient = useQueryClient();
   const playRef = useRef<any>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false); // 음원 재생
