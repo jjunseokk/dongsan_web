@@ -171,12 +171,12 @@ const SignUp = () => {
       </div>
       {successSignUp ? (
         <PopupContainer>
-          <p>회원가입이 완료되었습니다.</p>
+          <p>회원가입이 신청이 완료되었습니다.<br/> 가입승인 후 로그인이 가능합니다.</p>
           <SignButton
-            context="로그인 하기"
+            context="확인"
             color="#427D4F"
             borderColor="#427D4F"
-            onClick={() => navigate("/login")}
+            onClick={() => navigate("/")}
           />
         </PopupContainer>
       ) : null}

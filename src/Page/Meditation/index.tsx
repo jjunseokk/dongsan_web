@@ -45,9 +45,11 @@ const MeditationContainer = styled.div`
 
 const Meditation = () => {
   const navigate = useNavigate();
+
+  // 묵상리스트 조회 ----- 무한 스크롤 구현해야함
   const { data: meditation } = useQuery({
     queryKey: ["meditation"],
-    queryFn: () => getMeditation(),
+    queryFn: () => getMeditation(1),
   });
 
   return (

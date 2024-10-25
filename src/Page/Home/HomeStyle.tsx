@@ -116,7 +116,7 @@ export const HomeContainer = styled.div`
       bottom: -100%;
       left: 0px;
       width: ${px2vw(430)};
-      height: ${px2vw(495)};
+      min-height: ${px2vw(495)};
       border-top-left-radius: 15px;
       border-top-right-radius: 15px;
       border: 1px solid #427d4f;
@@ -202,7 +202,6 @@ export const HomeContainer = styled.div`
           }
           .modal-menu {
             width: ${px2vw(116)};
-            /* height: ${px2vw(84)}; */
             box-shadow: 1px 1px 5px 1px #00000040;
             border-radius: 5px;
             position: absolute;

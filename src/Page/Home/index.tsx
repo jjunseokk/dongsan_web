@@ -30,9 +30,10 @@ import { useNavigate } from "react-router-dom";
 const Home = () => {
   const navigate = useNavigate();
   const date = new Date(); //현재 시간
-  const currentDate = date.toLocaleDateString('en-CA'); // 현재시간 형식 변경 YYYY-MM-DD
+  const currentDate = date.toLocaleDateString("en-CA"); // 현재시간 형식 변경 YYYY-MM-DD
   const queryClient = useQueryClient();
   const playRef = useRef<any>(null);
+  const inputRef = useRef<any>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false); // 음원 재생
   const [showComment, setShowComment] = useState<boolean>(false); // 댓글 쓰기 팝업
   const [showEdit, setShowEdit] = useState<number | null>(null); // 수정 시 input으로 변경
@@ -44,7 +45,7 @@ const Home = () => {
     isOpen: false,
   }); // 삭제 시 팝업
   const [cookie] = useCookies(["login"]); // token 값
-  const { setProfile } = userProfileStore();
+  const { setProfile } = userProfileStore(); //상태관리에서 프로필 불러오기
 
   // 오늘의 묵상
   const { data: todayMeditation, status } = useQuery({
@@ -55,7 +56,7 @@ const Home = () => {
   // 댓글조회
   const { data: comments } = useQuery({
     queryKey: ["comment", status],
-    queryFn: () => getComments(todayMeditation?.data?.today.id),
+    queryFn: () => getComments(todayMeditation?.data?.today?.id),
   });
 
   // 좋아요 뮤테이션
@@ -190,6 +191,12 @@ const Home = () => {
     }
   }, [todayMeditation?.data?.today?.music]);
 
+  useEffect(() => {
+    if (!cookie.login) {
+      navigate("/");
+    }
+  }, []);
+
   return (
     <HomeContainer>
       {showDeletePopup.isOpen ? (
@@ -270,7 +277,7 @@ const Home = () => {
             <img
               onClick={handleHeart}
               src={
-                todayMeditation?.data.heart.some(
+                todayMeditation?.data?.heart.some(
                   (item: any) => item.userId === profileData?.data.user.userId
                 )
                   ? "/assets/heart-active.png"
@@ -282,7 +289,7 @@ const Home = () => {
           </div>
           <div onClick={() => setShowComment(true)}>
             <img src="/assets/comment.png" alt="" />
-            <p>{comments?.data.comment.length}</p>
+            <p>{comments?.data.totalCount}</p>
           </div>
         </div>
       </div>
@@ -292,7 +299,7 @@ const Home = () => {
           <div className="popup-header">
             <p className="title">나눔</p>
             <p className="description">
-              총 {comments?.data.comment.length}개의 나눔
+              총 {comments?.data.totalCount}개의 나눔
             </p>
           </div>
 
@@ -359,6 +366,7 @@ const Home = () => {
           </div>
           <div className="home-input-area">
             <input
+              ref={inputRef}
               value={comment}
               onChange={(e) => setComment(e.target.value)}
               type="text"

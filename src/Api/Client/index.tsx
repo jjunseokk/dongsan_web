@@ -21,8 +21,8 @@ const writeComment = (data: comments) => {
 };
 
 // 댓글 조회
-const getComments = (id: number) => {
-  return AxiosInstance.get(`/client/comments?id=${id}`);
+const getComments = (commentId: number) => {
+  return AxiosInstance.get(`/client/comments?id=${commentId}`);
 };
 
 // 댓글 수정

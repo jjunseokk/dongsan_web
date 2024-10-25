@@ -70,6 +70,7 @@ const AdminUserListContainer = styled(motion.div)`
 const AdminUserList = () => {
   const navigate = useNavigate();
 
+  // 유저 목록 불러오기
   const { data: userList } = useQuery({
     queryKey: ["userList"],
     queryFn: () => getUserList(),

@@ -7,13 +7,13 @@ import {
 } from "../../Type";
 
 // 묵상리스트 조회
-const getMeditation = () => {
-  return AxiosInstance.get(`/admin/meditation`);
+const getMeditation = (page: number) => {
+  return AxiosInstance.get(`/admin/meditation?page=${page}`);
 };
 
 // 묵상상세조회
-const getMeditationDetail = (id: undefined | number) => {
-  return AxiosInstance.get(`admin/MeditationDetail?id=${id}`);
+const getMeditationDetail = (meditationId: undefined | number) => {
+  return AxiosInstance.get(`admin/MeditationDetail?id=${meditationId}`);
 };
 
 // 묵상리스트 추가
@@ -27,8 +27,8 @@ const editMeditation = (data: postMeditation, id: number) => {
 };
 
 // 묵상리스트 삭제
-const deleteMeditation = (ids: number[]) => {
-  return AxiosInstance.delete(`/admin/meditation`, { data: ids });
+const deleteMeditation = (meditationIds: number[]) => {
+  return AxiosInstance.delete(`/admin/meditation`, { data: meditationIds });
 };
 
 // 가입 승인
@@ -42,8 +42,8 @@ const getUserList = () => {
 };
 
 // 유저 상세 목록
-const getUserDetail = (id: string | undefined) => {
-  return AxiosInstance.get(`/users/getDetailProfile?id=${id}`);
+const getUserDetail = (userId: string | undefined) => {
+  return AxiosInstance.get(`/admin/getDetailProfile?id=${userId}`);
 };
 
 // 공지사항 조회
@@ -52,8 +52,8 @@ const getNotice = () => {
 };
 
 // 공지사항 상세 조회
-const getDetailNotice = (id: number) => {
-  return AxiosInstance.get(`/admin/noticeDetail?id=${id}`);
+const getDetailNotice = (noticeId: number) => {
+  return AxiosInstance.get(`/admin/noticeDetail?id=${noticeId}`);
 };
 
 // 공지사항 작성
@@ -62,8 +62,8 @@ const createNotice = (data: createNoticeType) => {
 };
 
 // 공지사항 삭제
-const deleteNotice = (id: number) => {
-  return AxiosInstance.delete(`/admin/notice?id=${id}`);
+const deleteNotice = (noticeId: number) => {
+  return AxiosInstance.delete(`/admin/notice?id=${noticeId}`);
 };
 
 // 공지사항 수정

@@ -8,7 +8,7 @@ export const DashboardContainer = styled.div`
   margin-top: ${px2vwPc(10)};
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-  padding: ${px2vwPc(30)};
+  padding: ${px2vwPc(50)};
 
   .dashboard-title {
     font: 500 20px "Pretendard";

@@ -40,7 +40,9 @@ const NoticeContainer = styled.div`
 `;
 
 const Notice = () => {
+  // 공지사항 펼치기
   const [showAccordion, setShowAccordion] = useState<number | null>(null);
+  // 공지사항 불러오기
   const { data: notice } = useQuery({
     queryKey: ["getNotice"],
     queryFn: () => getNotice(),

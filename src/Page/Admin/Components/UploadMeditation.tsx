@@ -35,6 +35,12 @@ const UploadMeditationContainer = styled.div`
     border-radius: 10px;
     display: flex;
     gap: ${px2vwPc(20)};
+    .loading-spinner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
     .left-section {
       .upload-meditation-thumbnail {
         width: ${px2vwPc(400)};
@@ -98,12 +104,14 @@ const UploadMeditation = ({ setShow }: UploadMeditationStyle) => {
   const [thumbnail, setThumbnail] = useState<any>();
   const [music, setMusic] = useState<any>();
   const [still, setStill] = useState<any>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const createMeditationMutation = useMutation({
     mutationKey: ["createMeditation"],
     mutationFn: (data: any) => createMeditation(data),
     onSuccess: (res) => {
       if (res.status === 200) {
+        setLoading(false);
         window.location.reload();
       }
     },
@@ -126,7 +134,7 @@ const UploadMeditation = ({ setShow }: UploadMeditationStyle) => {
 
   const handleUploadMeditation = () => {
     const formData = new FormData();
-
+    setLoading(true);
     formData.append("title", meditationTitle);
     formData.append("word", meditationBible);
     formData.append("thumbnail", thumbnail);
@@ -148,6 +156,10 @@ const UploadMeditation = ({ setShow }: UploadMeditationStyle) => {
         animate={{ opacity: 1 }}
         className="upload-meditation-wrap"
       >
+        {loading ? (
+          <img className="loading-spinner" src="/assets/loading.gif" alt="" />
+        ) : null}
+
         <div className="left-section">
           <div
             onClick={() => thumbnailRef.current.click()}

@@ -61,11 +61,13 @@ const AdminUserApproveContainer = styled(motion.div)`
           font: 400 14px "Pretendard";
           &:nth-of-type(3) {
             padding-left: ${px2vwPc(10)};
-            cursor: pointer;
+          }
+          &:nth-of-type(6) {
+            font-weight: 700;
+            color: #427d4f;
           }
           &:nth-of-type(7) {
             display: flex;
-            gap: ${px2vwPc(10)};
             justify-content: center;
             align-items: center;
           }
@@ -79,11 +81,13 @@ const AdminUserApproveContainer = styled(motion.div)`
 `;
 
 const AdminUserApprove = () => {
+  // 가입 요청한 유저 목록
   const { data: userList } = useQuery({
     queryKey: ["userList"],
     queryFn: () => getUserList(),
   });
 
+  // 가입 승인 뮤테이션
   const approveMutation = useMutation({
     mutationKey: ["approve"],
     mutationFn: (data: updateApprove) => showApprove(data),
@@ -94,8 +98,9 @@ const AdminUserApprove = () => {
     },
   });
 
-  const handleApprove = (value: boolean, id: number) => {
-    approveMutation.mutate({ id: id, approve: value });
+  // 가입 승인 버튼
+  const handleApprove = (value: boolean, userId: number) => {
+    approveMutation.mutate({ id: userId, approve: value });
   };
   return (
     <AdminUserApproveContainer
@@ -131,27 +136,18 @@ const AdminUserApprove = () => {
                   </td>
                   <td>
                     {value.userApprove === false ? (
-                      <>
-                        <Button
-                          context="승인"
-                          color="#427d4f"
-                          borderColor="#427d4f"
-                          onClick={() => handleApprove(true, value.id)}
-                          width={px2vwPc(90)}
-                        />
-                        <Button
-                          context="거절"
-                          color="#FF1919"
-                          borderColor="#FF1919"
-                          onClick={() => handleApprove(false, value.id)}
-                          width={px2vwPc(90)}
-                        />
-                      </>
+                      <Button
+                        context="승인"
+                        color="#427d4f"
+                        borderColor="#427d4f"
+                        onClick={() => handleApprove(true, value.id)}
+                        width={px2vwPc(180)}
+                      />
                     ) : (
                       <Button
                         context="승인 취소"
-                        color="#002fff"
-                        borderColor="#002fff"
+                        color="#FF1919"
+                        borderColor="#FF1919"
                         onClick={() => handleApprove(false, value.id)}
                         width={px2vwPc(180)}
                       />

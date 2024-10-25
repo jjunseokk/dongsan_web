@@ -78,23 +78,34 @@ const EditUserInfoContainer = styled.div`
 `;
 
 const EditUserInfo = () => {
+  // 비밀번호 모달
   const [showModal, setShowModal] = useState<boolean>(false);
+  // 유저 비밀번호
   const [userPw, setUserPw] = useState<string>("");
+  // 새로운 비밀번호
   const [newPw, setNewPw] = useState<string>("");
+  // 새로운 비밀번호 체크
   const [checkPw, setCheckPw] = useState<string>("");
+  // 파일 ref
   const fileRef = useRef<any>(null);
+  // 유저 프로필
   const [thumbnail, setThumbnail] = useState<string>("");
+  // 유저 프로필 상태관리
   const { profile, setProfile } = userProfileStore();
+  // 토큰 값 불러오기
   const [cookie] = useCookies(["login"]);
 
+  // 유저 정보 변경
   const changeProfileMutation = useMutation({
     mutationKey: ["profileThumbnail"],
     mutationFn: (data: any) => changeProfile(data, cookie.login),
     onSuccess: (res) => {
+      // 성공시 프로필 상태관리 이미지만 변경
       setProfile({ thumbnail: res.data.thumbnail });
     },
   });
 
+  // 프로필 사진 변경
   const handleGetProfile = (e: any) => {
     const { files } = e.target;
     const uploadFile = files[0];

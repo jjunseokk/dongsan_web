@@ -59,11 +59,12 @@ const SplashContainer = styled.div`
 
 const Splash = () => {
   const navigate = useNavigate();
+  // 쿠키에 저장되어있는 token값 가져오기
+  const [cookie] = useCookies(["login"]);
 
-  const [cookies] = useCookies(["login"]);
-
+  // token이 존재한다면 자동로그인
   useEffect(() => {
-    if (cookies.login) {
+    if (cookie.login) {
       navigate("/main");
     }
   }, []);

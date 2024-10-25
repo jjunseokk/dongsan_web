@@ -40,8 +40,8 @@ const MeditationPlay = () => {
     isOpen: false,
   }); // 삭제 시 팝업
   const [cookie] = useCookies(["login"]); // token 값
-  const { profile } = userProfileStore();
-  const path = useParams<any>();
+  const { profile } = userProfileStore(); // 프로필 상태 관리 불러오기
+  const path = useParams<any>(); //path값 가져오기
 
   // 묵상상세
   const { data: meditationDetail, status } = useQuery({

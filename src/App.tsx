@@ -1,5 +1,5 @@
 import "./App.scss";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import styled from "styled-components";
 import Login from "./Page/Login";
 import Splash from "./Page/Login/Splash";
@@ -9,7 +9,6 @@ import Meditation from "./Page/Meditation";
 import Story from "./Page/Story";
 import EditUserInfo from "./Page/MyPage";
 import MeditationPlay from "./Page/Meditation/MeditationPlay";
-import Service from "./Page/MyPage/Service";
 import Notice from "./Page/MyPage/Notice";
 import Admin from "./Page/Admin";
 import AdminNotice from "./Page/Admin/Dashboard/AdminNotice";
@@ -34,32 +33,31 @@ const AppContainer = styled.div<AppContainerStyle>`
   }
 `;
 
-
 function App() {
   return (
     <AppContainer $width={userSize}>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Splash />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/signUp" element={<SignUp />} />
-            <Route path="/main" element={<Home />} />
-            <Route path="/meditation" element={<Meditation />} />
-            <Route path="/meditation/:id" element={<MeditationPlay />} />
-            <Route path="/story" element={<Story />} />
-            <Route path="/myPage" element={<EditUserInfo />} />
-            <Route path="/myPage/service" element={<Service />} />
-            <Route path="/myPage/notice" element={<Notice />} />
-            <Route path="/dongsan/admin" element={<Admin />}>
-              <Route path="notice" element={<AdminNotice />} />
-              <Route path="meditation" element={<AdminMeditation />} />
-              <Route path="userList" element={<AdminUserList />} />
-              <Route path="userList/:id/detail" element={<AdminUserDetail />} />
-              <Route path="userList/approve" element={<AdminUserApprove />} />
-            </Route>
-            <Route path="/*" element={<Splash />} />
-          </Routes>
-        </BrowserRouter>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Splash />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/signUp" element={<SignUp />} />
+          <Route path="/main" element={<Home />} />
+          <Route path="/meditation" element={<Meditation />} />
+          <Route path="/meditation/:id" element={<MeditationPlay />} />
+          <Route path="/story" element={<Story />} />
+          <Route path="/myPage" element={<EditUserInfo />} />
+          <Route path="/myPage/notice" element={<Notice />} />
+          <Route path="/dongsan/admin" element={<Admin />}>
+            <Route index element={<Navigate to="meditation" />} />
+            <Route path="notice" element={<AdminNotice />} />
+            <Route path="meditation" element={<AdminMeditation />} />
+            <Route path="userList" element={<AdminUserList />} />
+            <Route path="userList/:id/detail" element={<AdminUserDetail />} />
+            <Route path="userList/approve" element={<AdminUserApprove />} />
+          </Route>
+          <Route path="/*" element={<Splash />} />
+        </Routes>
+      </BrowserRouter>
     </AppContainer>
   );
 }

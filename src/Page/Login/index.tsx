@@ -36,7 +36,6 @@ const LoginContainer = styled.div`
 
 export const PopupContainer = styled.div`
   width: ${px2vw(351)};
-  /* height: ${px2vw(179)}; */
   padding: ${px2vw(20)} ${px2vw(21)};
   border: none;
   box-shadow: 1px 1px 2px 1px #00000040;
@@ -51,6 +50,7 @@ export const PopupContainer = styled.div`
   align-items: center;
   flex-direction: column;
   z-index: 999;
+  text-align: center;
   > p {
     font-size: 20;
     font-weight: 600;
@@ -64,29 +64,36 @@ export const PopupContainer = styled.div`
     gap: ${px2vw(10)};
     margin-top: ${px2vw(30)};
     > button {
-      width: ${px2vw(309/2)};
+      width: ${px2vw(309 / 2)};
     }
   }
 `;
 
 const Login = () => {
   const navigate = useNavigate();
+  // 유저 아이디 받기
   const [userId, setUseId] = useState<string>("");
+  // 유저 비밀번호 받기
   const [userPw, setUserPw] = useState<string>("");
+  // 로그인 완료 팝업 창
   const [showSuccessPopup, setShowSuccessPopup] = useState<boolean>(false);
+  // 로그인 실패 이유 뜨기
   const [warning, setWarning] = useState<string>("");
 
+  // 토큰 쿠키 저장
   const [, setCookie] = useCookies(["login"]);
 
+  // 아이디 비밀번호가 true인지 확인
   const canRegister = userId && userPw;
 
+  // 로그인 뮤테이션
   const loginMutation = useMutation({
     mutationKey: ["login"],
     mutationFn: (data: login) => showLogin(data),
     onSuccess: (res) => {
       if (res.status === 200) {
         setShowSuccessPopup(true);
-        setCookie("login", res.data.token);
+        setCookie("login", res.data.token); // 로그인에 성공하면 token값 저장
       }
     },
     onError: (err: any) => {
@@ -94,12 +101,14 @@ const Login = () => {
     },
   });
 
+  // 로그인 버튼
   const handleLogin = () => {
     loginMutation.mutate({
       userId,
       password: userPw, // login 타입에 맞춰 필드 이름 조정
     });
   };
+
   return (
     <LoginContainer>
       <BackHeader title="로그인" />

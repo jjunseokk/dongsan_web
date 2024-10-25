@@ -66,10 +66,14 @@ const AdminNoticeContainer = styled(motion.div)`
 `;
 
 const AdminNotice = () => {
+  // 업로드 팝업 창
   const [showUploadNotice, setShowUploadNotice] = useState<boolean>(false);
+  // 수정 팝업 창
   const [showEditNotice, setShowEditNotice] = useState<boolean>(false);
-  const [id, setId] = useState<number | null>(null);
+  // 공지사항 선택 아이디
+  const [noticeId, setNoticeId] = useState<number | null>(null);
 
+  // 공지사항 목록 가져오기
   const { data: notice } = useQuery({
     queryKey: ["notice"],
     queryFn: () => getNotice(),
@@ -82,7 +86,7 @@ const AdminNotice = () => {
     >
       {showUploadNotice ? <UploadNotice setShow={setShowUploadNotice} /> : null}
       {showEditNotice ? (
-        <EditNotice id={id} setShow={setShowEditNotice} />
+        <EditNotice id={noticeId} setShow={setShowEditNotice} />
       ) : null}
       <DashboardContainer>
         <p className="dashboard-title">공지 작성</p>
@@ -109,7 +113,7 @@ const AdminNotice = () => {
                   <td
                     onClick={() => {
                       setShowEditNotice(true);
-                      setId(value.id);
+                      setNoticeId(value.id);
                     }}
                   >
                     {value.title}
