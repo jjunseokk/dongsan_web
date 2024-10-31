@@ -210,171 +210,179 @@ const Home = () => {
           />
         </PopupContainer>
       ) : null}
-      <div className="home-date">
-        <p>
-          {todayMeditation?.data.today
-            ? todayMeditation?.data?.today?.createDate
-            : "XXXX-XX-XX"}
-        </p>
-        <img
-          onClick={() => navigate("/myPage")}
-          className="home-myPage"
-          src="/assets/setting-solid.png"
-          alt=""
-        />
-      </div>
-      <p className="home-today-qt">오늘의 묵상</p>
-      <div className="home-qt-track">
-        <div className="track-bg">
+      <div className="home-wrap">
+        <div className="home-date">
+          <p>
+            {todayMeditation?.data.today
+              ? todayMeditation?.data?.today?.createDate
+              : "XXXX-XX-XX"}
+          </p>
           <img
-            className={isPlaying ? "active" : ""}
-            // src={"/assets/track_bg.png"}
-            src={
-              todayMeditation?.data.today
-                ? todayMeditation?.data?.today?.thumbnail
-                : "/assets/track_bg.png"
-            }
+            onClick={() => navigate("/myPage")}
+            className="home-myPage"
+            src="/assets/setting-solid.png"
             alt=""
           />
-          <div className="track-center-white"></div>
         </div>
-      </div>
-      <div className="home-qt-info">
-        <p className="qt-title">
-          {todayMeditation?.data.today
-            ? todayMeditation?.data?.today?.title
-            : "오늘의 묵상은 없습니다."}
-        </p>
-        <p className="qt-chapter">
-          {todayMeditation?.data.today
-            ? todayMeditation?.data?.today?.word
-            : "오늘의 묵상은 없습니다."}
-        </p>
-        <div className="qt-audio-controller">
-          <img src="/assets/audio-prev.png" alt="prev" />
-          <img
-            onClick={handlePlayPause}
-            src={
-              isPlaying ? "/assets/audio-pause.png" : "/assets/audio-play.png"
-            }
-            alt="play"
-          />
-          <img src="/assets/audio-next.png" alt="next" />
-        </div>
-        <AudioPlayer
-          ref={playRef}
-          onPlay={() => setIsPlaying(true)}
-          onPause={() => setIsPlaying(false)}
-          showSkipControls={true}
-          showJumpControls={false}
-          autoPlay={false}
-          src={todayMeditation?.data?.today?.music}
-          // src="/assets/play.mp3"
-          style={{ display: "none" }}
-        />
-        <div className="home-qt-activeArea">
-          <div>
+        <p className="home-today-qt">오늘의 묵상</p>
+        <div className="home-qt-track">
+          <div className="track-bg">
             <img
-              onClick={handleHeart}
+              className={isPlaying ? "active" : ""}
+              // src={"/assets/track_bg.png"}
               src={
-                todayMeditation?.data?.heart.some(
-                  (item: any) => item.userId === profileData?.data.user.userId
-                )
-                  ? "/assets/heart-active.png"
-                  : "/assets/heart.png"
+                todayMeditation?.data.today
+                  ? todayMeditation?.data?.today?.thumbnail
+                  : "/assets/track_bg.png"
               }
               alt=""
             />
-            <p>{todayMeditation?.data?.heart?.length}</p>
-          </div>
-          <div onClick={() => setShowComment(true)}>
-            <img src="/assets/comment.png" alt="" />
-            <p>{comments?.data.totalCount}</p>
+            <div className="track-center-white"></div>
           </div>
         </div>
-      </div>
-      <div className={showComment ? "home-comment active" : "home-comment"}>
-        <div onClick={() => setShowComment(false)} className="comment-bg"></div>
-        <div className="comment-popup">
-          <div className="popup-header">
-            <p className="title">나눔</p>
-            <p className="description">
-              총 {comments?.data.totalCount}개의 나눔
-            </p>
+        <div className="home-qt-info">
+          <p className="qt-title">
+            {todayMeditation?.data.today
+              ? todayMeditation?.data?.today?.title
+              : "오늘의 묵상은 없습니다."}
+          </p>
+          <p className="qt-chapter">
+            {todayMeditation?.data.today
+              ? todayMeditation?.data?.today?.word
+              : "오늘의 묵상은 없습니다."}
+          </p>
+          <div className="qt-audio-controller">
+            <img src="/assets/audio-prev.png" alt="prev" />
+            <img
+              onClick={handlePlayPause}
+              src={
+                isPlaying ? "/assets/audio-pause.png" : "/assets/audio-play.png"
+              }
+              alt="play"
+            />
+            <img src="/assets/audio-next.png" alt="next" />
           </div>
+          <AudioPlayer
+            ref={playRef}
+            onPlay={() => setIsPlaying(true)}
+            onPause={() => setIsPlaying(false)}
+            showSkipControls={true}
+            showJumpControls={false}
+            autoPlay={false}
+            src={todayMeditation?.data?.today?.music}
+            // src="/assets/play.mp3"
+            style={{ display: "none" }}
+          />
+          <div className="home-qt-activeArea">
+            <div>
+              <img
+                onClick={handleHeart}
+                src={
+                  todayMeditation?.data?.heart.some(
+                    (item: any) => item.userId === profileData?.data.user.userId
+                  )
+                    ? "/assets/heart-active.png"
+                    : "/assets/heart.png"
+                }
+                alt=""
+              />
+              <p>{todayMeditation?.data?.heart?.length}</p>
+            </div>
+            <div onClick={() => setShowComment(true)}>
+              <img src="/assets/comment.png" alt="" />
+              <p>{comments?.data.totalCount}</p>
+            </div>
+          </div>
+        </div>
+        <div className={showComment ? "home-comment active" : "home-comment"}>
+          <div
+            onClick={() => setShowComment(false)}
+            className="comment-bg"
+          ></div>
+          <div className="comment-popup">
+            <div className="popup-header">
+              <p className="title">나눔</p>
+              <p className="description">
+                총 {comments?.data.totalCount}개의 나눔
+              </p>
+            </div>
 
-          <div className="popup-body">
-            {comments?.data.comment.map(
-              (value: getCommentsType, index: number) => {
-                return (
-                  <div key={value.commentId} className="comment-container">
-                    <div className="comment-info">
-                      <div>
-                        <p>{value.writer}</p>
-                        <p>{value.createDate}</p>
-                      </div>
-                      <img
-                        onClick={() => setShowModalMenu(index)}
-                        src="/assets/more_menu.png"
-                        alt=""
-                      />
-                    </div>
-                    {showEdit === index ? (
-                      <div className="comment-edit">
-                        <input
-                          value={edit}
-                          onChange={(e) => setEdit(e.target.value)}
-                          className="edit-input"
-                          type="text"
-                        />
+            <div className="popup-body">
+              {comments?.data.comment.map(
+                (value: getCommentsType, index: number) => {
+                  return (
+                    <div key={value.commentId} className="comment-container">
+                      <div className="comment-info">
                         <div>
-                          <p onClick={() => handleEditComment(value.commentId)}>
-                            수정
-                          </p>
-                          <p onClick={() => setShowEdit(null)}>취소</p>
+                          <p>{value.writer}</p>
+                          <p>{value.createDate}</p>
                         </div>
+                        <img
+                          onClick={() => setShowModalMenu(index)}
+                          src="/assets/more_menu.png"
+                          alt=""
+                        />
                       </div>
-                    ) : (
-                      <p>{value.context}</p>
-                    )}
-
-                    {showModalMenu === index ? (
-                      profileData?.data.user.userId === value.userId ? (
-                        <div className="modal-menu">
-                          <p onClick={() => handleEdit(index)}>수정하기</p>
-                          <p
-                            onClick={() =>
-                              setShowDeletePopup({
-                                id: value.commentId,
-                                isOpen: true,
-                              })
-                            }
-                          >
-                            삭제하기
-                          </p>
+                      {showEdit === index ? (
+                        <div className="comment-edit">
+                          <input
+                            value={edit}
+                            onChange={(e) => setEdit(e.target.value)}
+                            className="edit-input"
+                            type="text"
+                          />
+                          <div>
+                            <p
+                              onClick={() => handleEditComment(value.commentId)}
+                            >
+                              수정
+                            </p>
+                            <p onClick={() => setShowEdit(null)}>취소</p>
+                          </div>
                         </div>
                       ) : (
-                        <div className="modal-menu">
-                          <p onClick={() => console.log("ss")}>신고하기</p>
-                        </div>
-                      )
-                    ) : null}
-                  </div>
-                );
-              }
-            )}
-          </div>
-          <div className="home-input-area">
-            <input
-              ref={inputRef}
-              value={comment}
-              onChange={(e) => setComment(e.target.value)}
-              type="text"
-            />
-            <p onClick={handleAddComment}>입력</p>
+                        <p>{value.context}</p>
+                      )}
+
+                      {showModalMenu === index ? (
+                        profileData?.data.user.userId === value.userId ? (
+                          <div className="modal-menu">
+                            <p onClick={() => handleEdit(index)}>수정하기</p>
+                            <p
+                              onClick={() =>
+                                setShowDeletePopup({
+                                  id: value.commentId,
+                                  isOpen: true,
+                                })
+                              }
+                            >
+                              삭제하기
+                            </p>
+                          </div>
+                        ) : (
+                          <div className="modal-menu">
+                            <p onClick={() => console.log("ss")}>신고하기</p>
+                          </div>
+                        )
+                      ) : null}
+                    </div>
+                  );
+                }
+              )}
+            </div>
+            <div className="home-input-area">
+              <input
+                ref={inputRef}
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                type="text"
+              />
+              <p onClick={handleAddComment}>입력</p>
+            </div>
           </div>
         </div>
       </div>
+
       <BottomMenu />
     </HomeContainer>
   );

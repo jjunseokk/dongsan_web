@@ -9,6 +9,8 @@ import { noticeType } from "../../Type";
 import BottomMenu from "../../components/BottomMenu";
 
 const NoticeContainer = styled.div`
+  width: ${px2vw(430)};
+  margin: 0 auto;
   .notice-wrap {
     .notice-item {
       > .item {

@@ -11,15 +11,18 @@ import { changeProfile } from "../../Api/Client";
 import { useCookies } from "react-cookie";
 
 const EditUserInfoContainer = styled.div`
+  width: ${px2vw(430)};
+  margin: 0 auto;
   .modal-bg {
     width: 100%;
     height: 100%;
     background-color: #4d4d4d8d;
     position: absolute;
+    left: 0;
     z-index: 100;
-    .new-password {
-      margin-top: ${px2vw(15)};
-    }
+  }
+  .new-password {
+    margin-top: ${px2vw(15)};
   }
 
   .EditUserInfo-wrap {
@@ -128,7 +131,8 @@ const EditUserInfo = () => {
   return (
     <EditUserInfoContainer>
       {showModal ? (
-        <div onClick={() => setShowModal(false)} className="modal-bg">
+        <>
+          <div onClick={() => setShowModal(false)} className="modal-bg"></div>
           <PopupContainer>
             <Input
               title="현재 비밀번호"
@@ -164,7 +168,7 @@ const EditUserInfo = () => {
               onClick={() => console.log("ss")}
             />
           </PopupContainer>
-        </div>
+        </>
       ) : null}
       <BackHeader title="내 정보 수정" />
       <div className="EditUserInfo-wrap">

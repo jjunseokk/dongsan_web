@@ -9,7 +9,8 @@ const SplashContainer = styled.div`
   position: relative;
   height: 100vh;
   overflow: hidden;
-
+  width: ${px2vw(430)};
+  margin: 0 auto;
   > .login-logo {
     width: ${px2vw(323)};
     margin-top: ${px2vw(171)};

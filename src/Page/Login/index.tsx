@@ -13,6 +13,8 @@ import { login } from "../../Type";
 import { useCookies } from "react-cookie";
 
 const LoginContainer = styled.div`
+  width: ${px2vw(430)};
+  margin: 0 auto;
   > .login-wrap {
     padding: 0px ${px2vw(25)};
     .login-warning {

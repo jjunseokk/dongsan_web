@@ -6,6 +6,8 @@ export const MeditationContainer = styled.div`
   height: 100vh;
   position: relative;
   overflow: hidden;
+  width: ${px2vw(430)};
+  margin: 0 auto;
 
   .meditation-wrap {
     padding: 0 ${px2vw(24)};
