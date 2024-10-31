@@ -3,8 +3,14 @@ import BackHeader from "../../components/BackHeader";
 import { px2vw } from "../../Util/px2vw";
 import { useState } from "react";
 import { motion } from "framer-motion";
+import { useQuery } from "@tanstack/react-query";
+import { getNotice } from "../../Api/Admin";
+import { noticeType } from "../../Type";
+import BottomMenu from "../../components/BottomMenu";
 
 const NoticeContainer = styled.div`
+  width: ${px2vw(430)};
+  margin: 0 auto;
   .notice-wrap {
     .notice-item {
       > .item {
@@ -27,52 +33,59 @@ const NoticeContainer = styled.div`
         background: #e7e7e7;
         padding: ${px2vw(30)} ${px2vw(25)};
         height: auto;
+        > p {
+          white-space: pre-wrap;
+        }
       }
     }
   }
 `;
 
 const Notice = () => {
-  const [showAccordion, setShowAccordion] = useState(false);
+  // 공지사항 펼치기
+  const [showAccordion, setShowAccordion] = useState<number | null>(null);
+  // 공지사항 불러오기
+  const { data: notice } = useQuery({
+    queryKey: ["getNotice"],
+    queryFn: () => getNotice(),
+  });
+
   return (
     <NoticeContainer>
-      <BackHeader title="공지사항" />
+      <BackHeader title="공지사항" backHandle={false} />
 
       <div className="notice-wrap">
-        <div className="notice-item">
-          <div
-            onClick={() => setShowAccordion(!showAccordion)}
-            className="item"
-          >
-            <div>
-              <p>앱 출시 안내</p>
-              <p>2024.10.10</p>
+        {notice?.data.notice.map((value: noticeType, index: number) => {
+          return (
+            <div key={value.id} className="notice-item">
+              <div onClick={() => setShowAccordion(index)} className="item">
+                <div>
+                  <p>{value.title}</p>
+                  <p>{value.createDate}</p>
+                </div>
+                <img
+                  src={
+                    showAccordion === index
+                      ? "/assets/down_arrow.png"
+                      : "/assets/right_arrow.png"
+                  }
+                  alt=""
+                />
+              </div>
+              {showAccordion === index ? (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  className="notice-accordion"
+                >
+                  <p>{value.context}</p>
+                </motion.div>
+              ) : null}
             </div>
-            <img
-              src={
-                showAccordion
-                  ? "/assets/down_arrow.png"
-                  : "/assets/right_arrow.png"
-              }
-              alt=""
-            />
-          </div>
-          {showAccordion ? (
-            <motion.div
-              initial={{ opacity: 0, y: -10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              className="notice-accordion"
-            >
-              <p>
-                안녕하세요, 광주동산교회 어플입니다.
-                <br />
-                <br />
-                새로 출시했습니다. 잘 부탁드리겠습니다.
-              </p>
-            </motion.div>
-          ) : null}
-        </div>
+          );
+        })}
       </div>
+      <BottomMenu />
     </NoticeContainer>
   );
 };

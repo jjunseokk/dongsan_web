@@ -1,104 +1,206 @@
 import styled from "styled-components";
-import BottomMenu from "../../components/BottomMenu";
 import BackHeader from "../../components/BackHeader";
 import { px2vw } from "../../Util/px2vw";
+import { useRef, useState } from "react";
+import { PopupContainer } from "../Login";
+import Input from "../../components/Input";
 import Button from "../../components/Button";
-import { useNavigate } from "react-router-dom";
+import userProfileStore from "../../Store";
+import { useMutation } from "@tanstack/react-query";
+import { changeProfile } from "../../Api/Client";
+import { useCookies } from "react-cookie";
 
-const MyPageContainer = styled.div`
-  .myPage-wrap {
-    padding: 0px ${px2vw(25)};
+const EditUserInfoContainer = styled.div`
+  width: ${px2vw(430)};
+  margin: 0 auto;
+  .modal-bg {
+    width: 100%;
+    height: 100%;
+    background-color: #4d4d4d8d;
+    position: absolute;
+    left: 0;
+    z-index: 100;
+  }
+  .new-password {
+    margin-top: ${px2vw(15)};
+  }
+
+  .EditUserInfo-wrap {
     margin-top: ${px2vw(30)};
-    .myPage-profile {
+    .profile {
       display: flex;
+      justify-content: center;
       align-items: center;
-      gap: ${px2vw(10)};
-      .profile-img {
-        width: ${px2vw(70)};
-        height: ${px2vw(70)};
-        border-radius: 50%;
+      flex-direction: column;
+
+      .profile-thumbnail {
+        width: ${px2vw(127)};
+        height: ${px2vw(127)};
+        background: #d9d9d9;
         position: relative;
-        background-color: #d9d9d9;
+        border-radius: 50%;
         > img {
-          position: absolute;
-          right: 0;
-          bottom: 0;
-        }
-      }
-      .profile-info {
-        > p {
-          font: 600 20px "Pretendard";
-          &:last-of-type {
-            font: 400 14px "Pretendard";
-            margin-top: ${px2vw(5)};
+          &:first-of-type {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+          }
+          &:nth-of-type(2) {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: ${px2vw(35)};
+            height: ${px2vw(35)};
           }
         }
+        > input {
+          display: none;
+        }
+      }
+      > p {
+        &:first-of-type {
+          margin-top: ${px2vw(30)};
+          font: 600 25px "Pretendard";
+        }
+        &:nth-of-type(2) {
+          font: 400 20px "Pretendard";
+          margin-top: ${px2vw(10)};
+        }
       }
     }
-    .profile-info-edit {
-      margin-top: ${px2vw(30)};
-    }
-    .myPage-menu {
+    .edit-item {
+      padding: ${px2vw(13)} ${px2vw(25)};
       margin-top: ${px2vw(40)};
-      .myPage-menu-item {
-        padding: ${px2vw(13)} 0px;
+      > div {
         display: flex;
-        align-items: center;
         justify-content: space-between;
-        > p {
-          font: 400 16px "Pretendard";
-        }
-        > img {
-          width: ${px2vw(5)};
-        }
+        align-items: center;
       }
     }
   }
 `;
 
-const MyPage = () => {
-  const navigate = useNavigate();
+const EditUserInfo = () => {
+  // 비밀번호 모달
+  const [showModal, setShowModal] = useState<boolean>(false);
+  // 유저 비밀번호
+  const [userPw, setUserPw] = useState<string>("");
+  // 새로운 비밀번호
+  const [newPw, setNewPw] = useState<string>("");
+  // 새로운 비밀번호 체크
+  const [checkPw, setCheckPw] = useState<string>("");
+  // 파일 ref
+  const fileRef = useRef<any>(null);
+  // 유저 프로필
+  const [thumbnail, setThumbnail] = useState<string>("");
+  // 유저 프로필 상태관리
+  const { profile, setProfile } = userProfileStore();
+  // 토큰 값 불러오기
+  const [cookie] = useCookies(["login"]);
+
+  // 유저 정보 변경
+  const changeProfileMutation = useMutation({
+    mutationKey: ["profileThumbnail"],
+    mutationFn: (data: any) => changeProfile(data, cookie.login),
+    onSuccess: (res) => {
+      // 성공시 프로필 상태관리 이미지만 변경
+      setProfile({ thumbnail: res.data.thumbnail });
+    },
+  });
+
+  // 프로필 사진 변경
+  const handleGetProfile = (e: any) => {
+    const { files } = e.target;
+    const uploadFile = files[0];
+
+    const reader: any = new FileReader();
+    reader.readAsDataURL(uploadFile);
+
+    reader.onloadend = () => {
+      setThumbnail(reader.result);
+    };
+
+    if (uploadFile) {
+      const formData = new FormData();
+
+      formData.append("thumbnail", uploadFile);
+      changeProfileMutation.mutate(formData);
+    }
+  };
+
   return (
-    <MyPageContainer>
-      <BackHeader backHandle={false} title="마이페이지" />
-      <div className="myPage-wrap">
-        <div className="myPage-profile">
-          <div className="profile-img">
+    <EditUserInfoContainer>
+      {showModal ? (
+        <>
+          <div onClick={() => setShowModal(false)} className="modal-bg"></div>
+          <PopupContainer>
+            <Input
+              title="현재 비밀번호"
+              placeholder="현재 비밀번호"
+              setValue={setUserPw}
+              value={userPw}
+              type="password"
+              width={px2vw(309)}
+            />
+
+            <div className="new-password">
+              <Input
+                title="새로운 비밀번호"
+                placeholder="새로운 비밀번호"
+                setValue={setNewPw}
+                value={newPw}
+                type="password"
+                width={px2vw(309)}
+              />
+              <Input
+                title="none"
+                placeholder="비밀번호 확인"
+                setValue={setCheckPw}
+                value={checkPw}
+                type="password"
+                width={px2vw(309)}
+              />
+            </div>
+            <Button
+              context="추가"
+              color="#427D4F"
+              borderColor="#427D4F"
+              onClick={() => console.log("ss")}
+            />
+          </PopupContainer>
+        </>
+      ) : null}
+      <BackHeader title="내 정보 수정" />
+      <div className="EditUserInfo-wrap">
+        <div className="profile">
+          <div
+            onClick={() => fileRef.current.click()}
+            className="profile-thumbnail"
+          >
+            <img
+              src={profile?.thumbnail ? profile?.thumbnail : thumbnail}
+              alt=""
+            />
+            <img src="/assets/setting.png" alt="" />
+            <input
+              onChange={handleGetProfile}
+              type="file"
+              ref={fileRef}
+              accept="image/*"
+            />
           </div>
-          <div className="profile-info">
-            <p>박준석</p>
-            <p>청년</p>
-          </div>
-        </div>
-        <div className="profile-info-edit">
-          <Button
-            context="내 정보 수정"
-            color="#427D4F"
-            borderColor="#427D4F"
-            onClick={() => navigate("/myPage/edit-password")}
-          />
+          <p>{profile?.name}</p>
         </div>
 
-        <div className="myPage-menu">
-          <div
-            onClick={() => navigate("/myPage/service")}
-            className="myPage-menu-item"
-          >
-            <p>고객센터</p>
-            <img src="/assets/right_arrow.png" alt="" />
-          </div>
-          <div
-            onClick={() => navigate("/myPage/notice")}
-            className="myPage-menu-item"
-          >
-            <p>공지사항</p>
+        <div onClick={() => setShowModal(true)} className="edit-item">
+          <div>
+            <p>비밀번호 수정</p>
             <img src="/assets/right_arrow.png" alt="" />
           </div>
         </div>
       </div>
-      <BottomMenu />
-    </MyPageContainer>
+    </EditUserInfoContainer>
   );
 };
 
-export default MyPage;
+export default EditUserInfo;

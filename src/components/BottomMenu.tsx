@@ -5,8 +5,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 const BottomMenuContainer = styled.div`
   position: fixed;
   bottom: 0px;
-  left: 0px;
-  width: 100%;
+  width: ${px2vw(430)};
+  margin: 0 auto;
   height: ${px2vw(50)};
   box-shadow: 0px -1px 5px 0px #00000040;
   display: flex;
@@ -83,7 +83,7 @@ const BottomMenu = () => {
       </div>
       <div
         className={pathname.includes("/myPage") ? "active" : ""}
-        onClick={() => navigate("/myPage")}
+        onClick={() => navigate("/myPage/notice")}
       >
         <img
           src={
@@ -93,7 +93,7 @@ const BottomMenu = () => {
           }
           alt=""
         />
-        <p>마이</p>
+        <p>공지사항</p>
       </div>
     </BottomMenuContainer>
   );

@@ -19,12 +19,12 @@ const AdminContainer = styled.div`
       justify-content: center;
       align-items: center;
       > img {
-        width: 90%;
+        width: 70%;
       }
     }
     .menu-unit {
       padding: ${px2vwPc(20)} ${px2vwPc(25)};
-      margin-top: ${px2vwPc(50)};
+      margin-top: 20px;
 
       > p {
         font: 500 16px "Pretendard";
@@ -63,7 +63,9 @@ const Admin = () => {
             묵상 추가/수정/삭제
           </p>
           <p className="title">성도 관리</p>
-          <p>가입 승인</p>
+          <p onClick={() => navigate("/dongsan/admin/userList/approve")}>
+            가입 승인
+          </p>
           <p onClick={() => navigate("/dongsan/admin/userList")}>성도</p>
           <p className="title">대시보드</p>
           <p>문의 내역</p>

@@ -1,19 +1,24 @@
 import styled from "styled-components";
 import Input from "../../../components/Input";
-import React, { SetStateAction, useState } from "react";
+import React, { SetStateAction, useEffect, useState } from "react";
 import px2vwPc from "../../../Util/px2vwPc";
 import { motion } from "framer-motion";
 import { px2vw } from "../../../Util/px2vw";
 import Button from "../../../components/Button";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { editNoticeType } from "../../../Type";
+import { deleteNotice, editNotice, getDetailNotice } from "../../../Api/Admin";
 
 interface EditNoticeStyle {
   setShow: React.Dispatch<SetStateAction<boolean>>;
+  id: number | null;
 }
 
 const EditNoticeContainer = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
+  z-index: 10;
   .editNotice-bg {
     position: absolute;
     top: 0;
@@ -29,7 +34,6 @@ const EditNoticeContainer = styled.div`
     background: #ffffff;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     width: ${px2vwPc(1000)};
-    height: ${px2vwPc(700)};
     padding: ${px2vwPc(50)};
     border-radius: 10px;
     > .notice-content {
@@ -57,20 +61,62 @@ const EditNoticeContainer = styled.div`
         }
       }
     }
-    > button {
-      position: absolute;
-      bottom: ${px2vwPc(20)};
-      right: ${px2vwPc(45)};
+    .btn-area {
+      display: flex;
+      align-items: center;
+      justify-content: end;
+      gap: ${px2vwPc(20)};
+      margin-top: ${px2vwPc(10)};
     }
   }
 `;
 
-const EditNotice = ({ setShow }: EditNoticeStyle) => {
+const EditNotice = ({ setShow, id }: EditNoticeStyle) => {
   const [noticeTitle, setNoticeTitle] = useState("");
+  const [noticeContext, setNoticeContext] = useState<string>("");
+
+  const { data: noticeDetail, status } = useQuery({
+    queryKey: ["detailNotice", id],
+    queryFn: () => getDetailNotice(Number(id)),
+  });
+
+  const createNoticeMutation = useMutation({
+    mutationKey: ["editNotice"],
+    mutationFn: (data: editNoticeType) => editNotice(data),
+    onSuccess: (res) => {
+      if (res.status === 200) {
+        setShow(false);
+        window.location.reload();
+      }
+    },
+  });
+
+  const deleteNoticeMutation = useMutation({
+    mutationKey: ["deleteNotice"],
+    mutationFn: (id: number) => deleteNotice(id),
+    onSuccess: (res) => {
+      if (res.status === 200) {
+        setShow(false);
+        window.location.reload();
+      }
+    },
+  });
 
   const handleNoticeSave = () => {
-    console.log("ss");
+    createNoticeMutation.mutate({
+      id: Number(id),
+      title: noticeTitle,
+      context: noticeContext,
+    });
   };
+  const handleNoticeDelete = () => {
+    deleteNoticeMutation.mutate(Number(id));
+  };
+
+  useEffect(() => {
+    setNoticeTitle(noticeDetail?.data.notice.title);
+    setNoticeContext(noticeDetail?.data.notice.context);
+  }, [status, id]);
   return (
     <EditNoticeContainer>
       <div onClick={() => setShow(false)} className="editNotice-bg"></div>
@@ -87,15 +133,28 @@ const EditNotice = ({ setShow }: EditNoticeStyle) => {
         />
         <div className="notice-content">
           <p>공지 내용</p>
-          <textarea placeholder="내용을 입력해주세요." />
+          <textarea
+            value={noticeContext}
+            onChange={(e) => setNoticeContext(e.target.value)}
+            placeholder="내용을 입력해주세요."
+          />
         </div>
-        <Button
-          context="저장"
-          color="#427d4f"
-          borderColor="#427d4f"
-          onClick={handleNoticeSave}
-          width={px2vwPc(150)}
-        />
+        <div className="btn-area">
+          <Button
+            context="삭제"
+            color="#ff1919"
+            borderColor="#ff1919"
+            onClick={handleNoticeDelete}
+            width={px2vwPc(150)}
+          />
+          <Button
+            context="저장"
+            color="#427d4f"
+            borderColor="#427d4f"
+            onClick={handleNoticeSave}
+            width={px2vwPc(150)}
+          />
+        </div>
       </motion.div>
     </EditNoticeContainer>
   );

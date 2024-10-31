@@ -3,11 +3,17 @@ import BottomMenu from "../../components/BottomMenu";
 import BackHeader from "../../components/BackHeader";
 import { px2vw } from "../../Util/px2vw";
 import { useNavigate } from "react-router-dom";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { getMeditation } from "../../Api/Admin";
+import { meditation } from "../../Type";
+import { useEffect, useRef } from "react";
 
 const MeditationContainer = styled.div`
+  width: ${px2vw(430)};
   height: 100vh;
   position: relative;
   overflow: hidden;
+  margin: 0 auto;
 
   .meditation-wrap {
     overflow: scroll;
@@ -42,100 +48,68 @@ const MeditationContainer = styled.div`
 
 const Meditation = () => {
   const navigate = useNavigate();
+  const meditationRef = useRef<any>(null);
+
+  // 묵상리스트 조회 ----- 무한 스크롤 구현해야함
+  const { data: meditationList, fetchNextPage } = useInfiniteQuery({
+    queryKey: ["meditationList"],
+    initialPageParam: 1,
+    queryFn: ({ pageParam = 1 }) => getMeditation(pageParam),
+    getNextPageParam: (_: any, allPages) => {
+      // 다음 페이지 번호를 반환하거나 없으면 undefined를 반환
+      // 예: lastPage가 데이터가 비어있지 않다면 다음 페이지로 넘어감
+      const totalCount = Math.ceil(allPages[0].data.totalCount / 10);
+
+      return allPages.length < totalCount ? allPages.length + 1 : undefined;
+    },
+  });
+
+  useEffect(() => {
+    const currentElement = meditationRef.current;
+
+    const handleScroll = () => {
+      const scrollTop = meditationRef.current?.scrollTop;
+      const scrollHeight = meditationRef.current?.scrollHeight;
+      const clientHeight = meditationRef.current?.clientHeight;
+
+      if (scrollTop + clientHeight >= scrollHeight - 10) {
+        // 여유값을 조금 주어서 끝에 도달하기 전에 로딩
+        fetchNextPage(); // 추가 데이터를 불러오는 함수 호출
+      }
+    };
+
+    if (currentElement) {
+      currentElement.addEventListener("scroll", handleScroll);
+    }
+
+    return () => {
+      if (currentElement) {
+        currentElement.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, [status]);
+
   return (
     <MeditationContainer>
       <BackHeader backHandle={false} title="묵상" />
-      <div className="meditation-wrap">
-        <div
-          onClick={() => navigate("/meditation/1")}
-          className="meditation-item"
-        >
-          <div>
-            <p>2024.10.05</p>
-            <p>잠언 1장 2절</p>
-          </div>
-          <img src="/assets/right_arrow.png" alt="" />
-        </div>
-        <div
-          onClick={() => navigate("/meditation/1")}
-          className="meditation-item"
-        >
-          <div>
-            <p>2024.10.05</p>
-            <p>잠언 1장 2절</p>
-          </div>
-          <img src="/assets/right_arrow.png" alt="" />
-        </div>
-        <div
-          onClick={() => navigate("/meditation/1")}
-          className="meditation-item"
-        >
-          <div>
-            <p>2024.10.05</p>
-            <p>잠언 1장 2절</p>
-          </div>
-          <img src="/assets/right_arrow.png" alt="" />
-        </div>
-        <div
-          onClick={() => navigate("/meditation/1")}
-          className="meditation-item"
-        >
-          <div>
-            <p>2024.10.05</p>
-            <p>잠언 1장 2절</p>
-          </div>
-          <img src="/assets/right_arrow.png" alt="" />
-        </div>
-        <div
-          onClick={() => navigate("/meditation/1")}
-          className="meditation-item"
-        >
-          <div>
-            <p>2024.10.05</p>
-            <p>잠언 1장 2절</p>
-          </div>
-          <img src="/assets/right_arrow.png" alt="" />
-        </div>
-        <div
-          onClick={() => navigate("/meditation/1")}
-          className="meditation-item"
-        >
-          <div>
-            <p>2024.10.05</p>
-            <p>잠언 1장 2절</p>
-          </div>
-          <img src="/assets/right_arrow.png" alt="" />
-        </div>
-        <div
-          onClick={() => navigate("/meditation/1")}
-          className="meditation-item"
-        >
-          <div>
-            <p>2024.10.05</p>
-            <p>잠언 1장 2절</p>
-          </div>
-          <img src="/assets/right_arrow.png" alt="" />
-        </div>
-        <div
-          onClick={() => navigate("/meditation/1")}
-          className="meditation-item"
-        >
-          <div>
-            <p>2024.10.05</p>
-            <p>잠언 1장 2절</p>
-          </div>
-          <img src="/assets/right_arrow.png" alt="" />
-        </div>
-        <div
-          onClick={() => navigate("/meditation/1")}
-          className="meditation-item"
-        >
-          <div>
-            <p>2024.10.05</p>
-            <p>잠언 1장 2절</p>
-          </div>
-          <img src="/assets/right_arrow.png" alt="" />
-        </div>
+      <div ref={meditationRef} className="meditation-wrap">
+        {meditationList?.pages.map((allValue) =>
+          allValue.data.meditationList.map((value: meditation) => {
+            return (
+              <div
+                key={value.id}
+                onClick={() => navigate(`/meditation/${value.id}`)}
+                className="meditation-item"
+              >
+                <div>
+                  <p>{value.createDate}</p>
+                  <p>{value.word}</p>
+                </div>
+                <img src="/assets/right_arrow.png" alt="" />
+              </div>
+            );
+          })
+        )}
       </div>
       <BottomMenu />
     </MeditationContainer>

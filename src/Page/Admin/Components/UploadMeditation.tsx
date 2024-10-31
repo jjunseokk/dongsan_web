@@ -4,6 +4,8 @@ import px2vwPc from "../../../Util/px2vwPc";
 import Input from "../../../components/Input";
 import React, { SetStateAction, useRef, useState } from "react";
 import Button from "../../../components/Button";
+import { useMutation } from "@tanstack/react-query";
+import { createMeditation } from "../../../Api/Admin";
 
 interface UploadMeditationStyle {
   setShow: React.Dispatch<SetStateAction<boolean>>;
@@ -13,6 +15,7 @@ const UploadMeditationContainer = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
+  z-index: 10;
   .upload-meditation-bg {
     position: absolute;
     top: 0;
@@ -33,6 +36,12 @@ const UploadMeditationContainer = styled.div`
     border-radius: 10px;
     display: flex;
     gap: ${px2vwPc(20)};
+    .loading-spinner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
     .left-section {
       .upload-meditation-thumbnail {
         width: ${px2vwPc(400)};
@@ -43,6 +52,11 @@ const UploadMeditationContainer = styled.div`
         justify-content: center;
         align-items: center;
         cursor: pointer;
+        overflow: hidden;
+        > img {
+          width: 100%;
+          height: 100%;
+        }
         > p {
           font: 700 18px "Pretendard";
           color: #ffffff;
@@ -88,8 +102,50 @@ const UploadMeditation = ({ setShow }: UploadMeditationStyle) => {
   const thumbnailRef = useRef<any>(null);
   const [meditationTitle, setMeditationTitle] = useState("");
   const [meditationBible, setMeditationBible] = useState("");
+  const [thumbnail, setThumbnail] = useState<any>();
+  const [music, setMusic] = useState<any>();
+  const [still, setStill] = useState<any>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
-  const handleUploadMeditation = () => {};
+  const createMeditationMutation = useMutation({
+    mutationKey: ["createMeditation"],
+    mutationFn: (data: any) => createMeditation(data),
+    onSuccess: (res) => {
+      if (res.status === 200) {
+        setLoading(false);
+        window.location.reload();
+      }
+    },
+  });
+
+  const handleImg = (e: any) => {
+    const file = e.target.files[0];
+    setThumbnail(file);
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setStill(reader.result);
+    };
+  };
+
+  const handleGetMusic = (e: any) => {
+    const file = e.target.files[0];
+    setMusic(file);
+  };
+
+  const handleUploadMeditation = () => {
+    const formData = new FormData();
+    setLoading(true);
+    formData.append("title", meditationTitle);
+    formData.append("word", meditationBible);
+    formData.append("thumbnail", thumbnail);
+    formData.append("music", music);
+
+    createMeditationMutation.mutate(formData);
+  };
+
+  const canRegister = meditationTitle && meditationBible && thumbnail && music;
+
   return (
     <UploadMeditationContainer>
       <div
@@ -101,13 +157,23 @@ const UploadMeditation = ({ setShow }: UploadMeditationStyle) => {
         animate={{ opacity: 1 }}
         className="upload-meditation-wrap"
       >
+        {loading ? (
+          <img className="loading-spinner" src="/assets/loading.gif" alt="" />
+        ) : null}
+
         <div className="left-section">
           <div
             onClick={() => thumbnailRef.current.click()}
             className="upload-meditation-thumbnail"
           >
-            <p>추가</p>
-            <input ref={thumbnailRef} type="file" accept=".jpg,.png,.jpeg" />
+            {still ? <img src={still} /> : <p>추가</p>}
+
+            <input
+              onChange={handleImg}
+              ref={thumbnailRef}
+              type="file"
+              accept=".jpg,.png,.jpeg"
+            />
           </div>
           <p>* 정사각형의 이미지를 넣어주세요.</p>
         </div>
@@ -126,7 +192,7 @@ const UploadMeditation = ({ setShow }: UploadMeditationStyle) => {
           />
           <div className="upload-mp3">
             <p>음원 파일</p>
-            <input type="file" accept="audio/*" />
+            <input onChange={handleGetMusic} type="file" accept="audio/*" />
           </div>
         </div>
         <Button
@@ -135,7 +201,7 @@ const UploadMeditation = ({ setShow }: UploadMeditationStyle) => {
           borderColor="#427d4f"
           onClick={handleUploadMeditation}
           width={px2vwPc(200)}
-          disabled={true}
+          disabled={!canRegister}
         />
       </motion.div>
     </UploadMeditationContainer>

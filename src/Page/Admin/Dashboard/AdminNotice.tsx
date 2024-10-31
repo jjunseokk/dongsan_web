@@ -5,19 +5,23 @@ import { useState } from "react";
 import UploadNotice from "../Components/UploadNotice";
 import EditNotice from "../Components/EdtiNotice";
 import { DashboardContainer } from "../Components/DashboardStyle";
+import { motion } from "framer-motion";
+import { useQuery } from "@tanstack/react-query";
+import { getNotice } from "../../../Api/Admin";
+import { noticeType } from "../../../Type";
 
-const AdminNoticeContainer = styled.div`
+const AdminNoticeContainer = styled(motion.div)`
   width: 100%;
   height: 100%;
   position: relative;
-  
+
   table {
     border-collapse: collapse;
     margin-top: ${px2vwPc(30)};
     th,
     td {
       text-align: center;
-      padding: ${px2vwPc(15)} 0px;
+      padding: ${px2vwPc(10)} 0px;
       border: 1px solid #e0e0e0;
       &:first-of-type {
         border-left: none;
@@ -62,13 +66,28 @@ const AdminNoticeContainer = styled.div`
 `;
 
 const AdminNotice = () => {
+  // 업로드 팝업 창
   const [showUploadNotice, setShowUploadNotice] = useState<boolean>(false);
+  // 수정 팝업 창
   const [showEditNotice, setShowEditNotice] = useState<boolean>(false);
+  // 공지사항 선택 아이디
+  const [noticeId, setNoticeId] = useState<number | null>(null);
+
+  // 공지사항 목록 가져오기
+  const { data: notice } = useQuery({
+    queryKey: ["notice"],
+    queryFn: () => getNotice(),
+  });
 
   return (
-    <AdminNoticeContainer>
+    <AdminNoticeContainer
+      initial={{ opacity: 0, x: -10 }}
+      whileInView={{ opacity: 1, x: 0 }}
+    >
       {showUploadNotice ? <UploadNotice setShow={setShowUploadNotice} /> : null}
-      {showEditNotice ? <EditNotice setShow={setShowEditNotice} /> : null}
+      {showEditNotice ? (
+        <EditNotice id={noticeId} setShow={setShowEditNotice} />
+      ) : null}
       <DashboardContainer>
         <p className="dashboard-title">공지 작성</p>
         <Button
@@ -87,11 +106,22 @@ const AdminNotice = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td onClick={() => setShowEditNotice(true)}>공지 제묵</td>
-              <td>2024-09-10</td>
-            </tr>
+            {notice?.data.notice.map((value: noticeType, index: number) => {
+              return (
+                <tr key={value.id}>
+                  <td>{index + 1}</td>
+                  <td
+                    onClick={() => {
+                      setShowEditNotice(true);
+                      setNoticeId(value.id);
+                    }}
+                  >
+                    {value.title}
+                  </td>
+                  <td>{value.createDate}</td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </DashboardContainer>

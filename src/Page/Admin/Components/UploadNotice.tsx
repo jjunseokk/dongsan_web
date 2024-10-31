@@ -5,6 +5,9 @@ import px2vwPc from "../../../Util/px2vwPc";
 import { motion } from "framer-motion";
 import { px2vw } from "../../../Util/px2vw";
 import Button from "../../../components/Button";
+import { useMutation } from "@tanstack/react-query";
+import { createNoticeType } from "../../../Type";
+import { createNotice } from "../../../Api/Admin";
 
 interface UploadNoticeStyle {
   setShow: React.Dispatch<SetStateAction<boolean>>;
@@ -14,6 +17,7 @@ const UploadNoticeContainer = styled.div`
   position: absolute;
   width: 100%;
   height: 100%;
+  z-index: 10;
   .uploadNotice-bg {
     position: absolute;
     top: 0;
@@ -29,7 +33,6 @@ const UploadNoticeContainer = styled.div`
     background: #ffffff;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     width: ${px2vwPc(1000)};
-    height: ${px2vwPc(750)};
     padding: ${px2vwPc(50)};
     border-radius: 10px;
     > .notice-content {
@@ -57,20 +60,38 @@ const UploadNoticeContainer = styled.div`
         }
       }
     }
-    > button {
-      position: absolute;
-      bottom: ${px2vwPc(50)};
-      right: ${px2vwPc(50)};
+    .btn-area {
+      display: flex;
+      align-items: center;
+      justify-content: end;
+      gap: ${px2vwPc(20)};
+      margin-top: ${px2vwPc(10)};
     }
   }
 `;
 
 const UploadNotice = ({ setShow }: UploadNoticeStyle) => {
-  const [noticeTitle, setNoticeTitle] = useState("");
+  const [noticeTitle, setNoticeTitle] = useState<string>("");
+  const [noticeContext, setNoticeContext] = useState<string>("");
+
+  const createNoticeMutation = useMutation({
+    mutationKey: ["createNotice"],
+    mutationFn: (data: createNoticeType) => createNotice(data),
+    onSuccess: (res) => {
+      if (res.status === 200) {
+        setShow(false);
+        window.location.reload();
+      }
+    },
+  });
 
   const handleNoticeSave = () => {
-    console.log("ss");
+    createNoticeMutation.mutate({
+      title: noticeTitle,
+      context: noticeContext,
+    });
   };
+
   return (
     <UploadNoticeContainer>
       <div onClick={() => setShow(false)} className="uploadNotice-bg"></div>
@@ -87,15 +108,20 @@ const UploadNotice = ({ setShow }: UploadNoticeStyle) => {
         />
         <div className="notice-content">
           <p>공지 내용</p>
-          <textarea placeholder="내용을 입력해주세요." />
+          <textarea
+            onChange={(e) => setNoticeContext(e.target.value)}
+            placeholder="내용을 입력해주세요."
+          />
         </div>
-        <Button
-          context="저장"
-          color="#427d4f"
-          borderColor="#427d4f"
-          onClick={handleNoticeSave}
-          width={px2vwPc(150)}
-        />
+        <div className="btn-area">
+          <Button
+            context="저장"
+            color="#427d4f"
+            borderColor="#427d4f"
+            onClick={handleNoticeSave}
+            width={px2vwPc(150)}
+          />
+        </div>
       </motion.div>
     </UploadNoticeContainer>
   );
