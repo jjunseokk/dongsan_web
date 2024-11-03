@@ -311,7 +311,11 @@ const MeditationPlay = () => {
                           </div>
                         </div>
                       ) : (
-                        <p>{value.context}</p>
+                        value.context
+                          .split("\n")
+                          .map((context) => (
+                            <p key={Math.random()}>{context}</p>
+                          ))
                       )}
 
                       {showModalMenu === index ? (
@@ -341,10 +345,9 @@ const MeditationPlay = () => {
               )}
             </div>
             <div className="meditation-input-area">
-              <input
+              <textarea
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
-                type="text"
               />
               <p onClick={handleAddComment}>입력</p>
             </div>

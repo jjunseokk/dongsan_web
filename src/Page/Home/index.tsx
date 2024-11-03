@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import { HomeContainer } from "./HomeStyle";
@@ -341,7 +341,11 @@ const Home = () => {
                           </div>
                         </div>
                       ) : (
-                        <p>{value.context}</p>
+                        value.context
+                          .split("\n")
+                          .map((context) => (
+                            <p key={Math.random()}>{context}</p>
+                          ))
                       )}
 
                       {showModalMenu === index ? (
@@ -371,11 +375,10 @@ const Home = () => {
               )}
             </div>
             <div className="home-input-area">
-              <input
+              <textarea
                 ref={inputRef}
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
-                type="text"
               />
               <p onClick={handleAddComment}>입력</p>
             </div>
