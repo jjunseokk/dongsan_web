@@ -50,6 +50,14 @@ const Notice = () => {
     queryFn: () => getNotice(),
   });
 
+  const handleNotice = (index: number) => {
+    if (showAccordion === index) {
+      setShowAccordion(null);
+    } else {
+      setShowAccordion(index);
+    }
+  };
+
   return (
     <NoticeContainer>
       <BackHeader title="공지사항" backHandle={false} />
@@ -58,7 +66,7 @@ const Notice = () => {
         {notice?.data.notice.map((value: noticeType, index: number) => {
           return (
             <div key={value.id} className="notice-item">
-              <div onClick={() => setShowAccordion(index)} className="item">
+              <div onClick={() => handleNotice(index)} className="item">
                 <div>
                   <p>{value.title}</p>
                   <p>{value.createDate}</p>

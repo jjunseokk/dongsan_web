@@ -119,7 +119,7 @@ export const HomeContainer = styled.div`
         bottom: -100%;
         left: 0px;
         width: ${px2vw(430)};
-        min-height: ${px2vw(495)};
+        height: ${px2vw(600)};
         border-top-left-radius: 15px;
         border-top-right-radius: 15px;
         border: 1px solid #427d4f;
@@ -149,7 +149,7 @@ export const HomeContainer = styled.div`
           }
         }
         > .popup-body {
-          height: ${px2vw(340)};
+          height: ${px2vw(430)};
           overflow: scroll;
           &::-webkit-scrollbar {
             display: none;
@@ -228,20 +228,23 @@ export const HomeContainer = styled.div`
           }
         }
         > .home-input-area {
-          position: relative;
+          position: absolute;
           width: ${px2vw(390)};
-          margin: 0 auto;
-          margin-top: ${px2vw(10)};
-          height: ${px2vw(34)};
+          height: ${px2vw(60)};
           border-radius: 10px;
           border: 1px solid #427d4f;
-          > input {
+          bottom: ${px2vw(5)};
+          left: 50%;
+          transform: translate(-50%, 0%);
+          > textarea {
             width: ${px2vw(345)};
-            height: ${px2vw(34)};
+            height: ${px2vw(55)};
             display: block;
             border: none;
             padding-left: ${px2vw(10)};
             background: none;
+            resize: none;
+            padding: ${px2vw(5)};
             &:focus {
               outline: none;
             }
