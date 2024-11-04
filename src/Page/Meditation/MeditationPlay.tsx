@@ -45,7 +45,7 @@ const MeditationPlay = () => {
 
   // 묵상상세
   const { data: meditationDetail, status } = useQuery({
-    queryKey: ["meditationDetail"],
+    queryKey: ["meditationDetail",],
     queryFn: () => getMeditationDetail(Number(path?.id)),
   });
 
@@ -62,7 +62,7 @@ const MeditationPlay = () => {
     onSuccess: (res) => {
       if (res.status === 200) {
         queryClient.invalidateQueries({
-          queryKey: ["today"],
+          queryKey: ["meditationDetail"],
         });
       }
     },
@@ -177,6 +177,7 @@ const MeditationPlay = () => {
     }
   }, [meditationDetail?.data.meditationDetail?.music]);
 
+  console.log(meditationDetail?.data.heart)
   return (
     <MeditationContainer>
       {showDeletePopup.isOpen ? (
