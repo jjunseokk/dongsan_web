@@ -64,6 +64,13 @@ const Input = ({
         type={type}
         placeholder={placeholder}
         maxLength={type === "tel" ? 12 : undefined}
+        autoComplete="off" // iOS 자동완성 제거
+        autoCorrect="off" // 자동수정 제거
+        spellCheck="false" // 맞춤법 제거
+        autoCapitalize="none"
+        style={{
+          WebkitAppearance: "none", // iOS 스타일 제거
+        }}
       />
     </InputContainer>
   );
