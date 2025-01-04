@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import BackHeader from "../../components/BackHeader";
 import { px2vw } from "../../Util/px2vw";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { PopupContainer } from "../Login";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
@@ -9,6 +9,7 @@ import userProfileStore from "../../Store";
 import { useMutation } from "@tanstack/react-query";
 import { changeProfile } from "../../Api/Client";
 import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 
 const EditUserInfoContainer = styled.div`
   width: ${px2vw(430)};
@@ -70,11 +71,12 @@ const EditUserInfoContainer = styled.div`
     }
     .edit-item {
       padding: ${px2vw(13)} ${px2vw(25)};
-      margin-top: ${px2vw(40)};
       > div {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        margin: ${px2vw(40)} 0;
+        cursor: pointer;
       }
     }
   }
@@ -96,7 +98,9 @@ const EditUserInfo = () => {
   // 유저 프로필 상태관리
   const { profile, setProfile } = userProfileStore();
   // 토큰 값 불러오기
-  const [cookie] = useCookies(["login"]);
+  const [cookie, , removeCookie] = useCookies(["login"]);
+
+  const navigate = useNavigate();
 
   // 유저 정보 변경
   const changeProfileMutation = useMutation({
@@ -105,6 +109,7 @@ const EditUserInfo = () => {
     onSuccess: (res) => {
       // 성공시 프로필 상태관리 이미지만 변경
       setProfile({ thumbnail: res.data.thumbnail });
+      location.reload();
     },
   });
 
@@ -127,6 +132,13 @@ const EditUserInfo = () => {
       changeProfileMutation.mutate(formData);
     }
   };
+
+  // 로그아웃 시 첫 화면으로
+  useEffect(() => {
+    if (cookie.login === undefined) {
+      navigate("/home");
+    }
+  }, [cookie]);
 
   return (
     <EditUserInfoContainer>
@@ -192,9 +204,13 @@ const EditUserInfo = () => {
           <p>{profile?.name}</p>
         </div>
 
-        <div onClick={() => setShowModal(true)} className="edit-item">
-          <div>
+        <div className="edit-item">
+          <div onClick={() => setShowModal(true)}>
             <p>비밀번호 수정</p>
+            <img src="/assets/right_arrow.png" alt="" />
+          </div>
+          <div onClick={() => removeCookie("login")}>
+            <p>로그아웃</p>
             <img src="/assets/right_arrow.png" alt="" />
           </div>
         </div>
