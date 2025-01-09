@@ -3,7 +3,7 @@ import BackHeader from "../../components/BackHeader";
 import { px2vw } from "../../Util/px2vw";
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { getNotice } from "../../Api/Admin";
 import { noticeType } from "../../Type";
 import BottomMenu from "../../components/BottomMenu";
