@@ -7,6 +7,11 @@ import Button from "../../../components/Button";
 import { useMutation } from "@tanstack/react-query";
 import { createMeditation } from "../../../Api/Admin";
 
+import DatePicker from "react-datepicker";
+import { ko } from "date-fns/locale";
+
+import "react-datepicker/dist/react-datepicker.css";
+
 interface UploadMeditationStyle {
   setShow: React.Dispatch<SetStateAction<boolean>>;
 }
@@ -78,6 +83,47 @@ const UploadMeditationContainer = styled.div`
           margin-top: ${px2vwPc(30)};
         }
       }
+      .upload-datePicker {
+        margin-top: ${px2vwPc(30)};
+        > p {
+          color: #151515;
+          font: 600 15px "Pretendard";
+        }
+        .date-wrap {
+          display: flex;
+          justify-content: space-around;
+          align-items: center;
+          > button {
+            background: none;
+            border: none;
+            font: 600 20px "Pretendard";
+            cursor: pointer;
+          }
+          > p {
+            font: 600 15px "Pretendard";
+          }
+        }
+
+        .react-datepicker-wrapper {
+          margin-top: ${px2vwPc(10)};
+          .react-datepicker__input-container {
+            > input {
+              width: 100% !important;
+              height: ${px2vwPc(40)};
+              padding: ${px2vwPc(10)};
+              border: 1px solid #d9d9d9;
+              border-radius: 5px;
+              &:focus {
+                outline: none;
+              }
+            }
+          }
+        }
+        .react-datepicker__day--selected {
+          background-color: #427d4f !important;
+        }
+      }
+
       .upload-mp3 {
         margin-top: ${px2vwPc(30)};
 
@@ -106,6 +152,7 @@ const UploadMeditation = ({ setShow }: UploadMeditationStyle) => {
   const [music, setMusic] = useState<any>();
   const [still, setStill] = useState<any>(null);
   const [loading, setLoading] = useState<boolean>(false);
+  const [startDate, setStartDate] = useState<Date | null>(new Date());
 
   const createMeditationMutation = useMutation({
     mutationKey: ["createMeditation"],
@@ -140,6 +187,7 @@ const UploadMeditation = ({ setShow }: UploadMeditationStyle) => {
     formData.append("word", meditationBible);
     formData.append("thumbnail", thumbnail);
     formData.append("music", music);
+    formData.append("date", startDate?.toISOString()?.split("T")[0] as any);
 
     createMeditationMutation.mutate(formData);
   };
@@ -190,6 +238,44 @@ const UploadMeditation = ({ setShow }: UploadMeditationStyle) => {
             setValue={setMeditationBible}
             value={meditationBible}
           />
+          <div className="upload-datePicker">
+            <p>날짜 선택</p>
+            <DatePicker
+              dateFormat="yyyy-MM-dd"
+              locale={ko}
+              selected={startDate}
+              onChange={(date) => setStartDate(date)}
+              renderCustomHeader={({
+                monthDate,
+                decreaseMonth,
+                prevMonthButtonDisabled,
+                increaseMonth,
+                nextMonthButtonDisabled,
+              }) => (
+                <div className="date-wrap">
+                  <button
+                    onClick={decreaseMonth}
+                    disabled={prevMonthButtonDisabled}
+                  >
+                    {"<"}
+                  </button>
+                  <p>
+                    {monthDate.toLocaleString("ko-Kr", {
+                      month: "long",
+                      year: "numeric",
+                    })}
+                  </p>
+                  <button
+                    onClick={increaseMonth}
+                    disabled={nextMonthButtonDisabled}
+                  >
+                    {">"}
+                  </button>
+                </div>
+              )}
+            />
+          </div>
+
           <div className="upload-mp3">
             <p>음원 파일</p>
             <input onChange={handleGetMusic} type="file" accept="audio/*" />

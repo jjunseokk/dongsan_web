@@ -9,8 +9,12 @@ interface paginationType {
   totalPage: number;
 }
 
-const PaginationContainer = styled.div`
-  display: flex;
+interface paginationStyleType {
+  $display: boolean;
+}
+
+const PaginationContainer = styled.div<paginationStyleType>`
+  display: ${({ $display }) => ($display ? "none" : "flex")};
   justify-content: center;
   align-items: center;
   margin-top: ${px2vwPc(50)};
@@ -21,7 +25,7 @@ const CustomPagination = ({ page, setPage, totalPage }: paginationType) => {
     setPage(value);
   };
   return (
-    <PaginationContainer>
+    <PaginationContainer $display={totalPage === 0}>
       <Pagination
         page={page}
         onChange={handleChange}

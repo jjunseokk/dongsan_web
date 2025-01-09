@@ -9,6 +9,7 @@ import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { getNotice } from "../../../Api/Admin";
 import { noticeType } from "../../../Type";
+import CustomPagination from "../../../components/CustomPagination";
 
 const AdminNoticeContainer = styled(motion.div)`
   width: 100%;
@@ -72,11 +73,12 @@ const AdminNotice = () => {
   const [showEditNotice, setShowEditNotice] = useState<boolean>(false);
   // 공지사항 선택 아이디
   const [noticeId, setNoticeId] = useState<number | null>(null);
+  const [page, setPage] = useState(1);
 
   // 공지사항 목록 가져오기
   const { data: notice } = useQuery({
     queryKey: ["notice"],
-    queryFn: () => getNotice(),
+    queryFn: () => getNotice(page),
   });
 
   return (
@@ -124,6 +126,11 @@ const AdminNotice = () => {
             })}
           </tbody>
         </table>
+        <CustomPagination
+          page={page}
+          setPage={setPage}
+          totalPage={notice?.data.totalCount}
+        />
       </DashboardContainer>
     </AdminNoticeContainer>
   );

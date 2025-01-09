@@ -6,6 +6,8 @@ import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { getUserList } from "../../../Api/Admin";
 import { getUser } from "../../../Type";
+import CustomPagination from "../../../components/CustomPagination";
+import { useState } from "react";
 
 const AdminUserListContainer = styled(motion.div)`
   width: 100%;
@@ -69,11 +71,12 @@ const AdminUserListContainer = styled(motion.div)`
 
 const AdminUserList = () => {
   const navigate = useNavigate();
+  const [page, setPage] = useState(1);
 
   // 유저 목록 불러오기
   const { data: userList } = useQuery({
     queryKey: ["userList"],
-    queryFn: () => getUserList(),
+    queryFn: () => getUserList(page),
   });
 
   return (
@@ -116,6 +119,7 @@ const AdminUserList = () => {
               })}
           </tbody>
         </table>
+        <CustomPagination page={page} setPage={setPage} totalPage={userList?.data.totalCount} />
       </DashboardContainer>
     </AdminUserListContainer>
   );
