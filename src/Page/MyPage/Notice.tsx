@@ -38,6 +38,15 @@ const NoticeContainer = styled.div`
         }
       }
     }
+    .notice-no-data {
+      font: 600 20px "Pretendard";
+      color: #ababab;
+      text-align: center;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
   }
 `;
 
@@ -63,35 +72,39 @@ const Notice = () => {
       <BackHeader title="공지사항" backHandle={false} />
 
       <div className="notice-wrap">
-        {notice?.data.notice.map((value: noticeType, index: number) => {
-          return (
-            <div key={value.id} className="notice-item">
-              <div onClick={() => handleNotice(index)} className="item">
-                <div>
-                  <p>{value.title}</p>
-                  <p>{value.createDate}</p>
+        {notice?.data.notice &&
+          notice?.data.notice.map((value: noticeType, index: number) => {
+            return (
+              <div key={value.id} className="notice-item">
+                <div onClick={() => handleNotice(index)} className="item">
+                  <div>
+                    <p>{value.title}</p>
+                    <p>{value.createDate}</p>
+                  </div>
+                  <img
+                    src={
+                      showAccordion === index
+                        ? "/assets/down_arrow.png"
+                        : "/assets/right_arrow.png"
+                    }
+                    alt=""
+                  />
                 </div>
-                <img
-                  src={
-                    showAccordion === index
-                      ? "/assets/down_arrow.png"
-                      : "/assets/right_arrow.png"
-                  }
-                  alt=""
-                />
+                {showAccordion === index ? (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    className="notice-accordion"
+                  >
+                    <p>{value.context}</p>
+                  </motion.div>
+                ) : null}
               </div>
-              {showAccordion === index ? (
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  className="notice-accordion"
-                >
-                  <p>{value.context}</p>
-                </motion.div>
-              ) : null}
-            </div>
-          );
-        })}
+            );
+          })}
+        {notice?.data.notice.length === 0 && (
+          <p className="notice-no-data">공지사항이 없습니다.</p>
+        )}
       </div>
       <BottomMenu />
     </NoticeContainer>

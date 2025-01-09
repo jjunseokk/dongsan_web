@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import BottomMenu from "../../components/BottomMenu";
 import { px2vw } from "../../Util/px2vw";
+import BackHeader from "../../components/BackHeader";
 
 const StoryContainer = styled.div`
   width: ${px2vw(430)};
@@ -21,6 +22,8 @@ const StoryContainer = styled.div`
 const Story = () => {
   return (
     <StoryContainer>
+      <BackHeader backHandle={false} title="사연" />
+
       <div className="story-wrap">
         <p>준비중입니다.</p>
         <p>빠른 시일 내에 만나요!</p>

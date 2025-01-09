@@ -38,6 +38,15 @@ const MeditationContainer = styled.div`
         }
       }
     }
+    .meditation-no-data{
+      font: 600 20px "Pretendard";
+      color: #ababab;
+      text-align: center;
+      position: absolute;
+      top:50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
   }
   @media screen and (max-width: 375px) {
     .meditation-wrap {
@@ -51,7 +60,11 @@ const Meditation = () => {
   const meditationRef = useRef<any>(null);
 
   // 묵상리스트 조회 ----- 무한 스크롤 구현해야함
-  const { data: meditationList, fetchNextPage } = useInfiniteQuery({
+  const {
+    data: meditationList,
+    fetchNextPage,
+    status,
+  } = useInfiniteQuery({
     queryKey: ["meditationList"],
     initialPageParam: 1,
     queryFn: ({ pageParam = 1 }) => getMeditation(pageParam),
@@ -89,26 +102,32 @@ const Meditation = () => {
     };
   }, [status]);
 
+  console.log(meditationList?.pages[0].data.meditationList.length);
+
   return (
     <MeditationContainer>
       <BackHeader backHandle={false} title="묵상" />
       <div ref={meditationRef} className="meditation-wrap">
-        {meditationList?.pages.map((allValue) =>
-          allValue.data.meditationList.map((value: meditation) => {
-            return (
-              <div
-                key={value.id}
-                onClick={() => navigate(`/meditation/${value.id}`)}
-                className="meditation-item"
-              >
-                <div>
-                  <p>{value.createDate}</p>
-                  <p>{value.word}</p>
+        {meditationList &&
+          meditationList?.pages.map((allValue) =>
+            allValue.data.meditationList.map((value: meditation) => {
+              return (
+                <div
+                  key={value.id}
+                  onClick={() => navigate(`/meditation/${value.id}`)}
+                  className="meditation-item"
+                >
+                  <div>
+                    <p>{value.createDate}</p>
+                    <p>{value.word}</p>
+                  </div>
+                  <img src="/assets/right_arrow.png" alt="" />
                 </div>
-                <img src="/assets/right_arrow.png" alt="" />
-              </div>
-            );
-          })
+              );
+            })
+          )}
+        {meditationList?.pages[0].data.meditationList.length === 0 && (
+          <p className="meditation-no-data">묵상이 없습니다.</p>
         )}
       </div>
       <BottomMenu />
