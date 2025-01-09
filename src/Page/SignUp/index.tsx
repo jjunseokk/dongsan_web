@@ -11,6 +11,9 @@ import { signUp } from "../../Type";
 import { showSignUp } from "../../Api/User";
 
 const SignUpContainer = styled.div`
+  width: ${px2vw(430)};
+  margin: 0 auto;
+
   .signUp-input {
     margin-top: ${px2vw(50)};
     padding: 0px ${px2vw(25)};
@@ -104,7 +107,7 @@ const SignUp = () => {
 
         <Input
           title="이름"
-          placeholder="홍길동"
+          placeholder="교적에 있는대로 적어주세요. 예) 홍길동a"
           setValue={setUserName}
           value={userName}
         />
@@ -171,7 +174,10 @@ const SignUp = () => {
       </div>
       {successSignUp ? (
         <PopupContainer>
-          <p>회원가입이 신청이 완료되었습니다.<br/> 가입승인 후 로그인이 가능합니다.</p>
+          <p>
+            회원가입이 신청이 완료되었습니다.
+            <br /> 가입승인 후 로그인이 가능합니다.
+          </p>
           <SignButton
             context="확인"
             color="#427D4F"

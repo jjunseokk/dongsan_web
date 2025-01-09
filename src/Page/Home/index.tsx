@@ -34,6 +34,7 @@ const Home = () => {
   const queryClient = useQueryClient();
   const playRef = useRef<any>(null);
   const inputRef = useRef<any>(null);
+  const modalRef = useRef<any>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false); // 음원 재생
   const [showComment, setShowComment] = useState<boolean>(false); // 댓글 쓰기 팝업
   const [showEdit, setShowEdit] = useState<number | null>(null); // 수정 시 input으로 변경
@@ -44,6 +45,8 @@ const Home = () => {
     id: null,
     isOpen: false,
   }); // 삭제 시 팝업
+  const [currentTime, setCurrentTime] = useState(0); // 현재시간
+  const [duration, setDuration] = useState(0); // 총시간
   const [cookie] = useCookies(["login"]); // token 값
   const { setProfile } = userProfileStore(); //상태관리에서 프로필 불러오기
 
@@ -126,6 +129,29 @@ const Home = () => {
     });
   };
 
+  // 현재 시간 업데이트 함수
+  const handleTimeUpdate = () => {
+    if (playRef.current?.audio?.current) {
+      const audio = playRef.current.audio.current;
+      setCurrentTime(audio.currentTime);
+    }
+  };
+
+  // 오디오 로드 시 전체 길이 가져오기
+  const handleLoadedMetaData = () => {
+    if (playRef.current?.audio?.current) {
+      const audio = playRef.current.audio.current;
+      setDuration(audio.duration);
+    }
+  };
+
+  // 시간 포맷팅 함수
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
+  };
+
   // 음원 재생/정지
   const handlePlayPause = () => {
     const audioElement = playRef.current.audio.current;
@@ -136,6 +162,20 @@ const Home = () => {
     } else {
       audioElement.play(); // 정지 중이면 재생
       setIsPlaying(true); // 상태를 재생으로 변경
+    }
+  };
+
+  // 10초 앞으로
+  const handleJumpForward = () => {
+    if (playRef.current?.audio?.current) {
+      playRef.current.audio.current.currentTime += 10; // 10초 앞으로
+    }
+  };
+
+  // 10초 뒤로
+  const handleJumpBackward = () => {
+    if (playRef.current?.audio?.current) {
+      playRef.current.audio.current.currentTime -= 10; // 10초 뒤로
     }
   };
 
@@ -182,7 +222,7 @@ const Home = () => {
   }, [status]);
 
   useEffect(() => {
-    const audioElement = playRef.current.audio.current;
+    const audioElement = playRef.current?.audio?.current;
 
     if (todayMeditation?.data?.today?.music) {
       // 음악 파일이 설정되었을 때, 자동으로 재생하지 않도록 pause
@@ -196,6 +236,22 @@ const Home = () => {
       navigate("/");
     }
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (event: any) => {
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        setShowModalMenu(null);
+      }
+    };
+
+    // Add event listener when the component mounts
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [modalRef]);
 
   return (
     <HomeContainer>
@@ -212,11 +268,7 @@ const Home = () => {
       ) : null}
       <div className="home-wrap">
         <div className="home-date">
-          <p>
-            {todayMeditation?.data.today
-              ? todayMeditation?.data?.today?.createDate
-              : "XXXX-XX-XX"}
-          </p>
+          <p>{todayMeditation?.data?.today?.createDate}</p>
           <img
             onClick={() => navigate("/myPage")}
             className="home-myPage"
@@ -224,81 +276,106 @@ const Home = () => {
             alt=""
           />
         </div>
-        <p className="home-today-qt">오늘의 묵상</p>
-        <div className="home-qt-track">
-          <div className="track-bg">
-            <img
-              className={isPlaying ? "active" : ""}
-              // src={"/assets/track_bg.png"}
-              src={
-                todayMeditation?.data.today
-                  ? todayMeditation?.data?.today?.thumbnail
-                  : "/assets/track_bg.png"
-              }
-              alt=""
-            />
-            <div className="track-center-white"></div>
-          </div>
-        </div>
-        <div className="home-qt-info">
-          <p className="qt-title">
-            {todayMeditation?.data.today
-              ? todayMeditation?.data?.today?.title
-              : "오늘의 묵상은 없습니다."}
-          </p>
-          <p className="qt-chapter">
-            {todayMeditation?.data.today
-              ? todayMeditation?.data?.today?.word
-              : "오늘의 묵상은 없습니다."}
-          </p>
-          <div className="qt-audio-controller">
-            <img src="/assets/audio-prev.png" alt="prev" />
-            <img
-              onClick={handlePlayPause}
-              src={
-                isPlaying ? "/assets/audio-pause.png" : "/assets/audio-play.png"
-              }
-              alt="play"
-            />
-            <img src="/assets/audio-next.png" alt="next" />
-          </div>
-          <AudioPlayer
-            ref={playRef}
-            onPlay={() => setIsPlaying(true)}
-            onPause={() => setIsPlaying(false)}
-            showSkipControls={true}
-            showJumpControls={false}
-            autoPlay={false}
-            src={todayMeditation?.data?.today?.music}
-            // src="/assets/play.mp3"
-            style={{ display: "none" }}
-          />
-          <div className="home-qt-activeArea">
-            <div>
-              <img
-                onClick={handleHeart}
-                src={
-                  todayMeditation?.data?.heart.some(
-                    (item: any) => item.userId === profileData?.data.user.userId
-                  )
-                    ? "/assets/heart-active.png"
-                    : "/assets/heart.png"
-                }
-                alt=""
+        {todayMeditation?.data.today ? (
+          <>
+            <p className="home-today-qt">오늘의 묵상</p>
+            <div className="home-qt-track">
+              <div className="track-bg">
+                <img
+                  className={isPlaying ? "active" : ""}
+                  src={
+                    todayMeditation?.data.today
+                      ? todayMeditation?.data?.today?.thumbnail
+                      : "/assets/track_bg.png"
+                  }
+                  alt=""
+                />
+                <div className="track-center-white"></div>
+              </div>
+            </div>
+            <div className="home-qt-info">
+              <p className="qt-title">{todayMeditation?.data?.today?.title}</p>
+              <p className="qt-chapter">{todayMeditation?.data?.today?.word}</p>
+
+              <AudioPlayer
+                ref={playRef}
+                onPlay={() => setIsPlaying(true)}
+                onPause={() => setIsPlaying(false)}
+                onListen={handleTimeUpdate}
+                onLoadedMetaData={handleLoadedMetaData}
+                showSkipControls={false}
+                showJumpControls={true}
+                autoPlay={false}
+                src={todayMeditation?.data?.today?.music}
+                style={{ display: "none" }}
               />
-              <p>{todayMeditation?.data?.heart?.length}</p>
+
+              <div className="qt-audio-controller">
+                <img
+                  onClick={handleJumpBackward}
+                  src="/assets/audio-prev.png"
+                  alt="prev"
+                />
+                <img
+                  onClick={handlePlayPause}
+                  src={
+                    isPlaying
+                      ? "/assets/audio-pause.png"
+                      : "/assets/audio-play.png"
+                  }
+                  alt="play"
+                />
+                <img
+                  onClick={handleJumpForward}
+                  src="/assets/audio-next.png"
+                  alt="next"
+                />
+              </div>
+
+              <span className="home-audio-time">
+                {formatTime(currentTime)} / {formatTime(duration)}
+              </span>
+
+              <div className="home-qt-activeArea">
+                <div>
+                  <img
+                    onClick={handleHeart}
+                    src={
+                      todayMeditation?.data?.heart.some(
+                        (item: any) =>
+                          item.userId === profileData?.data.user.userId
+                      )
+                        ? "/assets/heart-active.png"
+                        : "/assets/heart.png"
+                    }
+                    alt=""
+                  />
+                  <p>{todayMeditation?.data?.heart?.length}</p>
+                </div>
+                <div onClick={() => setShowComment(true)}>
+                  <img src="/assets/comment.png" alt="" />
+                  <p>{comments?.data.totalCount}</p>
+                </div>
+              </div>
             </div>
-            <div onClick={() => setShowComment(true)}>
-              <img src="/assets/comment.png" alt="" />
-              <p>{comments?.data.totalCount}</p>
+          </>
+        ) : (
+          <>
+            <div className="home-meditation-none">
+              <p>오늘 묵상은 없습니다.</p>
+              <p>지난 묵상을 들어보시는건 어떨까요?</p>
+              <Button
+                context="지난 묵상 듣기"
+                color="#427d4f"
+                onClick={() => navigate("/meditation")}
+                borderColor="#427d4f"
+              />
             </div>
-          </div>
-        </div>
+          </>
+        )}
+
         <div className={showComment ? "home-comment active" : "home-comment"}>
-          <div
-            onClick={() => setShowComment(false)}
-            className="comment-bg"
-          ></div>
+          <div onClick={() => setShowComment(false)} className="comment-bg" />
           <div className="comment-popup">
             <div className="popup-header">
               <p className="title">나눔</p>
@@ -350,7 +427,7 @@ const Home = () => {
 
                       {showModalMenu === index ? (
                         profileData?.data.user.userId === value.userId ? (
-                          <div className="modal-menu">
+                          <div className="modal-menu" ref={modalRef}>
                             <p onClick={() => handleEdit(index)}>수정하기</p>
                             <p
                               onClick={() =>
@@ -363,11 +440,12 @@ const Home = () => {
                               삭제하기
                             </p>
                           </div>
-                        ) : (
-                          <div className="modal-menu">
-                            <p onClick={() => console.log("ss")}>신고하기</p>
-                          </div>
-                        )
+                        ) : null
+                        // (
+                        //   <div className="modal-menu" ref={modalRef}>
+                        //     <p onClick={() => console.log("ss")}>신고하기</p>
+                        //   </div>
+                        // )
                       ) : null}
                     </div>
                   );

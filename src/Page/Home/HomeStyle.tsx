@@ -26,10 +26,29 @@ export const HomeContainer = styled.div`
         cursor: pointer;
       }
     }
+
     .home-today-qt {
       font: 700 20px "Pretendard";
       margin-top: 10px;
     }
+    .home-meditation-none {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      > p {
+        width: 100%;
+        color: #427d4f;
+        font-size: 17px;
+        font-weight: 700;
+        text-align: center;
+        margin: ${px2vw(5)} 0px;
+      }
+      > button {
+        margin-top: ${px2vw(20)};
+      }
+    }
+
     .home-qt-track {
       width: ${px2vw(300)};
       height: ${px2vw(300)};
@@ -38,6 +57,7 @@ export const HomeContainer = styled.div`
       margin: 0 auto;
       margin-top: ${px2vw(40)};
       position: relative;
+
       .track-bg {
         width: ${px2vw(270)};
         height: ${px2vw(270)};
@@ -50,9 +70,11 @@ export const HomeContainer = styled.div`
         display: flex;
         justify-content: center;
         align-items: center;
+
         .active {
           animation: playTrack 5s linear infinite;
         }
+
         .track-center-white {
           width: ${px2vw(60)};
           height: ${px2vw(60)};
@@ -65,6 +87,7 @@ export const HomeContainer = styled.div`
         }
       }
     }
+
     .home-qt-info {
       display: flex;
       justify-content: center;
@@ -79,6 +102,15 @@ export const HomeContainer = styled.div`
         font: 500 18px "Pretendard";
         margin-top: ${px2vw(10)};
       }
+
+      .home-audio-time {
+        font: 400 13px "Pretendard";
+        margin-top: ${px2vw(10)};
+      }
+      > input {
+        width: 100%;
+      }
+
       .qt-audio-controller {
         display: flex;
         gap: ${px2vw(45)};
@@ -86,6 +118,7 @@ export const HomeContainer = styled.div`
         margin-top: ${px2vw(30)};
         cursor: pointer;
       }
+
       .home-qt-activeArea {
         display: flex;
         align-items: center;
@@ -114,6 +147,7 @@ export const HomeContainer = styled.div`
         height: 100%;
         transition: all 0.5s;
       }
+
       .comment-popup {
         position: absolute;
         bottom: -100%;
@@ -269,6 +303,15 @@ export const HomeContainer = styled.div`
     }
     100% {
       transform: rotate(360deg);
+    }
+  }
+
+  @keyframes flowing {
+    0% {
+      width: 0%;
+    }
+    100% {
+      width: 100%;
     }
   }
 `;
