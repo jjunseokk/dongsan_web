@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Login from "./Page/Login";
 import Splash from "./Page/Login/Splash";
 import Home from "./Page/Home";
-import SignUp from "./Page/SignUp/SignUp";
+import SignUp from "./Page/SignUp";
 import Meditation from "./Page/Meditation";
 import Story from "./Page/Story";
 import EditUserInfo from "./Page/MyPage";
