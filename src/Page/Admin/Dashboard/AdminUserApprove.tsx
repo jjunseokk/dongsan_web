@@ -7,6 +7,8 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { getUserList } from "../../../Api/Admin";
 import { getUser, updateApprove } from "../../../Type";
 import { showApprove } from "../../../Api/Admin";
+import { useState } from "react";
+import CustomPagination from "../../../components/CustomPagination";
 
 const AdminUserApproveContainer = styled(motion.div)`
   width: 100%;
@@ -81,10 +83,12 @@ const AdminUserApproveContainer = styled(motion.div)`
 `;
 
 const AdminUserApprove = () => {
+  const [page, setPage] = useState(1);
+
   // 가입 요청한 유저 목록
   const { data: userList } = useQuery({
     queryKey: ["userList"],
-    queryFn: () => getUserList(),
+    queryFn: () => getUserList(page),
   });
 
   // 가입 승인 뮤테이션
@@ -158,6 +162,7 @@ const AdminUserApprove = () => {
             })}
           </tbody>
         </table>
+        <CustomPagination page={page} setPage={setPage} totalPage={userList?.data.totalCount} />
       </DashboardContainer>
     </AdminUserApproveContainer>
   );

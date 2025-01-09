@@ -38,12 +38,12 @@ const MeditationContainer = styled.div`
         }
       }
     }
-    .meditation-no-data{
+    .meditation-no-data {
       font: 600 20px "Pretendard";
       color: #ababab;
       text-align: center;
       position: absolute;
-      top:50%;
+      top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
     }
@@ -102,15 +102,13 @@ const Meditation = () => {
     };
   }, [status]);
 
-  console.log(meditationList?.pages[0].data.meditationList.length);
-
   return (
     <MeditationContainer>
       <BackHeader backHandle={false} title="묵상" />
       <div ref={meditationRef} className="meditation-wrap">
         {meditationList &&
           meditationList?.pages.map((allValue) =>
-            allValue.data.meditationList.map((value: meditation) => {
+            allValue?.data?.meditationList?.map((value: meditation) => {
               return (
                 <div
                   key={value.id}
@@ -126,7 +124,7 @@ const Meditation = () => {
               );
             })
           )}
-        {meditationList?.pages[0].data.meditationList.length === 0 && (
+        {meditationList?.pages[0]?.data?.meditationList?.length === 0 && (
           <p className="meditation-no-data">묵상이 없습니다.</p>
         )}
       </div>

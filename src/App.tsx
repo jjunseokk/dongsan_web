@@ -16,6 +16,7 @@ import AdminMeditation from "./Page/Admin/Dashboard/AdminMeditation";
 import AdminUserList from "./Page/Admin/Dashboard/AdminUserList";
 import AdminUserDetail from "./Page/Admin/Dashboard/AdminUserDetail";
 import AdminUserApprove from "./Page/Admin/Dashboard/AdminUserApprove";
+import Inquiries from "./Page/Inquiries";
 
 const userSize = window.innerWidth;
 
@@ -54,6 +55,7 @@ function App() {
             <Route path="userList" element={<AdminUserList />} />
             <Route path="userList/:id/detail" element={<AdminUserDetail />} />
             <Route path="userList/approve" element={<AdminUserApprove />} />
+            <Route path="inquiries" element={<Inquiries />} />
           </Route>
           <Route path="/*" element={<Splash />} />
         </Routes>

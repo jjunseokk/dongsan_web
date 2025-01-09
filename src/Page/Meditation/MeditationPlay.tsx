@@ -177,7 +177,6 @@ const MeditationPlay = () => {
     }
   }, [meditationDetail?.data.meditationDetail?.music]);
 
-  console.log(meditationDetail?.data.heart)
   return (
     <MeditationContainer>
       {showDeletePopup.isOpen ? (

@@ -37,8 +37,8 @@ const showApprove = (data: updateApprove) => {
 };
 
 // 유저 목록
-const getUserList = () => {
-  return AxiosInstance.get(`/admin/getProfile`);
+const getUserList = (page: number) => {
+  return AxiosInstance.get(`/admin/getProfile?page=${page}`);
 };
 
 // 유저 상세 목록
@@ -47,8 +47,8 @@ const getUserDetail = (userId: string | undefined) => {
 };
 
 // 공지사항 조회
-const getNotice = () => {
-  return AxiosInstance.get(`/admin/notice`);
+const getNotice = (page: number) => {
+  return AxiosInstance.get(`/admin/notice?page=${page}`);
 };
 
 // 공지사항 상세 조회
