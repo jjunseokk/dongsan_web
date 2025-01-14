@@ -1,6 +1,6 @@
 import axios from "axios";
 // 리얼
-const baseURL = "http://3.34.44.234";
+const baseURL = "https://dongsan-book.shop";
 // const baseURL = "http://localhost:8080";
 
 const AxiosInstance = axios.create({
