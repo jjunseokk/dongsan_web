@@ -229,7 +229,8 @@ export const MeditationContainer = styled.div`
             padding-left: ${px2vw(10)};
             background: none;
             resize: none;
-            padding: ${px2vw(5)};
+            padding: ${px2vw(10)};
+            font-size: 16px;
             &:focus {
               outline: none;
             }
