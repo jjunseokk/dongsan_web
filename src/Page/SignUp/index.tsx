@@ -165,12 +165,12 @@ const SignUp = () => {
           onClick={handleSingUp}
           disabled={!canRegister}
         />
-        <SignButton
+        {/* <SignButton
           context="불편사항 문의하기"
           color="#151515"
           borderColor="none"
           onClick={() => console.log("ss")}
-        />
+        /> */}
       </div>
       {successSignUp ? (
         <PopupContainer>
