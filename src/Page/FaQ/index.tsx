@@ -3,6 +3,8 @@ import { useState } from "react";
 import styled from "styled-components";
 import { motion } from "framer-motion";
 import px2vwPc from "../../Util/px2vwPc";
+import { useQuery } from "@tanstack/react-query";
+import { getFaq } from "../../Api/Admin";
 
 const FaQContainer = styled(motion.div)`
   border: 1px solid red;
@@ -95,7 +97,15 @@ const typeButton = [
 ];
 
 const FaQ = () => {
-  const [fqaType, setFqaType] = useState("all");
+  const [fqaType, setFqaType] = useState<string>("all");
+  const [page, setPage] = useState<number>(1);
+
+  const { data } = useQuery({
+    queryKey: ["Faq"],
+    queryFn: () => getFaq(page),
+  });
+
+  console.log(data?.data);
   return (
     <FaQContainer
       initial={{ opacity: 0, y: -10 }}
