@@ -21,15 +21,18 @@ const PaginationContainer = styled.div<paginationStyleType>`
 `;
 
 const CustomPagination = ({ page, setPage, totalPage }: paginationType) => {
+  const pageCount = Math.ceil(totalPage / 6);
+  
   const handleChange = (_: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
+
   return (
     <PaginationContainer $display={totalPage === 0}>
       <Pagination
         page={page}
         onChange={handleChange}
-        count={totalPage ? totalPage : 1}
+        count={totalPage ? pageCount : 1}
         sx={{
           "& .MuiPaginationItem-root": {
             color: "#427d4f", // 페이지 번호 색상

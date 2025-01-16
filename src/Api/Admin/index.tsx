@@ -71,6 +71,36 @@ const editNotice = (data: editNoticeType) => {
   return AxiosInstance.patch(`/admin/notice?`, data);
 };
 
+// FAQ 조회
+const getFaq = (page: number) => {
+  return AxiosInstance.get(`/admin/faq?page=${page}`);
+};
+
+// FAQ 상세 조회
+const getDetailFaq = (noticeId: number) => {
+  return AxiosInstance.get(`/admin/faqDetail?id=${noticeId}`);
+};
+
+// FAQ 작성
+const createFaq = (data: createNoticeType) => {
+  return AxiosInstance.post(`/admin/faq`, data);
+};
+
+// FAQ 삭제
+const deleteFaq = (faqId: number) => {
+  return AxiosInstance.delete(`/admin/faq?id=${faqId}`);
+};
+
+// FAQ 수정
+const editFaq = (data: editNoticeType) => {
+  return AxiosInstance.patch(`/admin/faq?`, data);
+};
+
+// FAQ 타입
+const getFaqType = () => {
+  return AxiosInstance.get(`/admin/fagType`);
+};
+
 export {
   getMeditation,
   createMeditation,
@@ -85,4 +115,10 @@ export {
   createNotice,
   deleteNotice,
   editNotice,
+  createFaq,
+  getFaq,
+  deleteFaq,
+  editFaq,
+  getDetailFaq,
+  getFaqType,
 };

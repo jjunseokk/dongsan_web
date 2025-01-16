@@ -77,7 +77,7 @@ const AdminNotice = () => {
 
   // 공지사항 목록 가져오기
   const { data: notice } = useQuery({
-    queryKey: ["notice"],
+    queryKey: ["notice", page],
     queryFn: () => getNotice(page),
   });
 

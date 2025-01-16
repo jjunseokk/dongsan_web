@@ -14,6 +14,7 @@ import { useNavigate } from "react-router-dom";
 const EditUserInfoContainer = styled.div`
   width: ${px2vw(430)};
   margin: 0 auto;
+
   .modal-bg {
     width: 100%;
     height: 100%;
@@ -78,6 +79,15 @@ const EditUserInfoContainer = styled.div`
         margin: ${px2vw(40)} 0;
         cursor: pointer;
       }
+    }
+    .delete-membership {
+      position: absolute;
+      bottom: ${px2vw(10)};
+      left: 50%;
+      transform: translate(-50%, 0%);
+      font-size: 13px;
+      color: #7b7b7b;
+      cursor: pointer;
     }
   }
 `;
@@ -214,6 +224,13 @@ const EditUserInfo = () => {
             <img src="/assets/right_arrow.png" alt="" />
           </div>
         </div>
+
+        <p
+          onClick={() => navigate("/myPage/withdrawal")}
+          className="delete-membership"
+        >
+          회원 탈퇴
+        </p>
       </div>
     </EditUserInfoContainer>
   );
