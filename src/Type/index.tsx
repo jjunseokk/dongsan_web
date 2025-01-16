@@ -115,5 +115,36 @@ export interface editNoticeType {
 // 좋아요 타입
 export interface showHeartType {
   meditationId: number;
-  token : string;
+  token: string;
+}
+
+// FAQ 타입
+export interface faqOptionType {
+  id: number;
+  value: string;
+  name: string;
+}
+
+// FAQ 작성 타입
+export interface createFaqType {
+  title: string;
+  context: string;
+  type: string;
+}
+
+// FAQ 수정 타입
+export interface editFaqType {
+  id: number;
+  title: string;
+  context: string;
+  type: string;
+}
+
+// FAQ 타입
+export interface faqType {
+  context: string;
+  createDate: string;
+  id: number;
+  title: string;
+  type: string;
 }

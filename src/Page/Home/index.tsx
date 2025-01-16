@@ -212,14 +212,14 @@ const Home = () => {
   };
 
   // 프로필
-  const { data: profileData } = useQuery({
+  const { data: profileData, status: profileStatus } = useQuery({
     queryKey: ["profile"],
     queryFn: () => getProfile(cookie.login),
   });
 
   useEffect(() => {
     setProfile(profileData?.data.user as any);
-  }, [status]);
+  }, [profileStatus]);
 
   useEffect(() => {
     const audioElement = playRef.current?.audio?.current;
@@ -441,12 +441,12 @@ const Home = () => {
                             </p>
                           </div>
                         ) : null
-                        // (
-                        //   <div className="modal-menu" ref={modalRef}>
-                        //     <p onClick={() => console.log("ss")}>신고하기</p>
-                        //   </div>
-                        // )
-                      ) : null}
+                      ) : // (
+                      //   <div className="modal-menu" ref={modalRef}>
+                      //     <p onClick={() => console.log("ss")}>신고하기</p>
+                      //   </div>
+                      // )
+                      null}
                     </div>
                   );
                 }

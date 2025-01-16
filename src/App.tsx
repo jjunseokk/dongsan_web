@@ -17,6 +17,9 @@ import AdminUserList from "./Page/Admin/Dashboard/AdminUserList";
 import AdminUserDetail from "./Page/Admin/Dashboard/AdminUserDetail";
 import AdminUserApprove from "./Page/Admin/Dashboard/AdminUserApprove";
 import Inquiries from "./Page/Inquiries";
+import FaQ from "./Page/FaQ/Index";
+import AdminFaq from "./Page/Admin/Dashboard/AdminFaq";
+import Withdrawal from "./Page/MyPage/Withdrawal";
 
 const userSize = window.innerWidth;
 
@@ -48,6 +51,8 @@ function App() {
           <Route path="/story" element={<Story />} />
           <Route path="/myPage" element={<EditUserInfo />} />
           <Route path="/myPage/notice" element={<Notice />} />
+          <Route path="/myPage/withdrawal" element={<Withdrawal />} />
+          <Route path="/FaQ" element={<FaQ />} />
           <Route path="/dongsan/admin" element={<Admin />}>
             <Route index element={<Navigate to="meditation" />} />
             <Route path="notice" element={<AdminNotice />} />
@@ -56,6 +61,7 @@ function App() {
             <Route path="userList/:id/detail" element={<AdminUserDetail />} />
             <Route path="userList/approve" element={<AdminUserApprove />} />
             <Route path="inquiries" element={<Inquiries />} />
+            <Route path="faq" element={<AdminFaq />} />
           </Route>
           <Route path="/*" element={<Splash />} />
         </Routes>
