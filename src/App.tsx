@@ -1,10 +1,10 @@
 import "./App.scss";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import styled from "styled-components";
-import Login from "./Page/Login";
+// import Login from "./Page/Login";
 import Splash from "./Page/Login/Splash";
 import Home from "./Page/Home";
-import SignUp from "./Page/SignUp";
+// import SignUp from "./Page/SignUp";
 import Meditation from "./Page/Meditation";
 import Story from "./Page/Story";
 import EditUserInfo from "./Page/MyPage";
@@ -17,7 +17,7 @@ import AdminUserList from "./Page/Admin/Dashboard/AdminUserList";
 import AdminUserDetail from "./Page/Admin/Dashboard/AdminUserDetail";
 import AdminUserApprove from "./Page/Admin/Dashboard/AdminUserApprove";
 import Inquiries from "./Page/Inquiries";
-import FaQ from "./Page/FaQ/Index";
+import FaQ from "./Page/FaQ";
 import AdminFaq from "./Page/Admin/Dashboard/AdminFaq";
 import Withdrawal from "./Page/MyPage/Withdrawal";
 
@@ -42,10 +42,10 @@ function App() {
     <AppContainer $width={userSize}>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Splash />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signUp" element={<SignUp />} />
-          <Route path="/main" element={<Home />} />
+          <Route path="/" element={<Home />} />
+          {/* <Route path="/login" element={<Login />} />
+          <Route path="/signUp" element={<SignUp />} /> */}
+          {/* <Route path="/main" element={<Home />} /> */}
           <Route path="/meditation" element={<Meditation />} />
           <Route path="/meditation/:id" element={<MeditationPlay />} />
           <Route path="/story" element={<Story />} />

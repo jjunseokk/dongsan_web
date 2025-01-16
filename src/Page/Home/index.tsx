@@ -231,11 +231,11 @@ const Home = () => {
     }
   }, [todayMeditation?.data?.today?.music]);
 
-  useEffect(() => {
-    if (!cookie.login) {
-      navigate("/");
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!cookie.login) {
+  //     navigate("/");
+  //   }
+  // }, []);
 
   useEffect(() => {
     const handleClickOutside = (event: any) => {
