@@ -105,7 +105,6 @@ const FaQ = () => {
     queryFn: () => getFaq(page),
   });
 
-  console.log(data?.data);
   return (
     <FaQContainer
       initial={{ opacity: 0, y: -10 }}
