@@ -17,7 +17,7 @@ import AdminUserList from "./Page/Admin/Dashboard/AdminUserList";
 import AdminUserDetail from "./Page/Admin/Dashboard/AdminUserDetail";
 import AdminUserApprove from "./Page/Admin/Dashboard/AdminUserApprove";
 import Inquiries from "./Page/Inquiries";
-import FaQ from "./Page/FaQ/Index";
+import FaQ from "./Page/FaQ";
 import AdminFaq from "./Page/Admin/Dashboard/AdminFaq";
 import Withdrawal from "./Page/MyPage/Withdrawal";
 
