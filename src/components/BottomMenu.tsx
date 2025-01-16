@@ -1,6 +1,10 @@
 import styled from "styled-components";
 import { px2vw } from "../Util/px2vw";
 import { useLocation, useNavigate } from "react-router-dom";
+import { ReactComponent as HomeImg } from "../../public/assets/home.svg";
+import { ReactComponent as MeditationImg } from "../../public/assets/meditation.svg";
+import { ReactComponent as StroyImg } from "../../public/assets/story.svg";
+import { ReactComponent as MyImg } from "../../public/assets/my.svg";
 
 const BottomMenuContainer = styled.div`
   position: fixed;
@@ -19,7 +23,12 @@ const BottomMenuContainer = styled.div`
     justify-content: center;
     align-items: center;
     flex-direction: column;
-
+    width: ${px2vw(100)};
+    svg {
+      width: ${px2vw(20)};
+      height: ${px2vw(20)};
+      margin-bottom: ${px2vw(5)};
+    }
     > p {
       font: 500 11px "Pretendard";
     }
@@ -43,27 +52,15 @@ const BottomMenu = () => {
         className={pathname.includes("/main") ? "active" : ""}
         onClick={() => navigate("/main")}
       >
-        <img
-          src={
-            pathname.includes("/main")
-              ? "/assets/home_active.png"
-              : "/assets/home.png"
-          }
-          alt="home"
-        />
+        <HomeImg fill={pathname.includes("/main") ? "#427D4F" : "#000000"} />
         <p>홈</p>
       </div>
       <div
         className={pathname.includes("/meditation") ? "active" : ""}
         onClick={() => navigate("/meditation")}
       >
-        <img
-          src={
-            pathname.includes("/meditation")
-              ? "/assets/meditation_active.png"
-              : "/assets/meditation.png"
-          }
-          alt=""
+        <MeditationImg
+          fill={pathname.includes("/meditation") ? "#427D4F" : "#000000"}
         />
         <p>묵상</p>
       </div>
@@ -71,28 +68,14 @@ const BottomMenu = () => {
         className={pathname.includes("/story") ? "active" : ""}
         onClick={() => navigate("/story")}
       >
-        <img
-          src={
-            pathname.includes("/story")
-              ? "/assets/story_active.png"
-              : "/assets/story.png"
-          }
-          alt="story"
-        />
+        <StroyImg fill={pathname.includes("/story") ? "#427D4F" : "#000000"} />
         <p>사연</p>
       </div>
       <div
         className={pathname.includes("/myPage") ? "active" : ""}
         onClick={() => navigate("/myPage/notice")}
       >
-        <img
-          src={
-            pathname.includes("myPage")
-              ? "/assets/my_active.png"
-              : "/assets/my.png"
-          }
-          alt=""
-        />
+        <MyImg fill={pathname.includes("/myPage") ? "#427D4F" : "#000000"} />
         <p>공지사항</p>
       </div>
     </BottomMenuContainer>
