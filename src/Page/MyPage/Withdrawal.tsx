@@ -5,6 +5,7 @@ import BackHeader from "../../components/BackHeader";
 import { useMutation } from "@tanstack/react-query";
 import { showSecession } from "../../Api/Client";
 import userProfileStore from "../../Store";
+import { secessionType } from "../../Type";
 
 const WithdrawalContainer = styled.div`
   width: ${px2vw(430)};
@@ -112,11 +113,9 @@ const Withdrawal = () => {
   const [agree, setAgree] = useState<boolean>(false);
   const { profile } = userProfileStore();
 
-  console.log(profile);
-
   const secessionMutation = useMutation({
     mutationKey: ["userSecession"],
-    mutationFn: (userId: string) => showSecession(userId),
+    mutationFn: (userId: secessionType) => showSecession(userId),
     onSuccess: (res) => {
       if (res.status === 200) {
         window.location.reload();
@@ -125,8 +124,11 @@ const Withdrawal = () => {
   });
 
   const handleSecession = () => {
-    secessionMutation.mutate(profile?.userId);
+    secessionMutation.mutate({
+      userId: profile.userId,
+    });
   };
+
   return (
     <WithdrawalContainer>
       <BackHeader title="회원 탈퇴" />
