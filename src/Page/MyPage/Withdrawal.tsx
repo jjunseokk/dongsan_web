@@ -6,6 +6,7 @@ import { useMutation } from "@tanstack/react-query";
 import { showSecession } from "../../Api/Client";
 import userProfileStore from "../../Store";
 import { secessionType } from "../../Type";
+import { useCookies } from "react-cookie";
 
 const WithdrawalContainer = styled.div`
   width: ${px2vw(430)};
@@ -112,13 +113,14 @@ const WithdrawalContainer = styled.div`
 const Withdrawal = () => {
   const [agree, setAgree] = useState<boolean>(false);
   const { profile } = userProfileStore();
-
+  // 토큰 값 불러오기
+  const [, , removeCookie] = useCookies(["login"]);
   const secessionMutation = useMutation({
     mutationKey: ["userSecession"],
     mutationFn: (userId: secessionType) => showSecession(userId),
     onSuccess: (res) => {
       if (res.status === 200) {
-        window.location.reload();
+        removeCookie("login");
       }
     },
   });

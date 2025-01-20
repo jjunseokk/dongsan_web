@@ -22,4 +22,9 @@ const getProfile = (token: string) => {
   });
 };
 
-export { showLogin, showSignUp, getProfile };
+// 비밀번호 수정
+const editPassword = (data: any) => {
+  return AxiosInstance.post(`/users/editPassword`, { data });
+};
+
+export { showLogin, showSignUp, getProfile, editPassword };
