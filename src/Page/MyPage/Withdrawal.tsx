@@ -2,15 +2,23 @@ import { useState } from "react";
 import styled from "styled-components";
 import { px2vw } from "../../Util/px2vw";
 import BackHeader from "../../components/BackHeader";
+import { useMutation } from "@tanstack/react-query";
+import { showSecession } from "../../Api/Client";
+import userProfileStore from "../../Store";
 
 const WithdrawalContainer = styled.div`
   width: ${px2vw(430)};
+  margin: 0 auto;
   height: 100vh;
   overflow: hidden;
   .withdrawal-wrap {
     text-align: center;
     height: 94.5vh;
-    overflow: auto;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+      width: 6px; /* 스크롤바 너비 */
+      display: none;
+    }
 
     .emphasis {
       margin-top: ${px2vw(50)};
@@ -53,6 +61,7 @@ const WithdrawalContainer = styled.div`
         background: #ffffff;
         margin-top: ${px2vw(20)};
         color: #151515;
+        cursor: pointer;
       }
     }
 
@@ -101,6 +110,18 @@ const WithdrawalContainer = styled.div`
 
 const Withdrawal = () => {
   const [agree, setAgree] = useState<boolean>(false);
+  const { profile } = userProfileStore();
+
+  console.log(profile);
+
+  const secessionMutation = useMutation({
+    mutationKey: ["userSecession"],
+    mutationFn: (userId: string) => showSecession(userId),
+  });
+
+  const handleSecession = () => {
+    secessionMutation.mutate(profile?.userId);
+  };
   return (
     <WithdrawalContainer>
       <BackHeader title="회원 탈퇴" />
@@ -117,7 +138,13 @@ const Withdrawal = () => {
         <div className="inquiries">
           <p>다른 불편 사항이 있으신가요?</p>
           <p>불편사항이 있으시다면 적극적으로 개선하겠습니다.</p>
-          <button>불편 접수</button>
+          <button
+            onClick={() =>
+              (window.location.href = "mailto:support@junsee0923@gmail.com")
+            }
+          >
+            불편 접수
+          </button>
         </div>
         <img className="withdrawal-bg" src="/assets/tree.png" alt="" />
         <div className="withdrawal">
@@ -132,7 +159,7 @@ const Withdrawal = () => {
           <button
             className={agree ? "active" : ""}
             disabled={agree ? false : true}
-            onClick={() => console.log("ss")}
+            onClick={handleSecession}
           >
             탈퇴하기
           </button>

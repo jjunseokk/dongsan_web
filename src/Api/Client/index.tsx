@@ -57,6 +57,10 @@ const showHeart = (data: showHeartType) => {
   );
 };
 
+const showSecession = (userId: string) => {
+  return AxiosInstance.delete(`client/secession`, { data: userId });
+};
+
 export {
   getTodayMeditation,
   writeComment,
@@ -65,4 +69,5 @@ export {
   changeProfile,
   deleteComments,
   showHeart,
+  showSecession,
 };

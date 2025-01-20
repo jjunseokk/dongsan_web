@@ -17,7 +17,6 @@ import AdminUserList from "./Page/Admin/Dashboard/AdminUserList";
 import AdminUserDetail from "./Page/Admin/Dashboard/AdminUserDetail";
 import AdminUserApprove from "./Page/Admin/Dashboard/AdminUserApprove";
 import Inquiries from "./Page/Inquiries";
-import FaQ from "./Page/FaQ";
 import AdminFaq from "./Page/Admin/Dashboard/AdminFaq";
 import Withdrawal from "./Page/MyPage/Withdrawal";
 
@@ -52,7 +51,6 @@ function App() {
           <Route path="/myPage" element={<EditUserInfo />} />
           <Route path="/myPage/notice" element={<Notice />} />
           <Route path="/myPage/withdrawal" element={<Withdrawal />} />
-          <Route path="/FaQ" element={<FaQ />} />
           <Route path="/dongsan/admin" element={<Admin />}>
             <Route index element={<Navigate to="meditation" />} />
             <Route path="notice" element={<AdminNotice />} />
