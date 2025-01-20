@@ -58,7 +58,7 @@ const showHeart = (data: showHeartType) => {
 };
 
 const showSecession = (userId: string) => {
-  return AxiosInstance.delete(`client/secession`, { data: userId });
+  return AxiosInstance.delete(`/client/secession`, { data: userId });
 };
 
 export {
