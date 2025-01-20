@@ -10,6 +10,7 @@ import { useMutation } from "@tanstack/react-query";
 import { changeProfile } from "../../Api/Client";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
+import { editPassword } from "../../Api/User";
 
 const EditUserInfoContainer = styled.div`
   width: ${px2vw(430)};
@@ -123,6 +124,25 @@ const EditUserInfo = () => {
     },
   });
 
+  // 비밀번호 변경
+  const changePassword = useMutation({
+    mutationKey: ["changePassword"],
+    mutationFn: (data: any) => editPassword(data),
+    onSuccess: (res) => {
+      if (res.status === 200) {
+        location.reload();
+      }
+    },
+  });
+
+  const handleEditPassword = () => {
+    changePassword.mutate({
+      userId: profile.userId,
+      password: userPw,
+      newPassword: newPw,
+    });
+  };
+
   // 프로필 사진 변경
   const handleGetProfile = (e: any) => {
     const { files } = e.target;
@@ -184,10 +204,11 @@ const EditUserInfo = () => {
               />
             </div>
             <Button
-              context="추가"
+              context="변경"
               color="#427D4F"
               borderColor="#427D4F"
-              onClick={() => console.log("ss")}
+              onClick={handleEditPassword}
+              disabled={newPw === checkPw && newPw ? false : true}
             />
           </PopupContainer>
         </>
