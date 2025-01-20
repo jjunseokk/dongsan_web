@@ -7,6 +7,7 @@ import { showSecession } from "../../Api/Client";
 import userProfileStore from "../../Store";
 import { secessionType } from "../../Type";
 import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 
 const WithdrawalContainer = styled.div`
   width: ${px2vw(430)};
@@ -111,6 +112,7 @@ const WithdrawalContainer = styled.div`
 `;
 
 const Withdrawal = () => {
+  const navigate = useNavigate();
   const [agree, setAgree] = useState<boolean>(false);
   const { profile } = userProfileStore();
   // 토큰 값 불러오기
@@ -121,6 +123,7 @@ const Withdrawal = () => {
     onSuccess: (res) => {
       if (res.status === 200) {
         removeCookie("login");
+        navigate("/");
       }
     },
   });
