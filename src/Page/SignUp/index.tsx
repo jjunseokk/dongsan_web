@@ -37,6 +37,31 @@ const SignUpContainer = styled.div`
       }
     }
   }
+  .sign-agree {
+    > div {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      > div {
+        display: flex;
+        align-items: center;
+        gap: ${px2vw(15)};
+        > p {
+          font-size: 12px;
+          margin: ${px2vw(5)} 0;
+        }
+        > input {
+          width: ${px2vw(15)};
+          height: ${px2vw(15)};
+          accent-color: #427d4f;
+        }
+      }
+      > img {
+        cursor: pointer;
+        width: ${px2vw(8)};
+      }
+    }
+  }
   .signUp-btn {
     display: flex;
     justify-content: center;
@@ -56,6 +81,10 @@ const SignUp = () => {
   const [pastor, setPastor] = useState<string>("");
   const [successSignUp, setSuccessSignUp] = useState<boolean>(false);
   const [warning, setWarning] = useState<string>("");
+  const [agree, setAgree] = useState<any>({
+    agree_1: false,
+    agree_2: false,
+  });
 
   const signUpMutation = useMutation({
     mutationKey: ["signUp"],
@@ -79,7 +108,9 @@ const SignUp = () => {
     userPassword &&
     userPassword === checkPassword &&
     userPhone &&
-    pastor === "임도한";
+    pastor === "임도한" &&
+    agree.agree_1 && // 약관 동의 확인
+    agree.agree_2; // 개인정보 처리방침 동의 확인
 
   const handleSingUp = () => {
     signUpMutation.mutate({
@@ -89,6 +120,13 @@ const SignUp = () => {
       phoneNumber: userPhone,
       pastor: pastor,
     });
+  };
+
+  const handleAgreeChange = (key: string) => {
+    setAgree((prev: any) => ({
+      ...prev,
+      [key]: !prev[key], // 현재 값의 반대로 토글
+    }));
   };
 
   return (
@@ -156,6 +194,53 @@ const SignUp = () => {
             목사님 성함 입력은 “광주동산교회” 성도임을 확인하기 위해서 입니다.
           </p>
         </div>
+
+        <div className="sign-agree">
+          <div>
+            <div>
+              <input
+                type="checkbox"
+                name="terms"
+                id="terms"
+                checked={agree.agree_1}
+                onChange={() => handleAgreeChange("agree_1")}
+              />
+              <p>서비스 이용약관 (필수)</p>
+            </div>
+            <img
+              onClick={() =>
+                window.open(
+                  "https://solar-flavor-da3.notion.site/48d0eaa162054ba3ba780b53ed3d1610?pvs=74",
+                  "_blank"
+                )
+              }
+              src="/assets/right_arrow.png"
+              alt=""
+            />
+          </div>
+          <div>
+            <div>
+              <input
+                type="checkbox"
+                name="privacy"
+                id="privacy"
+                checked={agree.agree_2}
+                onChange={() => handleAgreeChange("agree_2")}
+              />
+              <p>개인정보 처리방침 (필수)</p>
+            </div>
+            <img
+              onClick={() =>
+                window.open(
+                  "https://solar-flavor-da3.notion.site/1816f84c663480778e58d84fc110584b",
+                  "_blank"
+                )
+              }
+              src="/assets/right_arrow.png"
+              alt=""
+            />
+          </div>
+        </div>
       </div>
       <div className="signUp-btn">
         <SignButton
@@ -165,12 +250,6 @@ const SignUp = () => {
           onClick={handleSingUp}
           disabled={!canRegister}
         />
-        {/* <SignButton
-          context="불편사항 문의하기"
-          color="#151515"
-          borderColor="none"
-          onClick={() => console.log("ss")}
-        /> */}
       </div>
       {successSignUp ? (
         <PopupContainer>
