@@ -117,6 +117,11 @@ const Withdrawal = () => {
   const secessionMutation = useMutation({
     mutationKey: ["userSecession"],
     mutationFn: (userId: string) => showSecession(userId),
+    onSuccess: (res) => {
+      if (res.status === 200) {
+        window.location.reload();
+      }
+    },
   });
 
   const handleSecession = () => {
@@ -138,13 +143,14 @@ const Withdrawal = () => {
         <div className="inquiries">
           <p>다른 불편 사항이 있으신가요?</p>
           <p>불편사항이 있으시다면 적극적으로 개선하겠습니다.</p>
-            <button
+          <button
             onClick={() =>
-              (window.location.href = "mailto:junsee0923@gmail.com?subject=불편 사항 접수&body=여기에 불편 사항을 작성해주세요.")
+              (window.location.href =
+                "mailto:junsee0923@gmail.com?subject=불편 사항 접수&body=여기에 불편 사항을 작성해주세요.")
             }
-            >
+          >
             불편 접수
-            </button>
+          </button>
         </div>
         <img className="withdrawal-bg" src="/assets/tree.png" alt="" />
         <div className="withdrawal">
