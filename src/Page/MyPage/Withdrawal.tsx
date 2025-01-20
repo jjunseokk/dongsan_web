@@ -123,7 +123,7 @@ const Withdrawal = () => {
     onSuccess: (res) => {
       if (res.status === 200) {
         removeCookie("login");
-        navigate("/login");
+        navigate("/");
       }
     },
   });
