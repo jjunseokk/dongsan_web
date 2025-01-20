@@ -138,13 +138,13 @@ const Withdrawal = () => {
         <div className="inquiries">
           <p>다른 불편 사항이 있으신가요?</p>
           <p>불편사항이 있으시다면 적극적으로 개선하겠습니다.</p>
-          <button
+            <button
             onClick={() =>
-              (window.location.href = "mailto:support@junsee0923@gmail.com")
+              (window.location.href = "mailto:junsee0923@gmail.com?subject=불편 사항 접수&body=여기에 불편 사항을 작성해주세요.")
             }
-          >
+            >
             불편 접수
-          </button>
+            </button>
         </div>
         <img className="withdrawal-bg" src="/assets/tree.png" alt="" />
         <div className="withdrawal">
