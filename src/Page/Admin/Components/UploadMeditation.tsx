@@ -46,6 +46,7 @@ const UploadMeditationContainer = styled.div`
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+      z-index: 999;
     }
     .left-section {
       .upload-meditation-thumbnail {
