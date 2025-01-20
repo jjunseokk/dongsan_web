@@ -143,6 +143,11 @@ const EditUserInfo = () => {
     });
   };
 
+  const handleLogout = () => {
+    removeCookie("login");
+    (window as any).ReactNativeWebView?.postMessage("logout");
+  };
+
   // 프로필 사진 변경
   const handleGetProfile = (e: any) => {
     const { files } = e.target;
@@ -240,7 +245,7 @@ const EditUserInfo = () => {
             <p>비밀번호 수정</p>
             <img src="/assets/right_arrow.png" alt="" />
           </div>
-          <div onClick={() => removeCookie("login")}>
+          <div onClick={handleLogout}>
             <p>로그아웃</p>
             <img src="/assets/right_arrow.png" alt="" />
           </div>
