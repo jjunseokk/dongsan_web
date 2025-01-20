@@ -128,8 +128,6 @@ const UploadFaq = ({ setShow }: UploadFaqStyle) => {
     queryFn: () => getFaqType(),
   });
 
-  console.log(faqType?.data);
-
   const createFaqMutation = useMutation({
     mutationKey: ["createFaq"],
     mutationFn: (data: createFaqType) => createFaq(data),
