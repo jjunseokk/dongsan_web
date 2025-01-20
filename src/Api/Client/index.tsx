@@ -3,6 +3,7 @@ import {
   comments,
   deleteCommentsType,
   editCommentsType,
+  secessionType,
   showHeartType,
 } from "../../Type";
 
@@ -57,8 +58,8 @@ const showHeart = (data: showHeartType) => {
   );
 };
 
-const showSecession = (userId: string) => {
-  return AxiosInstance.delete(`client/secession`, { data: userId });
+const showSecession = (data: secessionType) => {
+  return AxiosInstance.delete(`/client/secession`, { data });
 };
 
 export {
