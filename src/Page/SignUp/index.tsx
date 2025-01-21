@@ -9,7 +9,8 @@ import { PopupContainer } from "../Login";
 import { useMutation } from "@tanstack/react-query";
 import { signUp } from "../../Type";
 import { showSignUp } from "../../Api/User";
-// import Terms from "./components/Terms";
+import Terms from "./components/Terms";
+import Privacy from "./components/Privacy";
 
 const SignUpContainer = styled.div`
   width: ${px2vw(430)};
@@ -86,6 +87,8 @@ const SignUp = () => {
     agree_1: false,
     agree_2: false,
   });
+  const [showTerms, setShowTerms] = useState<boolean>(false);
+  const [showPrivacy, setShowPrivacy] = useState<boolean>(false);
 
   const signUpMutation = useMutation({
     mutationKey: ["signUp"],
@@ -209,13 +212,7 @@ const SignUp = () => {
               <p>서비스 이용약관 (필수)</p>
             </div>
             <img
-              onClick={() =>
-                window.open(
-                  "https://solar-flavor-da3.notion.site/48d0eaa162054ba3ba780b53ed3d1610?pvs=74",
-                  "_blank",
-                  "noopener,noreferrer"
-                )
-              }
+              onClick={() => setShowTerms(true)}
               src="/assets/right_arrow.png"
               alt=""
             />
@@ -232,13 +229,7 @@ const SignUp = () => {
               <p>개인정보 처리방침 (필수)</p>
             </div>
             <img
-              onClick={() =>
-                window.open(
-                  "https://solar-flavor-da3.notion.site/1816f84c663480778e58d84fc110584b",
-                  "_blank",
-                  "noopener,noreferrer"
-                )
-              }
+              onClick={() => setShowPrivacy(true)}
               src="/assets/right_arrow.png"
               alt=""
             />
@@ -268,7 +259,8 @@ const SignUp = () => {
           />
         </PopupContainer>
       ) : null}
-
+      {showTerms && <Terms setShowTerms={setShowTerms} />}
+      {showPrivacy && <Privacy setShowPrivacy={setShowPrivacy} />}
     </SignUpContainer>
   );
 };
