@@ -49,18 +49,18 @@ const SignUpContainer = styled.div`
         align-items: center;
         gap: ${px2vw(15)};
         > p {
-          font-size: 12px;
+          font-size: 14px;
           margin: ${px2vw(5)} 0;
         }
         > input {
-          width: ${px2vw(15)};
-          height: ${px2vw(15)};
+          width: ${px2vw(17)};
+          height: ${px2vw(17)};
           accent-color: #427d4f;
         }
       }
       > img {
         cursor: pointer;
-        width: ${px2vw(8)};
+        width: ${px2vw(10)};
       }
     }
   }
