@@ -9,6 +9,7 @@ import { PopupContainer } from "../Login";
 import { useMutation } from "@tanstack/react-query";
 import { signUp } from "../../Type";
 import { showSignUp } from "../../Api/User";
+// import Terms from "./components/Terms";
 
 const SignUpContainer = styled.div`
   width: ${px2vw(430)};
@@ -211,7 +212,8 @@ const SignUp = () => {
               onClick={() =>
                 window.open(
                   "https://solar-flavor-da3.notion.site/48d0eaa162054ba3ba780b53ed3d1610?pvs=74",
-                  "_blank"
+                  "_blank",
+                  "noopener,noreferrer"
                 )
               }
               src="/assets/right_arrow.png"
@@ -233,7 +235,8 @@ const SignUp = () => {
               onClick={() =>
                 window.open(
                   "https://solar-flavor-da3.notion.site/1816f84c663480778e58d84fc110584b",
-                  "_blank"
+                  "_blank",
+                  "noopener,noreferrer"
                 )
               }
               src="/assets/right_arrow.png"
@@ -265,6 +268,7 @@ const SignUp = () => {
           />
         </PopupContainer>
       ) : null}
+
     </SignUpContainer>
   );
 };
