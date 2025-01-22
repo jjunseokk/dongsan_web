@@ -79,7 +79,7 @@ const SignUp = () => {
   const [userName, setUserName] = useState<string>("");
   const [userPassword, setUserPassword] = useState<string>("");
   const [checkPassword, setCheckPassword] = useState<string>("");
-  const [userPhone, setUserPhone] = useState<string>("");
+  // const [userPhone, setUserPhone] = useState<string>("");
   const [pastor, setPastor] = useState<string>("");
   const [successSignUp, setSuccessSignUp] = useState<boolean>(false);
   const [warning, setWarning] = useState<string>("");
@@ -121,7 +121,7 @@ const SignUp = () => {
       userId,
       name: userName,
       password: userPassword,
-      phoneNumber: userPhone,
+      // phoneNumber: userPhone,
       pastor: pastor,
     });
   };

@@ -50,7 +50,7 @@ export interface signUp {
   userId: string;
   name: string;
   password: string;
-  phoneNumber: string;
+  phoneNumber?: string;
   pastor: string;
 }
 
