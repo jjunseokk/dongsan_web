@@ -111,7 +111,7 @@ const SignUp = () => {
     userName &&
     userPassword &&
     userPassword === checkPassword &&
-    userPhone &&
+    // userPhone &&
     pastor === "임도한" &&
     agree.agree_1 && // 약관 동의 확인
     agree.agree_2; // 개인정보 처리방침 동의 확인
@@ -180,13 +180,13 @@ const SignUp = () => {
           )}
         </div>
 
-        <Input
+        {/* <Input
           title="전화번호"
           placeholder="010-0000-0000"
           setValue={setUserPhone}
           value={userPhone}
           type="tel"
-        />
+        /> */}
         <div className="caption-input">
           <Input
             title="목사님 성함"
