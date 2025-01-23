@@ -10,11 +10,15 @@ import BottomMenu from "../../components/BottomMenu";
 
 const NoticeContainer = styled.div`
   width: ${px2vw(430)};
+  height: 100vh;
   margin: 0 auto;
   .notice-wrap {
+    margin-bottom: ${px2vw(55)};
+    height: 89%;
+    overflow: auto;
     .notice-item {
       > .item {
-        padding: ${px2vw(22)} ${px2vw(25)};
+        padding: ${px2vw(20)} ${px2vw(25)};
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -61,7 +65,7 @@ const Notice = () => {
     fetchNextPage,
     status,
   } = useInfiniteQuery({
-    queryKey: ["meditationList"],
+    queryKey: ["noticeList"],
     initialPageParam: 1,
     queryFn: ({ pageParam = 1 }) => getNotice(pageParam),
     getNextPageParam: (_: any, allPages) => {

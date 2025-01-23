@@ -71,6 +71,8 @@ const UploadFaqContainer = styled.div`
           top: ${px2vwPc(40)};
           left: 0px;
           text-align: center;
+          box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+
           > p {
             padding: ${px2vwPc(10)};
             font-size: 13px;
@@ -120,7 +122,11 @@ const UploadFaqContainer = styled.div`
 const UploadFaq = ({ setShow }: UploadFaqStyle) => {
   const [faqTitle, setFaqTitle] = useState("");
   const [faqContext, setFaqContext] = useState<string>("");
-  const [type, setType] = useState<faqOptionType>({ id: 0, name: "", value: "" });
+  const [type, setType] = useState<faqOptionType>({
+    id: 0,
+    name: "",
+    value: "",
+  });
   const [showType, setShowType] = useState<boolean>(false);
 
   const { data: faqType } = useQuery({
