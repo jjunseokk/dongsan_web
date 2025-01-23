@@ -9,10 +9,15 @@ import { getUserDetail } from "../../../Api/Admin";
 const AdminUserDetailContainer = styled(motion.div)`
   width: 100%;
   position: relative;
+  .back-btn {
+    margin-bottom: ${px2vwPc(10)};
+    cursor: pointer;
+  }
   .userDetail-wrap {
     display: flex;
     gap: ${px2vwPc(10)};
     margin-top: ${px2vwPc(50)};
+
     > .left-section {
       width: ${px2vwPc(400)};
       display: flex;
@@ -81,6 +86,12 @@ const AdminUserDetail = () => {
       whileInView={{ opacity: 1, x: 0 }}
     >
       <DashboardContainer>
+        <img
+          className="back-btn"
+          onClick={() => history.back()}
+          src="/assets/arrow_back.png"
+          alt=""
+        />
         <p className="dashboard-title">성도 상세 정보</p>
         <div className="userDetail-wrap">
           <div className="left-section">
@@ -104,10 +115,6 @@ const AdminUserDetail = () => {
             <div>
               <p>이름</p>
               <p>{detailUser?.data.user.name}</p>
-            </div>
-            <div>
-              <p>전화번호</p>
-              <p>{detailUser?.data.user.phoneNumber}</p>
             </div>
             <div>
               <p>가입일자</p>
