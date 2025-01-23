@@ -19,6 +19,7 @@ import AdminUserApprove from "./Page/Admin/Dashboard/AdminUserApprove";
 import Inquiries from "./Page/Inquiries";
 import AdminFaq from "./Page/Admin/Dashboard/AdminFaq";
 import Withdrawal from "./Page/MyPage/Withdrawal";
+import FaQ from "./Page/MyPage/FaQ";
 
 const userSize = window.innerWidth;
 
@@ -51,6 +52,7 @@ function App() {
           <Route path="/myPage" element={<EditUserInfo />} />
           <Route path="/myPage/notice" element={<Notice />} />
           <Route path="/myPage/withdrawal" element={<Withdrawal />} />
+          <Route path="/myPage/FaQ" element={<FaQ />} />
           <Route path="/dongsan/admin" element={<Admin />}>
             <Route index element={<Navigate to="meditation" />} />
             <Route path="notice" element={<AdminNotice />} />

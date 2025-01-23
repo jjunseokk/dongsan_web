@@ -79,6 +79,8 @@ const EditFaqContainer = styled.div`
           top: ${px2vwPc(40)};
           left: 0px;
           text-align: center;
+          box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+
           > p {
             padding: ${px2vwPc(10)};
             font-size: 13px;

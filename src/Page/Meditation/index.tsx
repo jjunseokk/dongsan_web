@@ -18,6 +18,8 @@ const MeditationContainer = styled.div`
   .meditation-wrap {
     overflow: scroll;
     height: 89%;
+    margin-bottom: ${px2vw(55)};
+
     &::-webkit-scrollbar {
       display: none;
     }

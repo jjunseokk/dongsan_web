@@ -58,8 +58,14 @@ const showHeart = (data: showHeartType) => {
   );
 };
 
+// 회원탈퇴
 const showSecession = (data: secessionType) => {
   return AxiosInstance.delete(`/client/secession`, { data });
+};
+
+// FAQ 조회
+const getFaq = (page: number, type: string) => {
+  return AxiosInstance.get(`/client/faq?page=${page}&type=${type}`);
 };
 
 export {
@@ -71,4 +77,5 @@ export {
   deleteComments,
   showHeart,
   showSecession,
+  getFaq,
 };

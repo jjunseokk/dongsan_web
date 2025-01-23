@@ -245,6 +245,10 @@ const EditUserInfo = () => {
             <p>비밀번호 수정</p>
             <img src="/assets/right_arrow.png" alt="" />
           </div>
+          <div onClick={()=>navigate('/myPage/FaQ')}>
+            <p>FAQ</p>
+            <img src="/assets/right_arrow.png" alt="" />
+          </div>
           <div onClick={handleLogout}>
             <p>로그아웃</p>
             <img src="/assets/right_arrow.png" alt="" />
