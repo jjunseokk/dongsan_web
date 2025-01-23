@@ -50,8 +50,7 @@ const AdminUserApproveContainer = styled(motion.div)`
             width: ${px2vwPc(300)};
           }
           &:nth-of-type(5),
-          &:nth-of-type(6),
-          &:nth-of-type(7) {
+          &:nth-of-type(6) {
             width: ${px2vwPc(300)};
           }
         }
@@ -61,14 +60,14 @@ const AdminUserApproveContainer = styled(motion.div)`
       tr {
         td {
           font: 400 14px "Pretendard";
-          &:nth-of-type(3) {
+          &:nth-of-type(2) {
             padding-left: ${px2vwPc(10)};
           }
-          &:nth-of-type(6) {
+          &:nth-of-type(5) {
             font-weight: 700;
             color: #427d4f;
           }
-          &:nth-of-type(7) {
+          &:nth-of-type(6) {
             display: flex;
             justify-content: center;
             align-items: center;
@@ -120,7 +119,6 @@ const AdminUserApprove = () => {
               <th>번호</th>
               <th>아이디</th>
               <th>이름</th>
-              <th>전화번호</th>
               <th>가입일자</th>
               <th>승인상태</th>
               <th>승인</th>
@@ -133,7 +131,6 @@ const AdminUserApprove = () => {
                   <td>{index + 1}</td>
                   <td>{value.userId}</td>
                   <td>{value.name}</td>
-                  <td>{value.phoneNumber}</td>
                   <td>{value.createDate}</td>
                   <td className={value.userApprove === false ? "active" : ""}>
                     {value.userApprove === false ? "미승인" : "승인"}
@@ -162,7 +159,11 @@ const AdminUserApprove = () => {
             })}
           </tbody>
         </table>
-        <CustomPagination page={page} setPage={setPage} totalPage={userList?.data.totalCount} />
+        <CustomPagination
+          page={page}
+          setPage={setPage}
+          totalPage={userList?.data.totalCount}
+        />
       </DashboardContainer>
     </AdminUserApproveContainer>
   );

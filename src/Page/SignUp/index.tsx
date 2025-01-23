@@ -49,18 +49,18 @@ const SignUpContainer = styled.div`
         align-items: center;
         gap: ${px2vw(15)};
         > p {
-          font-size: 12px;
+          font-size: 14px;
           margin: ${px2vw(5)} 0;
         }
         > input {
-          width: ${px2vw(15)};
-          height: ${px2vw(15)};
+          width: ${px2vw(17)};
+          height: ${px2vw(17)};
           accent-color: #427d4f;
         }
       }
       > img {
         cursor: pointer;
-        width: ${px2vw(8)};
+        width: ${px2vw(10)};
       }
     }
   }
@@ -79,7 +79,7 @@ const SignUp = () => {
   const [userName, setUserName] = useState<string>("");
   const [userPassword, setUserPassword] = useState<string>("");
   const [checkPassword, setCheckPassword] = useState<string>("");
-  const [userPhone, setUserPhone] = useState<string>("");
+  // const [userPhone, setUserPhone] = useState<string>("");
   const [pastor, setPastor] = useState<string>("");
   const [successSignUp, setSuccessSignUp] = useState<boolean>(false);
   const [warning, setWarning] = useState<string>("");
@@ -111,7 +111,7 @@ const SignUp = () => {
     userName &&
     userPassword &&
     userPassword === checkPassword &&
-    userPhone &&
+    // userPhone &&
     pastor === "임도한" &&
     agree.agree_1 && // 약관 동의 확인
     agree.agree_2; // 개인정보 처리방침 동의 확인
@@ -121,7 +121,7 @@ const SignUp = () => {
       userId,
       name: userName,
       password: userPassword,
-      phoneNumber: userPhone,
+      // phoneNumber: userPhone,
       pastor: pastor,
     });
   };
@@ -180,13 +180,13 @@ const SignUp = () => {
           )}
         </div>
 
-        <Input
+        {/* <Input
           title="전화번호"
           placeholder="010-0000-0000"
           setValue={setUserPhone}
           value={userPhone}
           type="tel"
-        />
+        /> */}
         <div className="caption-input">
           <Input
             title="목사님 성함"

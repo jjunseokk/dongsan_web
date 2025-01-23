@@ -44,9 +44,8 @@ const AdminUserListContainer = styled(motion.div)`
             text-align: start;
             padding-left: ${px2vwPc(10)};
           }
-          &:nth-of-type(4),
-          &:nth-of-type(5) {
-            width: ${px2vwPc(240)};
+          &:nth-of-type(4) {
+            width: ${px2vwPc(400)};
           }
         }
       }
@@ -59,8 +58,6 @@ const AdminUserListContainer = styled(motion.div)`
           &:nth-of-type(3) {
             text-align: start;
             padding-left: ${px2vwPc(10)};
-          }
-          &:nth-of-type(3) {
             cursor: pointer;
           }
         }
@@ -93,7 +90,6 @@ const AdminUserList = () => {
               <th>번호</th>
               <th>아이디</th>
               <th>이름</th>
-              <th>전화번호</th>
               <th>가입일자</th>
             </tr>
           </thead>
@@ -112,14 +108,17 @@ const AdminUserList = () => {
                     >
                       {value.name}
                     </td>
-                    <td>{value.phoneNumber}</td>
                     <td>{value.createDate}</td>
                   </tr>
                 );
               })}
           </tbody>
         </table>
-        <CustomPagination page={page} setPage={setPage} totalPage={userList?.data.totalCount} />
+        <CustomPagination
+          page={page}
+          setPage={setPage}
+          totalPage={userList?.data.totalCount}
+        />
       </DashboardContainer>
     </AdminUserListContainer>
   );
