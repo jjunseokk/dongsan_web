@@ -149,8 +149,12 @@ export interface faqType {
   type: string;
 }
 
-
 // 유저 회원 탈퇴 아이디
 export interface secessionType {
   userId: string;
+}
+
+export interface adminLoginType {
+  userId: string;
+  password: string;
 }
