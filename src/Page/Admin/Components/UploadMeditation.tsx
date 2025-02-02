@@ -14,6 +14,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 interface UploadMeditationStyle {
   setShow: React.Dispatch<SetStateAction<boolean>>;
+  setLoading: React.Dispatch<SetStateAction<boolean>>;
 }
 
 const UploadMeditationContainer = styled.div`
@@ -41,13 +42,7 @@ const UploadMeditationContainer = styled.div`
     border-radius: 10px;
     display: flex;
     gap: ${px2vwPc(20)};
-    .loading-spinner {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 999;
-    }
+
     .left-section {
       .upload-meditation-thumbnail {
         width: ${px2vwPc(400)};
@@ -145,14 +140,13 @@ const UploadMeditationContainer = styled.div`
   }
 `;
 
-const UploadMeditation = ({ setShow }: UploadMeditationStyle) => {
+const UploadMeditation = ({ setShow, setLoading }: UploadMeditationStyle) => {
   const thumbnailRef = useRef<any>(null);
   const [meditationTitle, setMeditationTitle] = useState("");
   const [meditationBible, setMeditationBible] = useState("");
   const [thumbnail, setThumbnail] = useState<any>();
   const [music, setMusic] = useState<any>();
   const [still, setStill] = useState<any>(null);
-  const [loading, setLoading] = useState<boolean>(false);
   const [startDate, setStartDate] = useState<Date | null>(new Date());
 
   const createMeditationMutation = useMutation({
@@ -206,9 +200,6 @@ const UploadMeditation = ({ setShow }: UploadMeditationStyle) => {
         animate={{ opacity: 1 }}
         className="upload-meditation-wrap"
       >
-        {loading ? (
-          <img className="loading-spinner" src="/assets/loading.gif" alt="" />
-        ) : null}
 
         <div className="left-section">
           <div

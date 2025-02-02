@@ -22,6 +22,23 @@ const AdminMeditationContainer = styled(motion.div)`
     justify-content: space-between;
     align-items: center;
   }
+  .loading-bg {
+    width: 100%;
+    height: 100%;
+    background: #00000013;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 999;
+
+    .loading-spinner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 999;
+    }
+  }
 
   table {
     border-collapse: collapse;
@@ -102,6 +119,8 @@ const AdminMeditation = () => {
   const [meditationId, setMeditationId] = useState<number>(0);
   // 페이지
   const [page, setPage] = useState<number>(1);
+  // 로딩
+  const [loading, setLoading] = useState<boolean>(false);
 
   // 묵상 리스트 가져오기
   const { data: meditationList } = useQuery({
@@ -140,11 +159,25 @@ const AdminMeditation = () => {
       initial={{ opacity: 0, x: -10 }}
       whileInView={{ opacity: 1, x: 0 }}
     >
-      {showUpload ? <UploadMeditation setShow={setShowUpload} /> : null}
-      {showEdit ? (
-        <EditMeditation id={meditationId} setShow={setShowEdit} />
-      ) : null}
-      {showDeletePopup ? (
+      {loading && (
+        <div className="loading-bg">
+          <img className="loading-spinner" src="/assets/loading.gif" alt="" />
+        </div>
+      )}
+
+      {showUpload && (
+        <UploadMeditation setLoading={setLoading} setShow={setShowUpload} />
+      )}
+
+      {showEdit && (
+        <EditMeditation
+          setLoading={setLoading}
+          id={meditationId}
+          setShow={setShowEdit}
+        />
+      )}
+
+      {showDeletePopup && (
         <PopupContainer>
           <p>{selectedItems.length}개의 묵상을 삭제하시겠습니까?</p>
           <div className="btn-area">
@@ -162,7 +195,7 @@ const AdminMeditation = () => {
             />
           </div>
         </PopupContainer>
-      ) : null}
+      )}
 
       <DashboardContainer>
         <p className="dashboard-title">묵상/추가/삭제 관리</p>

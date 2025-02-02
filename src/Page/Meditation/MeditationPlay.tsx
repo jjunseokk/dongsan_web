@@ -39,13 +39,15 @@ const MeditationPlay = () => {
     id: null,
     isOpen: false,
   }); // 삭제 시 팝업
+  const [currentTime, setCurrentTime] = useState(0); // 현재시간
+  const [duration, setDuration] = useState(0); // 총시간
   const [cookie] = useCookies(["login"]); // token 값
   const { profile } = userProfileStore(); // 프로필 상태 관리 불러오기
   const path = useParams<any>(); //path값 가져오기
 
   // 묵상상세
   const { data: meditationDetail, status } = useQuery({
-    queryKey: ["meditationDetail",],
+    queryKey: ["meditationDetail"],
     queryFn: () => getMeditationDetail(Number(path?.id)),
   });
 
@@ -121,6 +123,29 @@ const MeditationPlay = () => {
     });
   };
 
+  // 현재 시간 업데이트 함수
+  const handleTimeUpdate = () => {
+    if (playRef.current?.audio?.current) {
+      const audio = playRef.current.audio.current;
+      setCurrentTime(audio.currentTime);
+    }
+  };
+
+  // 오디오 로드 시 전체 길이 가져오기
+  const handleLoadedMetaData = () => {
+    if (playRef.current?.audio?.current) {
+      const audio = playRef.current.audio.current;
+      setDuration(audio.duration);
+    }
+  };
+
+    // 시간 포맷팅 함수
+    const formatTime = (seconds: number) => {
+      const mins = Math.floor(seconds / 60);
+      const secs = Math.floor(seconds % 60);
+      return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
+    };
+
   // 음원 재생/정지
   const handlePlayPause = () => {
     const audioElement = playRef.current.audio.current;
@@ -131,6 +156,20 @@ const MeditationPlay = () => {
     } else {
       audioElement.play(); // 정지 중이면 재생
       setIsPlaying(true); // 상태를 재생으로 변경
+    }
+  };
+
+  // 10초 앞으로
+  const handleJumpForward = () => {
+    if (playRef.current?.audio?.current) {
+      playRef.current.audio.current.currentTime += 10; // 10초 앞으로
+    }
+  };
+
+  // 10초 뒤로
+  const handleJumpBackward = () => {
+    if (playRef.current?.audio?.current) {
+      playRef.current.audio.current.currentTime -= 10; // 10초 뒤로
     }
   };
 
@@ -217,8 +256,27 @@ const MeditationPlay = () => {
               ? meditationDetail?.data.meditationDetail.word
               : "오늘의 묵상은 없습니다."}
           </p>
+          
+          <AudioPlayer
+            ref={playRef}
+            onPlay={() => setIsPlaying(true)}
+            onPause={() => setIsPlaying(false)}
+            onListen={handleTimeUpdate}
+            onLoadedMetaData={handleLoadedMetaData}
+            showSkipControls={false}
+            showJumpControls={true}
+            autoPlay={false}
+            src={meditationDetail?.data.meditationDetail.music}
+            // src="/assets/play.mp3"
+            style={{ display: "none" }}
+          />
+
           <div className="qt-audio-controller">
-            <img src="/assets/audio-prev.png" alt="prev" />
+            <img
+              onClick={handleJumpBackward}
+              src="/assets/audio-prev.png"
+              alt="prev"
+            />
             <img
               onClick={handlePlayPause}
               src={
@@ -226,19 +284,17 @@ const MeditationPlay = () => {
               }
               alt="play"
             />
-            <img src="/assets/audio-next.png" alt="next" />
+            <img
+              onClick={handleJumpForward}
+              src="/assets/audio-next.png"
+              alt="next"
+            />
           </div>
-          <AudioPlayer
-            ref={playRef}
-            onPlay={() => setIsPlaying(true)}
-            onPause={() => setIsPlaying(false)}
-            showSkipControls={true}
-            showJumpControls={false}
-            autoPlay={false}
-            src={meditationDetail?.data.meditationDetail.music}
-            // src="/assets/play.mp3"
-            style={{ display: "none" }}
-          />
+
+          <span className="meditation-audio-time">
+            {formatTime(currentTime)} / {formatTime(duration)}
+          </span>
+
           <div className="meditation-qt-activeArea">
             <div>
               <img

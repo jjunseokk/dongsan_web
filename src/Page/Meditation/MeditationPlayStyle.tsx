@@ -72,6 +72,12 @@ export const MeditationContainer = styled.div`
         margin-top: ${px2vw(30)};
         cursor: pointer;
       }
+
+      .meditation-audio-time {
+        font: 400 13px "Pretendard";
+        margin-top: ${px2vw(10)};
+      }
+
       .meditation-qt-activeArea {
         display: flex;
         align-items: center;

@@ -13,6 +13,7 @@ import "react-datepicker/dist/react-datepicker.css";
 interface EditMeditationStyle {
   setShow: React.Dispatch<SetStateAction<boolean>>;
   id: number;
+  setLoading: React.Dispatch<SetStateAction<boolean>>;
 }
 
 const EditMeditationContainer = styled.div`
@@ -133,7 +134,7 @@ const EditMeditationContainer = styled.div`
   }
 `;
 
-const EditMeditation = ({ setShow, id }: EditMeditationStyle) => {
+const EditMeditation = ({ setShow, id, setLoading }: EditMeditationStyle) => {
   const thumbnailRef = useRef<any>(null);
   const [meditationTitle, setMeditationTitle] = useState("");
   const [meditationBible, setMeditationBible] = useState("");
@@ -186,6 +187,7 @@ const EditMeditation = ({ setShow, id }: EditMeditationStyle) => {
     formData.append("date", startDate?.toISOString()?.split("T")[0] as any);
 
     editMeditationMutation.mutate(formData);
+    setLoading(true);
   };
 
   const cnaRegister = meditationTitle && meditationBible && thumbnail && music;
