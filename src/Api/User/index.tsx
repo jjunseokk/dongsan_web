@@ -1,5 +1,5 @@
 import AxiosInstance from "../../AxiosInstance";
-import { login, signUp } from "../../Type";
+import { adminLoginType, login, signUp } from "../../Type";
 
 // 로그인
 const showLogin = (data: login) => {
@@ -27,4 +27,9 @@ const editPassword = (data: any) => {
   return AxiosInstance.post(`/users/editPassword`, { data });
 };
 
-export { showLogin, showSignUp, getProfile, editPassword };
+// 어드민 로그인
+const showAdminLogin = (data: adminLoginType) => {
+  return AxiosInstance.post(`/users/adminLogin`, data);
+};
+
+export { showLogin,showAdminLogin, showSignUp, getProfile, editPassword };
