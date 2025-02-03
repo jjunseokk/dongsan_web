@@ -72,7 +72,7 @@ const AdminUserList = () => {
 
   // 유저 목록 불러오기
   const { data: userList } = useQuery({
-    queryKey: ["userList"],
+    queryKey: ["userList", page],
     queryFn: () => getUserList(page),
   });
 
