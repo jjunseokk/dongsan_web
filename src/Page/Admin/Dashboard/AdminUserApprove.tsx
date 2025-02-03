@@ -86,7 +86,7 @@ const AdminUserApprove = () => {
 
   // 가입 요청한 유저 목록
   const { data: userList } = useQuery({
-    queryKey: ["userList"],
+    queryKey: ["userList", page],
     queryFn: () => getUserList(page),
   });
 
