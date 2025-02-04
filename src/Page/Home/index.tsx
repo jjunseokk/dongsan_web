@@ -441,11 +441,7 @@ const Home = () => {
                             </p>
                           </div>
                         ) : null
-                      ) : // (
-                      //   <div className="modal-menu" ref={modalRef}>
-                      //     <p onClick={() => console.log("ss")}>신고하기</p>
-                      //   </div>
-                      // )
+                      ) :
                       null}
                     </div>
                   );
