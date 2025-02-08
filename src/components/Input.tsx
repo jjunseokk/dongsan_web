@@ -23,7 +23,7 @@ const InputContainer = styled.div<InputContainerStyle>`
   }
   > input {
     border: 1px solid #d9d9d9;
-    height: ${px2vw(40)};
+    height: ${px2vw(45)};
     width: 100%;
     padding: ${px2vw(11)} ${px2vw(12)};
     border-radius: 5px;

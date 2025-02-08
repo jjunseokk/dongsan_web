@@ -104,8 +104,8 @@ export const HomeContainer = styled.div`
       }
 
       .home-audio-time {
-        font: 400 13px "Pretendard";
-        margin-top: ${px2vw(10)};
+        font: 400 16px "Pretendard";
+        margin-top: ${px2vw(20)};
       }
       > input {
         width: 100%;
@@ -130,9 +130,11 @@ export const HomeContainer = styled.div`
           gap: ${px2vw(5)};
           > img {
             cursor: pointer;
+            width: ${px2vw(25)};
           }
           > p {
             color: #427d4f;
+            font: 400 18px "Pretendard";
           }
         }
       }
