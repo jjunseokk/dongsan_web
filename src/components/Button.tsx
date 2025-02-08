@@ -19,7 +19,7 @@ interface SignButtonStyleType {
 
 const SignButtonContainer = styled.button<SignButtonStyleType>`
   width: ${({ $width }) => ($width ? $width : px2vw(380))};
-  height: ${px2vw(37)};
+  height: ${px2vw(50)};
   border-radius: 5px;
   background-color: ${({ $bgColor }) => $bgColor};
   display: flex;

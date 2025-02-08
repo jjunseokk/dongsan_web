@@ -111,19 +111,21 @@ const Meditation = () => {
         {meditationList &&
           meditationList?.pages.map((allValue) =>
             allValue?.data?.meditationList?.map((value: meditation) => {
-              return (
-                <div
-                  key={value.id}
-                  onClick={() => navigate(`/meditation/${value.id}`)}
-                  className="meditation-item"
-                >
-                  <div>
-                    <p>{value.createDate}</p>
-                    <p>{value.word}</p>
+              if (new Date(value.createDate) <= new Date()) {
+                return (
+                  <div
+                    key={value.id}
+                    onClick={() => navigate(`/meditation/${value.id}`)}
+                    className="meditation-item"
+                  >
+                    <div>
+                      <p>{value.createDate}</p>
+                      <p>{value.word}</p>
+                    </div>
+                    <img src="/assets/right_arrow.png" alt="" />
                   </div>
-                  <img src="/assets/right_arrow.png" alt="" />
-                </div>
-              );
+                );
+              }
             })
           )}
         {meditationList?.pages[0]?.data?.meditationList?.length === 0 && (
