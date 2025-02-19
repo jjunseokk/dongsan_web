@@ -160,7 +160,7 @@ const Admin = () => {
           </p>
           <p onClick={() => navigate("/dongsan/admin/userList")}>성도</p>
           <p className="title">대시보드</p>
-          <p onClick={() => navigate("/dongsan/admin/inquiries")}>문의 내역</p>
+          {/* <p onClick={() => navigate("/dongsan/admin/inquiries")}>문의 내역</p> */}
           <p onClick={() => navigate("/dongsan/admin/notice")}>공지사항</p>
           <p onClick={() => navigate("/dongsan/admin/faq")}>FAQ</p>
         </div>
