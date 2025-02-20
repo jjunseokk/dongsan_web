@@ -141,6 +141,7 @@ const Admin = () => {
             borderColor="#427d4f"
             onClick={handleLogin}
             width={"200px"}
+            onKeyDown={handleLogin}
           />
         </div>
       ) : null}
