@@ -69,7 +69,7 @@ const BottomMenu = () => {
         onClick={() => navigate("/story")}
       >
         <StroyImg fill={pathname.includes("/story") ? "#427D4F" : "#000000"} />
-        <p>사연</p>
+        <p>커뮤니티</p>
       </div>
       <div
         className={pathname.includes("/myPage") ? "active" : ""}
