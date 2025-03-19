@@ -1,55 +1,162 @@
 import BottomMenu from "../../components/BottomMenu";
 import BackHeader from "../../components/BackHeader";
-import { StoryContainer } from "./storyStyle";
+import { CommunityContainer } from "./communityStyle";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import Input from "../../components/Input";
+import Button from "../../components/Button";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { addCommunityType, getCommunityType } from "../../Type";
+import { addCommunity, getCommunity } from "../../Api/Client";
+import { useCookies } from "react-cookie";
+import userProfileStore from "../../Store/userProfile";
 
-const Story = () => {
+const Community = () => {
     const navigate = useNavigate();
-    const content =
-        "안녕하세요. 저는 아무개입니다. 오늘은 날씨가 좋네요. 우리가 할 수 있는 일이라곤 많지 않지만, 그래도 뭔가를 해보려고 합니다.";
+    const formRef = useRef<HTMLDivElement | null>(null);
+    const queryClient = useQueryClient();
 
-    const truncatedContent = content.length > 20 ? content.slice(0, 20) + "..." : content;
+    const [createCommunity, setCreateCommunity] = useState<boolean>(false);
+    const [title, setTitle] = useState<string>("");
+    const [content, setContent] = useState<string>("");
+    const [showMenu, setShowMenu] = useState<number | null>(null);
+    const [anonymity, setAnonymity] = useState<boolean>(false);
+    const [cookie] = useCookies(["login"]);
+    const { profile } = userProfileStore(); // 프로필 상태 관리 불러오기
+
+    const { data } = useQuery({
+        queryKey: ["community"],
+        queryFn: () => getCommunity(),
+    });
+
+    const addCommunityMutation = useMutation({
+        mutationKey: ["community add"],
+        mutationFn: (data: addCommunityType) => addCommunity(data, cookie.login),
+        onSuccess: (res) => {
+            if (res.status === 200) {
+                setTitle("");
+                setContent("");
+                setAnonymity(false);
+                setCreateCommunity(false);
+                queryClient.invalidateQueries({
+                    queryKey: ["community"],
+                });
+            }
+        },
+        onError: (err) => {
+            console.log(err);
+        },
+    });
+
+    const handleAddCommunity = () => {
+        addCommunityMutation.mutate({
+            title,
+            content,
+            anonymity,
+        });
+    };
+
+    useEffect(() => {
+        const handleClickOutside = (event: any) => {
+            if (formRef.current && !formRef.current.contains(event.target)) {
+                setCreateCommunity(false);
+            }
+        };
+
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, [setCreateCommunity]);
 
     return (
-        <StoryContainer>
-            <BackHeader backHandle={false} title="커뮤니티" />
-
-            <div className="story-wrap">
-                <div className="story-item">
-                    <div className="story-item-container">
-                        <div className="user">
-                            <div className="user-thumbnail">
-                                <img src="" alt="" />
-                            </div>
-                            <div className="user-info">
-                                <p>아무개</p>
-                                <p>2월 27일</p>
-                            </div>
-                        </div>
-                        <img src="/assets/more_menu.png" alt="" />
+        <CommunityContainer>
+            <div className={createCommunity ? "community-form-container active" : "community-form-container"}>
+                <div ref={formRef} className={createCommunity ? "community-form active" : "community-form"}>
+                    <Input title="제목" setValue={setTitle} value={title} placeholder="제목을 입력해주세요." />
+                    <div className="community-anonymity">
+                        <input checked={anonymity} onChange={() => setAnonymity(!anonymity)} type="checkBox" />
+                        <p>익명으로 작성하기</p>
+                    </div>
+                    <div>
+                        <p>내용</p>
+                        <textarea
+                            placeholder="내용을 입력해주세요."
+                            onChange={(e) => setContent(e.target.value)}
+                            value={content}
+                        />
                     </div>
 
-                    <div className="story-content">
-                        <p>
-                            {truncatedContent}
-                            {content.length > 20 && (
-                                <button onClick={() => navigate(`/story/${1}/detail`)}>더보기</button>
-                            )}
-                        </p>
-                    </div>
-                    <div className="story-event">
-                        <img src="/assets/heart.png" alt="" />
-                        <img src="/assets/comment.png" alt="" />
-                    </div>
+                    <Button
+                        width={"100%"}
+                        borderColor="#427d4f"
+                        color="#427d4f"
+                        context="글 발행하기"
+                        onClick={handleAddCommunity}
+                    />
                 </div>
             </div>
 
-            <div className="story-add">
+            <BackHeader backHandle={false} title="커뮤니티" />
+
+            <div className="community-wrap">
+                {data?.data.community.map((value: getCommunityType) => {
+                    const truncatedContent =
+                        value.content.length > 40 ? value.content.slice(0, 40) + "..." : value.content;
+
+                    return (
+                        <div key={value.id} className="community-item">
+                            <div className="community-item-container">
+                                <div className="user">
+                                    <div className="user-thumbnail">
+                                        <img src="/assets/tree.png" alt="" />
+                                    </div>
+                                    <div className="user-info">
+                                        <p>{value.anonymity === 1 ? value.nickname : value.writer}</p>
+                                        <p>{value.createDate}</p>
+                                    </div>
+                                </div>
+                                <div
+                                    className="more-btn"
+                                    onClick={() => setShowMenu((prev) => (prev === value.id ? null : value.id))}
+                                >
+                                    <img src="/assets/more_menu.png" alt="" />
+                                    {profile.name === value.writer && showMenu === value.id ? (
+                                        <div className="menu">
+                                            <p>수정</p>
+                                            <p>삭제</p>
+                                        </div>
+                                    ) : showMenu === value.id ? (
+                                        <div className="menu">
+                                            <p>신고</p>
+                                        </div>
+                                    ) : null}
+                                </div>
+                            </div>
+
+                            <div className="community-content">
+                                <p>{truncatedContent}</p>
+                                {value.content.length > 20 && (
+                                    <button onClick={() => navigate(`/community/${value.id}/detail`)}>더보기</button>
+                                )}
+                            </div>
+                            <div className="community-event">
+                                <div>
+                                    <img src="/assets/heart.png" alt="" />
+                                    <p>1</p>
+                                </div>
+                            </div>
+                        </div>
+                    );
+                })}
+            </div>
+
+            <div onClick={() => setCreateCommunity(true)} className="community-add">
                 <img src="/assets/plus.png" alt="" />
             </div>
             <BottomMenu />
-        </StoryContainer>
+        </CommunityContainer>
     );
 };
 
-export default Story;
+export default Community;

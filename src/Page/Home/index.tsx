@@ -24,7 +24,7 @@ import {
 } from "../../Type";
 import { useCookies } from "react-cookie";
 import { getProfile } from "../../Api/User";
-import userProfileStore from "../../Store";
+import userProfileStore from "../../Store/userProfile";
 import { useNavigate } from "react-router-dom";
 
 const Home = () => {

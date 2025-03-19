@@ -49,8 +49,8 @@ function App() {
           <Route path="/main" element={<Home />} />
           <Route path="/meditation" element={<Meditation />} />
           <Route path="/meditation/:id" element={<MeditationPlay />} />
-          <Route path="/story" element={<Community />} />
-          <Route path="/story/:id/detail" element={<CommunityDetail />} />
+          <Route path="/community" element={<Community />} />
+          <Route path="/community/:id/detail" element={<CommunityDetail />} />
           <Route path="/myPage" element={<EditUserInfo />} />
           <Route path="/myPage/notice" element={<Notice />} />
           <Route path="/myPage/withdrawal" element={<Withdrawal />} />

@@ -7,7 +7,7 @@ import Button from "../../components/Button";
 import BackHeader from "../../components/BackHeader";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCookies } from "react-cookie";
-import userProfileStore from "../../Store";
+import userProfileStore from "../../Store/userProfile";
 import {
   deleteComments,
   editComments,
