@@ -88,7 +88,7 @@ const Community = () => {
         });
     };
 
-    const handleEditCommunity = () => {};
+    // const handleEditCommunity = () => {};
 
     useEffect(() => {
         const handleClickOutside = (event: any) => {
