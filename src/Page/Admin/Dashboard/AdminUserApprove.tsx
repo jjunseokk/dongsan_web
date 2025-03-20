@@ -60,6 +60,7 @@ const AdminUserApproveContainer = styled(motion.div)`
       tr {
         td {
           font: 400 14px "Pretendard";
+          height: 65px;
           &:nth-of-type(2) {
             padding-left: ${px2vwPc(10)};
           }
@@ -86,7 +87,7 @@ const AdminUserApprove = () => {
 
   // 가입 요청한 유저 목록
   const { data: userList } = useQuery({
-    queryKey: ["userList"],
+    queryKey: ["userList", page],
     queryFn: () => getUserList(page),
   });
 
@@ -128,7 +129,7 @@ const AdminUserApprove = () => {
             {userList?.data.profile.map((value: getUser, index: number) => {
               return (
                 <tr key={value.id}>
-                  <td>{index + 1}</td>
+                  <td>{(page - 1) * 10 + index + 1}</td>
                   <td>{value.userId}</td>
                   <td>{value.name}</td>
                   <td>{value.createDate}</td>

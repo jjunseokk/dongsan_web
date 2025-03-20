@@ -4,7 +4,7 @@ import { px2vw } from "../../Util/px2vw";
 import BackHeader from "../../components/BackHeader";
 import { useMutation } from "@tanstack/react-query";
 import { showSecession } from "../../Api/Client";
-import userProfileStore from "../../Store";
+import userProfileStore from "../../Store/userProfile";
 import { secessionType } from "../../Type";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";

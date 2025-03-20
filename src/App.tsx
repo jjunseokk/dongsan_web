@@ -6,7 +6,7 @@ import Splash from "./Page/Login/Splash";
 import Home from "./Page/Home";
 import SignUp from "./Page/SignUp";
 import Meditation from "./Page/Meditation";
-import Story from "./Page/Story";
+import Community from "./Page/Community";
 import EditUserInfo from "./Page/MyPage";
 import MeditationPlay from "./Page/Meditation/MeditationPlay";
 import Notice from "./Page/MyPage/Notice";
@@ -20,6 +20,7 @@ import Inquiries from "./Page/Inquiries";
 import AdminFaq from "./Page/Admin/Dashboard/AdminFaq";
 import Withdrawal from "./Page/MyPage/Withdrawal";
 import FaQ from "./Page/MyPage/FaQ";
+import CommunityDetail from "./Page/Community/CommunityDetail";
 
 const userSize = window.innerWidth;
 
@@ -48,7 +49,8 @@ function App() {
           <Route path="/main" element={<Home />} />
           <Route path="/meditation" element={<Meditation />} />
           <Route path="/meditation/:id" element={<MeditationPlay />} />
-          <Route path="/story" element={<Story />} />
+          <Route path="/community" element={<Community />} />
+          <Route path="/community/:id/detail" element={<CommunityDetail />} />
           <Route path="/myPage" element={<EditUserInfo />} />
           <Route path="/myPage/notice" element={<Notice />} />
           <Route path="/myPage/withdrawal" element={<Withdrawal />} />

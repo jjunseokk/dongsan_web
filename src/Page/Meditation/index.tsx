@@ -24,22 +24,23 @@ const MeditationContainer = styled.div`
       display: none;
     }
     .meditation-item {
-      padding: ${px2vw(25)};
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid #ababab;
-      > div {
-        > p {
-          font: 600 20px "Pretendard";
-          &:last-of-type {
-            font-size: 15px;
-            color: #427d4f;
-            margin-top: ${px2vw(5)};
-          }
+            padding: ${px2vw(25)};
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ababab;
+            > div {
+                > p {
+                    font: 600 20px "Pretendard";
+                    &:last-of-type {
+                        font-size: 15px;
+                        color: #427d4f;
+                        margin-top: ${px2vw(5)};
+                    }
+                }
+            }
         }
-      }
-    }
+    
     .meditation-no-data {
       font: 600 20px "Pretendard";
       color: #ababab;
@@ -111,19 +112,21 @@ const Meditation = () => {
         {meditationList &&
           meditationList?.pages.map((allValue) =>
             allValue?.data?.meditationList?.map((value: meditation) => {
-              return (
-                <div
-                  key={value.id}
-                  onClick={() => navigate(`/meditation/${value.id}`)}
-                  className="meditation-item"
-                >
-                  <div>
-                    <p>{value.createDate}</p>
-                    <p>{value.word}</p>
+              if (new Date(value.createDate) <= new Date()) {
+                return (
+                  <div
+                    key={value.id}
+                    onClick={() => navigate(`/meditation/${value.id}`)}
+                    className="meditation-item"
+                  >
+                    <div>
+                      <p>{value.createDate}</p>
+                      <p>{value.word}</p>
+                    </div>
+                    <img src="/assets/right_arrow.png" alt="" />
                   </div>
-                  <img src="/assets/right_arrow.png" alt="" />
-                </div>
-              );
+                );
+              }
             })
           )}
         {meditationList?.pages[0]?.data?.meditationList?.length === 0 && (

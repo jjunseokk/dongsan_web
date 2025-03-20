@@ -5,7 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { PopupContainer } from "../Login";
 import Input from "../../components/Input";
 import Button from "../../components/Button";
-import userProfileStore from "../../Store";
+import userProfileStore from "../../Store/userProfile";
 import { useMutation } from "@tanstack/react-query";
 import { changeProfile } from "../../Api/Client";
 import { useCookies } from "react-cookie";

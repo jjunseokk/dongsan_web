@@ -7,7 +7,7 @@ import Button from "../../components/Button";
 import BackHeader from "../../components/BackHeader";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCookies } from "react-cookie";
-import userProfileStore from "../../Store";
+import userProfileStore from "../../Store/userProfile";
 import {
   deleteComments,
   editComments,
@@ -29,6 +29,7 @@ import { useParams } from "react-router-dom";
 const MeditationPlay = () => {
   const queryClient = useQueryClient();
   const playRef = useRef<any>(null);
+  const modalRef = useRef<any>(null);
   const [isPlaying, setIsPlaying] = useState<boolean>(false); // 음원 재생
   const [showComment, setShowComment] = useState<boolean>(false); // 댓글 쓰기 팝업
   const [showEdit, setShowEdit] = useState<number | null>(null); // 수정 시 input으로 변경
@@ -139,12 +140,12 @@ const MeditationPlay = () => {
     }
   };
 
-    // 시간 포맷팅 함수
-    const formatTime = (seconds: number) => {
-      const mins = Math.floor(seconds / 60);
-      const secs = Math.floor(seconds % 60);
-      return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
-    };
+  // 시간 포맷팅 함수
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60);
+    return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
+  };
 
   // 음원 재생/정지
   const handlePlayPause = () => {
@@ -216,6 +217,22 @@ const MeditationPlay = () => {
     }
   }, [meditationDetail?.data.meditationDetail?.music]);
 
+  useEffect(() => {
+    const handleClickOutside = (event: any) => {
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        setShowModalMenu(null);
+      }
+    };
+
+    // Add event listener when the component mounts
+    document.addEventListener("mousedown", handleClickOutside);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [modalRef]);
+
   return (
     <MeditationContainer>
       {showDeletePopup.isOpen ? (
@@ -256,7 +273,7 @@ const MeditationPlay = () => {
               ? meditationDetail?.data.meditationDetail.word
               : "오늘의 묵상은 없습니다."}
           </p>
-          
+
           <AudioPlayer
             ref={playRef}
             onPlay={() => setIsPlaying(true)}
@@ -376,7 +393,7 @@ const MeditationPlay = () => {
 
                       {showModalMenu === index ? (
                         profile?.userId === value.userId ? (
-                          <div className="modal-menu">
+                          <div className="modal-menu" ref={modalRef}>
                             <p onClick={() => handleEdit(index)}>수정하기</p>
                             <p
                               onClick={() =>
@@ -389,11 +406,7 @@ const MeditationPlay = () => {
                               삭제하기
                             </p>
                           </div>
-                        ) : (
-                          <div className="modal-menu">
-                            <p onClick={() => console.log("ss")}>신고하기</p>
-                          </div>
-                        )
+                        ) : null
                       ) : null}
                     </div>
                   );

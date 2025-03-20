@@ -21,7 +21,7 @@ const PaginationContainer = styled.div<paginationStyleType>`
 `;
 
 const CustomPagination = ({ page, setPage, totalPage }: paginationType) => {
-  const pageCount = Math.ceil(totalPage / 6);
+  const pageCount = Math.ceil(totalPage / 10);
   
   const handleChange = (_: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);

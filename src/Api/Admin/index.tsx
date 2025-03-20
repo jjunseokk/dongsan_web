@@ -101,6 +101,8 @@ const getFaqType = () => {
   return AxiosInstance.get(`/admin/fagType`);
 };
 
+
+
 export {
   getMeditation,
   createMeditation,

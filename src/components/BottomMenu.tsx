@@ -65,11 +65,11 @@ const BottomMenu = () => {
         <p>묵상</p>
       </div>
       <div
-        className={pathname.includes("/story") ? "active" : ""}
-        onClick={() => navigate("/story")}
+        className={pathname.includes("/community") ? "active" : ""}
+        onClick={() => navigate("/community")}
       >
-        <StroyImg fill={pathname.includes("/story") ? "#427D4F" : "#000000"} />
-        <p>사연</p>
+        <StroyImg fill={pathname.includes("/community") ? "#427D4F" : "#000000"} />
+        <p>커뮤니티</p>
       </div>
       <div
         className={pathname.includes("/myPage") ? "active" : ""}

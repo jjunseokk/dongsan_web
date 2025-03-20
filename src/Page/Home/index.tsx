@@ -24,7 +24,7 @@ import {
 } from "../../Type";
 import { useCookies } from "react-cookie";
 import { getProfile } from "../../Api/User";
-import userProfileStore from "../../Store";
+import userProfileStore from "../../Store/userProfile";
 import { useNavigate } from "react-router-dom";
 
 const Home = () => {
@@ -441,11 +441,7 @@ const Home = () => {
                             </p>
                           </div>
                         ) : null
-                      ) : // (
-                      //   <div className="modal-menu" ref={modalRef}>
-                      //     <p onClick={() => console.log("ss")}>신고하기</p>
-                      //   </div>
-                      // )
+                      ) :
                       null}
                     </div>
                   );

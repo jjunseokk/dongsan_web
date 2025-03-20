@@ -27,7 +27,7 @@ const SignUpContainer = styled.div`
     }
     .caption-input {
       > p {
-        font-size: 10px;
+        font-size: 12px;
         font-weight: 500;
         margin-top: ${px2vw(5)};
       }
@@ -53,8 +53,8 @@ const SignUpContainer = styled.div`
           margin: ${px2vw(5)} 0;
         }
         > input {
-          width: ${px2vw(17)};
-          height: ${px2vw(17)};
+          width: ${px2vw(20)};
+          height: ${px2vw(20)};
           accent-color: #427d4f;
         }
       }
