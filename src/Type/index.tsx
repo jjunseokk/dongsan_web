@@ -167,6 +167,13 @@ export interface addCommunityType {
     anonymity: boolean;
 }
 
+export interface communityHeartType {
+    heartId: number;
+    heart: number;
+    userId: string;
+    communityId: number;
+}
+
 // 커뮤니티 조회
 export interface getCommunityType {
     id: number;
@@ -176,4 +183,5 @@ export interface getCommunityType {
     createDate: string;
     anonymity: boolean | number;
     nickname: string | null;
+    communityHeart: communityHeartType;
 }

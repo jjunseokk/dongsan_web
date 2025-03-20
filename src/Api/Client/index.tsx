@@ -83,8 +83,32 @@ const getCommunity = () => {
     return AxiosInstance.get(`/client/community`);
 };
 
+// 커뮤니티 상세 조회
 const getCommunityDetail = (id: number) => {
     return AxiosInstance.get(`/client/community/detail?id=${id}`);
+};
+
+// 커뮤니티 삭제
+const deleteCommunity = (id: number) => {
+    return AxiosInstance.delete(`/client/community?id=${id}`);
+};
+
+// 커뮤니티 수정
+const editCommunity = (content: string, id: number) => {
+    return AxiosInstance.patch(`client/community?id=${id}`, { content });
+};
+
+// 커뮤니티 좋아요
+const showCommunityHeart = (communityId: number, token: string) => {
+    return AxiosInstance.post(
+        `client/communityHeart`,
+        { communityId },
+        {
+            headers: {
+                Authorization: token,
+            },
+        }
+    );
 };
 
 export {
@@ -100,4 +124,7 @@ export {
     addCommunity,
     getCommunity,
     getCommunityDetail,
+    deleteCommunity,
+    editCommunity,
+    showCommunityHeart,
 };

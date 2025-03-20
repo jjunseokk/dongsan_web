@@ -83,16 +83,25 @@ export const CommunityContainer = styled.div`
         overflow: scroll;
         height: 89%;
         margin-bottom: ${px2vw(55)};
+        position: relative;
 
         &::-webkit-scrollbar {
             display: none;
+        }
+
+        .null {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #427d4f;
         }
         > .community-item {
             width: 100%;
             background: #fff;
             padding: ${px2vw(12)};
             margin: ${px2vw(10)} 0;
-            &:first-of-type{
+            &:first-of-type {
                 margin-top: 0px;
             }
 
@@ -147,7 +156,7 @@ export const CommunityContainer = styled.div`
                             align-items: center;
                             justify-content: center;
                             cursor: pointer;
-                            &:last-of-type{
+                            &:last-of-type {
                                 color: red;
                             }
                         }

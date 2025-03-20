@@ -7,7 +7,7 @@ import Input from "../../components/Input";
 import Button from "../../components/Button";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { addCommunityType, getCommunityType } from "../../Type";
-import { addCommunity, getCommunity } from "../../Api/Client";
+import { addCommunity, deleteCommunity, editCommunity, getCommunity, showCommunityHeart } from "../../Api/Client";
 import { useCookies } from "react-cookie";
 import userProfileStore from "../../Store/userProfile";
 
@@ -48,6 +48,38 @@ const Community = () => {
         },
     });
 
+    const deleteCommunityMutation = useMutation({
+        mutationKey: ["community delete"],
+        mutationFn: (id: number) => deleteCommunity(id),
+        onSuccess: (res) => {
+            if (res.status === 200) {
+                queryClient.invalidateQueries({
+                    queryKey: ["community"],
+                });
+            }
+        },
+        onError: (err) => {
+            console.log(err);
+        },
+    });
+
+    const communityHeartMutation = useMutation({
+        mutationKey: ["heart"],
+        mutationFn: (communityId: number) => showCommunityHeart(communityId, cookie.login),
+        onSuccess: (res) => {
+            if (res.status === 200) {
+                queryClient.invalidateQueries({
+                    queryKey: ["community"],
+                });
+            }
+        },
+    });
+
+    // const editCommunityMutation = useMutation({
+    //     mutationKey: ["community edit"],
+    //     mutationFn: ({ id, content }: { id: number; content: string }) => editCommunity(content, id),
+    // });
+
     const handleAddCommunity = () => {
         addCommunityMutation.mutate({
             title,
@@ -55,6 +87,8 @@ const Community = () => {
             anonymity,
         });
     };
+
+    const handleEditCommunity = () => {};
 
     useEffect(() => {
         const handleClickOutside = (event: any) => {
@@ -100,9 +134,10 @@ const Community = () => {
             <BackHeader backHandle={false} title="커뮤니티" />
 
             <div className="community-wrap">
+                {data?.data.community.length === 0 && <p className="null">커뮤니티를 추가해보세요.</p>}
                 {data?.data.community.map((value: getCommunityType) => {
                     const truncatedContent =
-                        value.content.length > 40 ? value.content.slice(0, 40) + "..." : value.content;
+                        value?.content?.length > 40 ? value?.content?.slice(0, 40) + "..." : value.content;
 
                     return (
                         <div key={value.id} className="community-item">
@@ -123,8 +158,7 @@ const Community = () => {
                                     <img src="/assets/more_menu.png" alt="" />
                                     {profile.name === value.writer && showMenu === value.id ? (
                                         <div className="menu">
-                                            <p>수정</p>
-                                            <p>삭제</p>
+                                            <p onClick={() => deleteCommunityMutation.mutate(value.id)}>삭제</p>
                                         </div>
                                     ) : showMenu === value.id ? (
                                         <div className="menu">
@@ -142,8 +176,17 @@ const Community = () => {
                             </div>
                             <div className="community-event">
                                 <div>
-                                    <img src="/assets/heart.png" alt="" />
-                                    <p>1</p>
+                                    <img
+                                        onClick={() => communityHeartMutation.mutate(value.id)}
+                                        src={
+                                            Array.isArray(value?.communityHeart) &&
+                                            value.communityHeart.some((item: any) => item.userId === profile.userId)
+                                                ? "/assets/heart-active.png"
+                                                : "/assets/heart.png"
+                                        }
+                                        alt=""
+                                    />
+                                    <p>{Array.isArray(value.communityHeart) ? value.communityHeart.length : 0}</p>
                                 </div>
                             </div>
                         </div>

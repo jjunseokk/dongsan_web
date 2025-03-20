@@ -4,9 +4,11 @@ import { px2vw } from "../../Util/px2vw";
 import { useQuery } from "@tanstack/react-query";
 import { getCommunityDetail } from "../../Api/Client";
 import { useParams } from "react-router-dom";
+import userProfileStore from "../../Store/userProfile";
 
 const CommunityDetail = () => {
     const { id } = useParams();
+    const { profile } = userProfileStore(); // 프로필 상태 관리 불러오기
 
     const { data } = useQuery({
         queryKey: ["Community Detail", id],
@@ -33,8 +35,12 @@ const CommunityDetail = () => {
 
                 <div className="community-event">
                     <div>
-                        <img src="/assets/heart.png" alt="" />
-                        <p>1</p>
+                        <img src={ data?.data.heart.some(
+                    (item: any) => item.userId === profile.userId
+                  )
+                    ? "/assets/heart-active.png"
+                    : "/assets/heart.png"} alt="" />
+                        <p>{data?.data.heart.length}</p>
                     </div>
                 </div>
                 {/* <div className="community-comment">
