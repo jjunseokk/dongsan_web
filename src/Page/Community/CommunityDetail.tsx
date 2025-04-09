@@ -24,7 +24,7 @@ const CommunityDetail = () => {
                         <img src="/assets/tree.png" alt="" />
                     </div>
                     <div className="user-info">
-                        <p>{data?.data?.communityDetail?.writer}</p>
+                        <p>{data?.data?.communityDetail?.nickname}</p>
                     </div>
                 </div>
                 <div className="community-content-detail">
