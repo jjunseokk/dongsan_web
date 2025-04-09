@@ -174,7 +174,7 @@ export const CommunityContainer = styled.div`
                     border: none;
                     cursor: pointer;
                     margin-top: ${px2vw(15)};
-                    color: #151515;
+                    color: #427d4f;
                     font-size: 18px;
                 }
             }
