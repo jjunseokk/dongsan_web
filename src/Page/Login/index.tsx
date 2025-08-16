@@ -103,7 +103,7 @@ const Login = () => {
         onSuccess: (res) => {
             if (res.status === 200) {
                 setShowSuccessPopup(true);
-                setCookie("login", res.data.token, { path: "/", maxAge: 60 * 60 * 24 * 30 }); // 로그인에 성공하면 token값 저장, 7일 동안 유지
+                setCookie("login", res.data.token, { path: "/", maxAge: 60 * 60 * 24 * 90 }); // 로그인에 성공하면 token값 저장, 3개월 동안 유지
             }
         },
         onError: (err: any) => {
