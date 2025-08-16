@@ -77,6 +77,9 @@ export const PopupContainer = styled.div`
             width: ${px2vw(309 / 2)};
         }
     }
+    >img{
+        margin-bottom: 10px;
+    }
 `;
 
 const Login = () => {

@@ -73,12 +73,11 @@ const Community = () => {
                 });
             }
         },
+        onError: (err) => {
+            console.log(err);
+        },
     });
 
-    // const editCommunityMutation = useMutation({
-    //     mutationKey: ["community edit"],
-    //     mutationFn: ({ id, content }: { id: number; content: string }) => editCommunity(content, id),
-    // });
 
     const handleAddCommunity = () => {
         addCommunityMutation.mutate({
@@ -87,8 +86,6 @@ const Community = () => {
             anonymity,
         });
     };
-
-    // const handleEditCommunity = () => {};
 
     useEffect(() => {
         const handleClickOutside = (event: any) => {
