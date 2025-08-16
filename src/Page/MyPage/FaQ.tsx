@@ -209,8 +209,6 @@ const FaQ = () => {
     };
   }, [status]);
 
-  console.log(filteredFaqs);
-
   return (
     <FaQContainer>
       <BackHeader title="FAQ" />
