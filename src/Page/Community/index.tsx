@@ -7,7 +7,7 @@ import Input from "../../components/Input";
 import Button from "../../components/Button";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { addCommunityType, getCommunityType } from "../../Type";
-import { addCommunity, deleteCommunity, editCommunity, getCommunity, showCommunityHeart } from "../../Api/Client";
+import { addCommunity, deleteCommunity, getCommunity, showCommunityHeart } from "../../Api/Client";
 import { useCookies } from "react-cookie";
 import userProfileStore from "../../Store/userProfile";
 
@@ -88,7 +88,7 @@ const Community = () => {
         });
     };
 
-    const handleEditCommunity = () => {};
+    // const handleEditCommunity = () => {};
 
     useEffect(() => {
         const handleClickOutside = (event: any) => {
