@@ -184,7 +184,11 @@ const EditMeditation = ({ setShow, id, setLoading }: EditMeditationStyle) => {
         if (typeof music === "object") {
             formData.append("music", music);
         }
-        formData.append("date", startDate?.toISOString()?.split("T")[0] as any);
+
+        if (startDate) {
+            const dateObj = startDate instanceof Date ? startDate : new Date(startDate);
+            formData.append("date", dateObj.toISOString().split("T")[0]);
+        }
 
         editMeditationMutation.mutate(formData);
         setLoading(true);

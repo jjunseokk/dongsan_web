@@ -257,7 +257,7 @@ const AdminMeditation = () => {
         <CustomPagination
           page={page}
           setPage={setPage}
-          totalPage={Math.ceil(meditationList?.data.totalCount / 10)}
+          totalPage={meditationList?.data.totalCount}
         />
       </DashboardContainer>
     </AdminMeditationContainer>
