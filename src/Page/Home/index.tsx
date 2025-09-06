@@ -11,7 +11,7 @@ import {
   editComments,
   getComments,
   getTodayMeditation,
-  showHeart,
+  // showHeart,
   writeComment,
 } from "../../Api/Client";
 import {
@@ -20,7 +20,7 @@ import {
   DeletePopupState,
   editCommentsType,
   getCommentsType,
-  showHeartType,
+  // showHeartType,
 } from "../../Type";
 import { useCookies } from "react-cookie";
 import { getProfile } from "../../Api/User";
@@ -62,18 +62,18 @@ const Home = () => {
     queryFn: () => getComments(todayMeditation?.data?.today?.id),
   });
 
-  // 좋아요 뮤테이션
-  const heartMutation = useMutation({
-    mutationKey: ["heart"],
-    mutationFn: (data: showHeartType) => showHeart(data),
-    onSuccess: (res) => {
-      if (res.status === 200) {
-        queryClient.invalidateQueries({
-          queryKey: ["today"],
-        });
-      }
-    },
-  });
+  // // 좋아요 뮤테이션
+  // const heartMutation = useMutation({
+  //   mutationKey: ["heart"],
+  //   mutationFn: (data: showHeartType) => showHeart(data),
+  //   onSuccess: (res) => {
+  //     if (res.status === 200) {
+  //       queryClient.invalidateQueries({
+  //         queryKey: ["today"],
+  //       });
+  //     }
+  //   },
+  // });
 
   // 댓글수정 뮤테이션
   const editMutation = useMutation({
@@ -121,13 +121,13 @@ const Home = () => {
     },
   });
 
-  // 좋아요 버튼
-  const handleHeart = () => {
-    heartMutation.mutate({
-      meditationId: todayMeditation?.data.today.id,
-      token: cookie.login,
-    });
-  };
+  // // 좋아요 버튼
+  // const handleHeart = () => {
+  //   heartMutation.mutate({
+  //     meditationId: todayMeditation?.data.today.id,
+  //     token: cookie.login,
+  //   });
+  // };
 
   // 현재 시간 업데이트 함수
   const handleTimeUpdate = () => {
@@ -336,7 +336,7 @@ const Home = () => {
                 {formatTime(currentTime)} / {formatTime(duration)}
               </span>
 
-              <div className="home-qt-activeArea">
+              {/* <div className="home-qt-activeArea">
                 <div>
                   <img
                     onClick={handleHeart}
@@ -356,7 +356,7 @@ const Home = () => {
                   <img src="/assets/comment.png" alt="" />
                   <p>{comments?.data.totalCount}</p>
                 </div>
-              </div>
+              </div> */}
             </div>
           </>
         ) : (
