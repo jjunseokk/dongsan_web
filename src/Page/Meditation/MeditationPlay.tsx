@@ -8,14 +8,20 @@ import BackHeader from "../../components/BackHeader";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useCookies } from "react-cookie";
 import userProfileStore from "../../Store/userProfile";
-import { deleteComments, editComments, getComments, showHeart, writeComment } from "../../Api/Client";
+import {
+    deleteComments,
+    editComments,
+    getComments,
+    // showHeart,
+    writeComment,
+} from "../../Api/Client";
 import {
     comments,
     deleteCommentsType,
     DeletePopupState,
     editCommentsType,
     getCommentsType,
-    showHeartType,
+    // showHeartType,
 } from "../../Type";
 import { getMeditationDetail } from "../../Api/Admin";
 import { useNavigate, useParams } from "react-router-dom";
@@ -37,11 +43,11 @@ const MeditationPlay = () => {
     const [currentTime, setCurrentTime] = useState(0); // 현재시간
     const [duration, setDuration] = useState(0); // 총시간
     const [isError, setIsError] = useState(false); // 에러 상태
-    const [cookie,_,removeCookie] = useCookies(["login"]); // token 값
+    const [cookie, _, removeCookie] = useCookies(["login"]); // token 값
     const { profile } = userProfileStore(); // 프로필 상태 관리 불러오기
     const path = useParams<any>(); //path값 가져오기
-  const navigate = useNavigate();
-  
+    const navigate = useNavigate();
+
     // 묵상상세
     const { data: meditationDetail, status } = useQuery({
         queryKey: ["meditationDetail"],
@@ -54,24 +60,24 @@ const MeditationPlay = () => {
         queryFn: () => getComments(Number(path.id)),
     });
 
-    // 좋아요 뮤테이션
-    const heartMutation = useMutation({
-        mutationKey: ["heart"],
-        mutationFn: (data: showHeartType) => showHeart(data),
-        onSuccess: (res) => {
-            if (res.status === 200) {
-                queryClient.invalidateQueries({
-                    queryKey: ["meditationDetail"],
-                });
-            }
-        },
-        onError: (err: any) => {
-            console.log(err);
-            if (err.response?.status === 500) {
-                setIsError(true);
-            }
-        },
-    });
+    // // 좋아요 뮤테이션
+    // const heartMutation = useMutation({
+    //     mutationKey: ["heart"],
+    //     mutationFn: (data: showHeartType) => showHeart(data),
+    //     onSuccess: (res) => {
+    //         if (res.status === 200) {
+    //             queryClient.invalidateQueries({
+    //                 queryKey: ["meditationDetail"],
+    //             });
+    //         }
+    //     },
+    //     onError: (err: any) => {
+    //         console.log(err);
+    //         if (err.response?.status === 500) {
+    //             setIsError(true);
+    //         }
+    //     },
+    // });
 
     // 댓글수정 뮤테이션
     const editMutation = useMutation({
@@ -118,13 +124,13 @@ const MeditationPlay = () => {
         },
     });
 
-    // 좋아요 버튼
-    const handleHeart = () => {
-        heartMutation.mutate({
-            meditationId: Number(path?.id),
-            token: cookie.login,
-        });
-    };
+    // // 좋아요 버튼
+    // const handleHeart = () => {
+    //     heartMutation.mutate({
+    //         meditationId: Number(path?.id),
+    //         token: cookie.login,
+    //     });
+    // };
 
     // 현재 시간 업데이트 함수
     const handleTimeUpdate = () => {
@@ -241,12 +247,12 @@ const MeditationPlay = () => {
         };
     }, [modalRef]);
 
-      // 로그아웃 시 첫 화면으로
-  useEffect(() => {
-    if (cookie.login === undefined) {
-      navigate("/home");
-    }
-  }, [cookie]);
+    // 로그아웃 시 첫 화면으로
+    useEffect(() => {
+        if (cookie.login === undefined) {
+            navigate("/home");
+        }
+    }, [cookie]);
 
     return (
         <MeditationContainer>
@@ -320,7 +326,7 @@ const MeditationPlay = () => {
                         {formatTime(currentTime)} / {formatTime(duration)}
                     </span>
 
-                    <div className="meditation-qt-activeArea">
+                    {/* <div className="meditation-qt-activeArea">
                         <div>
                             <img
                                 onClick={handleHeart}
@@ -337,7 +343,7 @@ const MeditationPlay = () => {
                             <img src="/assets/comment.png" alt="" />
                             <p>{comments?.data.comment.length}</p>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
                 <div className={showComment ? "meditation-comment active" : "meditation-comment"}>
                     <div onClick={() => setShowComment(false)} className="comment-bg"></div>
