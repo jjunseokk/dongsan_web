@@ -21,6 +21,15 @@ const SplashContainer = styled.div`
         align-items: center;
         justify-content: center;
         flex-direction: column;
+        > p {
+            &:first-of-type {
+                font-size: 20px;
+            }
+            font-size: 15px;
+        }
+        >img{
+            width: 50%;
+        }
     }
     > .login-logo {
         width: ${px2vw(323)};
@@ -84,15 +93,16 @@ const Splash = () => {
     return (
         <SplashContainer>
             <div className="alert">
-                <h1>안녕하세요, 광주동산교회입니다.</h1>
-                <br/>
-                <h3>
+                <p>안녕하세요, 광주동산교회입니다.</p>
+                <br />
+                <p>
                     교회 사정상 안타깝게 앱 사용을 중지하기로 했습니다.
                     <br />
                     앱을 이용하시는 분들께 사과드립니다.
                     <br />
                     죄송합니다.
-                </h3>
+                </p>
+                <img src="/assets/tree.png" alt="" />
             </div>
             <img className="login-logo" src="/assets/login-logo.png" alt="" />
             <p className="login-slogan">
