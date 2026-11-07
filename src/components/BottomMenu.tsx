@@ -1,10 +1,10 @@
 import styled from "styled-components";
 import { px2vw } from "../Util/px2vw";
 import { useLocation, useNavigate } from "react-router-dom";
-import { ReactComponent as HomeImg } from "../../public/assets/home.svg";
-import { ReactComponent as MeditationImg } from "../../public/assets/meditation.svg";
-import { ReactComponent as StroyImg } from "../../public/assets/story.svg";
-import { ReactComponent as MyImg } from "../../public/assets/my.svg";
+import HomeImg from "../assets/home.svg?react";
+import MeditationImg from "../assets/meditation.svg?react";
+import StroyImg from "../assets/story.svg?react";
+import MyImg from "../assets/my.svg?react";
 
 const BottomMenuContainer = styled.div`
   position: fixed;

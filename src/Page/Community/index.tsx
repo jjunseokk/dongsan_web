@@ -123,7 +123,7 @@ const Community = () => {
                         borderColor="#427d4f"
                         color="#427d4f"
                         context="글 발행하기"
-                        onClick={handleAddCommunity}
+                        onClick={() => { if (title.trim() && content.trim()) handleAddCommunity(); }}
                     />
                 </div>
             </div>
@@ -159,7 +159,7 @@ const Community = () => {
                                         </div>
                                     ) : showMenu === value.id ? (
                                         <div className="menu">
-                                            <p>신고</p>
+                                            <p onClick={() => { setShowMenu(null); window.dispatchEvent(new CustomEvent("demo-error", { detail: "체험용 샘플 글입니다. 신고는 실제로 접수되지 않습니다." })); }}>신고 안내</p>
                                         </div>
                                     ) : null}
                                 </div>

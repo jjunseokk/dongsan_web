@@ -10,7 +10,7 @@ import { useEffect, useRef } from "react";
 
 const MeditationContainer = styled.div`
   width: ${px2vw(430)};
-  height: 100vh;
+  height: calc(100dvh - 56px);
   position: relative;
   overflow: hidden;
   margin: 0 auto;

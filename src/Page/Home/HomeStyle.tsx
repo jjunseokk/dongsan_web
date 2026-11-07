@@ -4,7 +4,7 @@ import { px2vw } from "../../Util/px2vw";
 export const HomeContainer = styled.div`
     width: ${px2vw(430)};
     margin: 0 auto;
-    height: 100vh;
+    height: calc(100dvh - 56px);
     position: relative;
     overflow: hidden;
     .alert {

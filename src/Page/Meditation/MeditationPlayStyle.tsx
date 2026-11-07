@@ -3,7 +3,7 @@ import { px2vw } from "../../Util/px2vw";
 
 export const MeditationContainer = styled.div`
   width: 100%;
-  height: 100vh;
+  height: calc(100dvh - 56px);
   position: relative;
   overflow: hidden;
   width: ${px2vw(430)};

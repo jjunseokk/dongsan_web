@@ -7,7 +7,7 @@ import { useCookies } from "react-cookie";
 const SplashContainer = styled.div`
     text-align: center;
     position: relative;
-    height: 100vh;
+    height: calc(100dvh - 56px);
     overflow: hidden;
     width: ${px2vw(430)};
     margin: 0 auto;

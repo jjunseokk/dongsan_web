@@ -49,14 +49,14 @@ const MeditationPlay = () => {
     const navigate = useNavigate();
 
     // 묵상상세
-    const { data: meditationDetail, status } = useQuery({
-        queryKey: ["meditationDetail"],
+    const { data: meditationDetail } = useQuery({
+        queryKey: ["meditationDetail", path.id],
         queryFn: () => getMeditationDetail(Number(path?.id)),
     });
 
     // 댓글조회
     const { data: comments } = useQuery({
-        queryKey: ["comment", status],
+        queryKey: ["comment", path.id],
         queryFn: () => getComments(Number(path.id)),
     });
 
@@ -87,7 +87,7 @@ const MeditationPlay = () => {
             if (res.status === 200) {
                 setShowEdit(null);
                 queryClient.invalidateQueries({
-                    queryKey: ["comment", status],
+                    queryKey: ["comment", path.id],
                 });
             }
         },
@@ -101,7 +101,7 @@ const MeditationPlay = () => {
             if (res.status === 200) {
                 setComment("");
                 queryClient.invalidateQueries({
-                    queryKey: ["comment", status],
+                    queryKey: ["comment", path.id],
                 });
             }
         },
@@ -118,7 +118,7 @@ const MeditationPlay = () => {
                     isOpen: false,
                 });
                 queryClient.invalidateQueries({
-                    queryKey: ["comment", status],
+                    queryKey: ["comment", path.id],
                 });
             }
         },
@@ -163,7 +163,7 @@ const MeditationPlay = () => {
             audioElement.pause(); // 재생 중이면 정지
             setIsPlaying(false); // 상태를 정지로 변경
         } else {
-            audioElement.play(); // 정지 중이면 재생
+            audioElement.play().catch(() => { setIsPlaying(false); window.dispatchEvent(new CustomEvent('demo-error', { detail: '음원을 재생할 수 없습니다. 다시 시도해주세요.' })); }); // 사용자 조작으로 재생
             setIsPlaying(true); // 상태를 재생으로 변경
         }
     };
@@ -313,37 +313,19 @@ const MeditationPlay = () => {
                     />
 
                     <div className="qt-audio-controller">
-                        <img onClick={handleJumpBackward} src="/assets/audio-prev.png" alt="prev" />
-                        <img
-                            onClick={handlePlayPause}
+                        <img role="button" tabIndex={0} onKeyDown={e => e.key === "Enter" && handleJumpBackward()} onClick={handleJumpBackward} src="/assets/audio-prev.png" alt="10초 뒤로" />
+                        <img role="button" tabIndex={0} onKeyDown={e => e.key === "Enter" && handlePlayPause()} onClick={handlePlayPause}
                             src={isPlaying ? "/assets/audio-pause.png" : "/assets/audio-play.png"}
-                            alt="play"
+                            alt={isPlaying ? "일시정지" : "음원 재생"}
                         />
-                        <img onClick={handleJumpForward} src="/assets/audio-next.png" alt="next" />
+                        <img role="button" tabIndex={0} onKeyDown={e => e.key === "Enter" && handleJumpForward()} onClick={handleJumpForward} src="/assets/audio-next.png" alt="10초 앞으로" />
                     </div>
 
                     <span className="meditation-audio-time">
                         {formatTime(currentTime)} / {formatTime(duration)}
                     </span>
 
-                    {/* <div className="meditation-qt-activeArea">
-                        <div>
-                            <img
-                                onClick={handleHeart}
-                                src={
-                                    meditationDetail?.data.heart.some((item: any) => item.userId === profile.userId)
-                                        ? "/assets/heart-active.png"
-                                        : "/assets/heart.png"
-                                }
-                                alt=""
-                            />
-                            <p>{meditationDetail?.data.heart.length}</p>
-                        </div>
-                        <div onClick={() => setShowComment(true)}>
-                            <img src="/assets/comment.png" alt="" />
-                            <p>{comments?.data.comment.length}</p>
-                        </div>
-                    </div> */}
+                    <button className="demo-reflection" onClick={() => setShowComment(true)}>묵상 나눔 {comments?.data.comment.length || 0}개 보기 · 작성</button>
                 </div>
                 <div className={showComment ? "meditation-comment active" : "meditation-comment"}>
                     <div onClick={() => setShowComment(false)} className="comment-bg"></div>

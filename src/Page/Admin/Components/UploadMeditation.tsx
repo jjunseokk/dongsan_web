@@ -144,9 +144,9 @@ const UploadMeditation = ({ setShow, setLoading }: UploadMeditationStyle) => {
   const thumbnailRef = useRef<any>(null);
   const [meditationTitle, setMeditationTitle] = useState("");
   const [meditationBible, setMeditationBible] = useState("");
-  const [thumbnail, setThumbnail] = useState<any>();
-  const [music, setMusic] = useState<any>();
-  const [still, setStill] = useState<any>(null);
+  const [thumbnail, setThumbnail] = useState<any>("/assets/demo-cover.svg");
+  const [music, setMusic] = useState<any>("/assets/demo-audio.wav");
+  const [still, setStill] = useState<any>("/assets/demo-cover.svg");
   const [startDate, setStartDate] = useState<Date | null>(new Date());
 
   const createMeditationMutation = useMutation({
@@ -176,6 +176,7 @@ const UploadMeditation = ({ setShow, setLoading }: UploadMeditationStyle) => {
   };
 
   const handleUploadMeditation = () => {
+    if (!meditationTitle.trim() || !meditationBible.trim()) return;
     const formData = new FormData();
     setLoading(true);
     formData.append("title", meditationTitle);
@@ -268,7 +269,7 @@ const UploadMeditation = ({ setShow, setLoading }: UploadMeditationStyle) => {
             />
           </div>
 
-          <div className="upload-mp3">
+          <div className="upload-mp3"><small>파일을 선택하지 않으면 데모 음원이 사용됩니다.</small>
             <p>음원 파일</p>
             <input onChange={handleGetMusic} type="file" accept="audio/*" />
           </div>

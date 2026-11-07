@@ -10,7 +10,7 @@ import BottomMenu from "../../components/BottomMenu";
 
 const NoticeContainer = styled.div`
   width: ${px2vw(430)};
-  height: 100vh;
+  height: calc(100dvh - 56px);
   margin: 0 auto;
   .notice-wrap {
     margin-bottom: ${px2vw(55)};

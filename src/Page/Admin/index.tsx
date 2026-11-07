@@ -49,7 +49,7 @@ const AdminContainer = styled.div`
     }
     .admin-menu {
         width: ${px2vwPc(350)};
-        height: 100vh;
+        height: calc(100dvh - 56px);
         background: #ffffff;
         box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 

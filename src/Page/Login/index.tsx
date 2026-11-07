@@ -36,7 +36,7 @@ const LoginContainer = styled.div`
     }
     .login-bg {
         width: 100%;
-        height: 100vh;
+        height: calc(100dvh - 56px);
         background: #15151536;
         position: absolute;
         top: 0%;

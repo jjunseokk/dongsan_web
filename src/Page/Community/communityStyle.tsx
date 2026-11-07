@@ -3,7 +3,7 @@ import { px2vw } from "../../Util/px2vw";
 
 export const CommunityContainer = styled.div`
     width: ${px2vw(430)};
-    height: 100vh;
+    height: calc(100dvh - 56px);
     margin: 0 auto;
     position: relative;
     overflow: hidden;
@@ -11,7 +11,7 @@ export const CommunityContainer = styled.div`
 
     .community-form-container {
         width: 100%;
-        height: 100vh;
+        height: calc(100dvh - 56px);
         position: absolute;
         top: 100%;
         left: 0%;

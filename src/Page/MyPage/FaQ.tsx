@@ -9,7 +9,7 @@ import { faqType } from "../../Type";
 
 const FaQContainer = styled.div`
   width: ${px2vw(430)};
-  height: 100vh;
+  height: calc(100dvh - 56px);
   margin: 0 auto;
   .faq-wrap {
     height: 89%;

@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 const WithdrawalContainer = styled.div`
   width: ${px2vw(430)};
   margin: 0 auto;
-  height: 100vh;
+  height: calc(100dvh - 56px);
   overflow: hidden;
   .withdrawal-wrap {
     text-align: center;

@@ -8,7 +8,7 @@ interface PrivacyType {
 
 const PrivacyContainer = styled.div`
   width: ${px2vw(430)};
-  height: 100vh;
+  height: calc(100dvh - 56px);
   overflow: auto;
   position: absolute;
   top: 0;

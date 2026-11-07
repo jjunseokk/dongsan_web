@@ -2,7 +2,7 @@ import "./App.scss";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import styled from "styled-components";
 import Login from "./Page/Login";
-import Splash from "./Page/Login/Splash";
+import { DemoFrame, DemoLanding } from "./demo/Experience";
 import Home from "./Page/Home";
 import SignUp from "./Page/SignUp";
 import Meditation from "./Page/Meditation";
@@ -29,21 +29,17 @@ interface AppContainerStyle {
 }
 
 const AppContainer = styled.div<AppContainerStyle>`
-  @media screen and (max-width: 768px) {
-    width: 430px;
-    margin: 0 auto;
-  }
-  @media screen and (max-width: 430px) {
-    width: ${({ $width }) => $width}px;
-  }
+
+
 `;
 
 function App() {
   return (
     <AppContainer $width={userSize}>
       <BrowserRouter>
+        <DemoFrame />
         <Routes>
-          <Route path="/" element={<Splash />} />
+          <Route path="/" element={<DemoLanding />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signUp" element={<SignUp />} />
           <Route path="/main" element={<Home />} />
@@ -65,7 +61,7 @@ function App() {
             <Route path="inquiries" element={<Inquiries />} />
             <Route path="faq" element={<AdminFaq />} />
           </Route>
-          <Route path="/*" element={<Splash />} />
+          <Route path="/*" element={<DemoLanding />} />
         </Routes>
       </BrowserRouter>
     </AppContainer>

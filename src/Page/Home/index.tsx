@@ -51,14 +51,14 @@ const Home = () => {
     const { setProfile } = userProfileStore(); //상태관리에서 프로필 불러오기
 
     // 오늘의 묵상
-    const { data: todayMeditation, status } = useQuery({
+    const { data: todayMeditation } = useQuery({
         queryKey: ["today"],
         queryFn: () => getTodayMeditation(currentDate),
     });
 
     // 댓글조회
     const { data: comments } = useQuery({
-        queryKey: ["comment", status],
+        queryKey: ["comment", todayMeditation?.data?.today?.id],
         queryFn: () => getComments(todayMeditation?.data?.today?.id),
     });
 
@@ -84,7 +84,7 @@ const Home = () => {
                 setShowEdit(null);
 
                 queryClient.invalidateQueries({
-                    queryKey: ["comment", status],
+                    queryKey: ["comment", todayMeditation?.data?.today?.id],
                 });
             }
         },
@@ -98,7 +98,7 @@ const Home = () => {
             if (res.status === 200) {
                 setComment("");
                 queryClient.invalidateQueries({
-                    queryKey: ["comment", status],
+                    queryKey: ["comment", todayMeditation?.data?.today?.id],
                 });
             }
         },
@@ -115,7 +115,7 @@ const Home = () => {
                     isOpen: false,
                 });
                 queryClient.invalidateQueries({
-                    queryKey: ["comment", status],
+                    queryKey: ["comment", todayMeditation?.data?.today?.id],
                 });
             }
         },
@@ -160,7 +160,7 @@ const Home = () => {
             audioElement.pause(); // 재생 중이면 정지
             setIsPlaying(false); // 상태를 정지로 변경
         } else {
-            audioElement.play(); // 정지 중이면 재생
+            audioElement.play().catch(() => { setIsPlaying(false); window.dispatchEvent(new CustomEvent('demo-error', { detail: '음원을 재생할 수 없습니다. 다시 시도해주세요.' })); }); // 사용자 조작으로 재생
             setIsPlaying(true); // 상태를 재생으로 변경
         }
     };
@@ -255,18 +255,6 @@ const Home = () => {
 
     return (
         <HomeContainer>
-            <div className="alert">
-                <p>안녕하세요, 광주동산교회입니다.</p>
-                <br />
-                <p>
-                    교회 사정상 안타깝게 앱 사용을 중지하기로 했습니다.
-                    <br />
-                    앱을 이용하시는 분들께 사과드립니다.
-                    <br />
-                    죄송합니다.
-                </p>
-                <img src="/assets/tree.png" alt="" />
-            </div>
 
             {showDeletePopup.isOpen ? (
                 <PopupContainer>
@@ -319,40 +307,19 @@ const Home = () => {
                             />
 
                             <div className="qt-audio-controller">
-                                <img onClick={handleJumpBackward} src="/assets/audio-prev.png" alt="prev" />
-                                <img
-                                    onClick={handlePlayPause}
+                                <img role="button" tabIndex={0} onKeyDown={e => e.key === "Enter" && handleJumpBackward()} onClick={handleJumpBackward} src="/assets/audio-prev.png" alt="10초 뒤로" />
+                                <img role="button" tabIndex={0} onKeyDown={e => e.key === "Enter" && handlePlayPause()} onClick={handlePlayPause}
                                     src={isPlaying ? "/assets/audio-pause.png" : "/assets/audio-play.png"}
-                                    alt="play"
+                                    alt={isPlaying ? "일시정지" : "음원 재생"}
                                 />
-                                <img onClick={handleJumpForward} src="/assets/audio-next.png" alt="next" />
+                                <img role="button" tabIndex={0} onKeyDown={e => e.key === "Enter" && handleJumpForward()} onClick={handleJumpForward} src="/assets/audio-next.png" alt="10초 앞으로" />
                             </div>
 
                             <span className="home-audio-time">
                                 {formatTime(currentTime)} / {formatTime(duration)}
                             </span>
 
-                            {/* <div className="home-qt-activeArea">
-                <div>
-                  <img
-                    onClick={handleHeart}
-                    src={
-                      todayMeditation?.data?.heart.some(
-                        (item: any) =>
-                          item.userId === profileData?.data.user.userId
-                      )
-                        ? "/assets/heart-active.png"
-                        : "/assets/heart.png"
-                    }
-                    alt=""
-                  />
-                  <p>{todayMeditation?.data?.heart?.length}</p>
-                </div>
-                <div onClick={() => setShowComment(true)}>
-                  <img src="/assets/comment.png" alt="" />
-                  <p>{comments?.data.totalCount}</p>
-                </div>
-              </div> */}
+                            <button className="demo-reflection" onClick={() => setShowComment(true)}>묵상 나눔 {comments?.data.totalCount || 0}개 보기 · 작성</button>
                         </div>
                     </>
                 ) : (
