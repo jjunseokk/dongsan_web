@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import AudioPlayer from "react-h5-audio-player";
+import { useDemoAudio } from "../../demo/useDemoAudio";
 import "react-h5-audio-player/lib/styles.css";
 import { HomeContainer } from "./HomeStyle";
 import { PopupContainer } from "../Login";
@@ -55,6 +56,9 @@ const Home = () => {
         queryKey: ["today"],
         queryFn: () => getTodayMeditation(currentDate),
     });
+
+    // 댓글조회
+    const audioSource = useDemoAudio(todayMeditation?.data?.today?.music);
 
     // 댓글조회
     const { data: comments } = useQuery({
@@ -167,16 +171,18 @@ const Home = () => {
 
     // 10초 앞으로
     const handleJumpForward = () => {
-        if (playRef.current?.audio?.current) {
-            playRef.current.audio.current.currentTime += 10; // 10초 앞으로
-        }
+        const audio = playRef.current?.audio?.current as HTMLAudioElement | undefined;
+        if (!audio || !Number.isFinite(audio.duration)) return;
+        audio.currentTime = Math.min(audio.duration, audio.currentTime + 10);
+        setCurrentTime(audio.currentTime);
     };
 
     // 10초 뒤로
     const handleJumpBackward = () => {
-        if (playRef.current?.audio?.current) {
-            playRef.current.audio.current.currentTime -= 10; // 10초 뒤로
-        }
+        const audio = playRef.current?.audio?.current as HTMLAudioElement | undefined;
+        if (!audio || !Number.isFinite(audio.duration)) return;
+        audio.currentTime = Math.max(0, audio.currentTime - 10);
+        setCurrentTime(audio.currentTime);
     };
 
     // 댓글 쓰기 버튼
@@ -298,11 +304,14 @@ const Home = () => {
                                 onPlay={() => setIsPlaying(true)}
                                 onPause={() => setIsPlaying(false)}
                                 onListen={handleTimeUpdate}
+                                onSeeked={handleTimeUpdate}
+                                onEnded={() => { setIsPlaying(false); handleTimeUpdate(); }}
                                 onLoadedMetaData={handleLoadedMetaData}
                                 showSkipControls={false}
                                 showJumpControls={true}
                                 autoPlay={false}
-                                src={todayMeditation?.data?.today?.music}
+                                autoPlayAfterSrcChange={false}
+                                src={audioSource}
                                 style={{ display: "none" }}
                             />
 
